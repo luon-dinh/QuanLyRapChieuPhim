@@ -7,15 +7,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public final class SceneControler {
-	private static SceneControler instance = null;
+public final class SceneController {
+	private static SceneController instance = null;
 
-	private SceneControler() {
+	private SceneController() {
 	};
 
-	public static SceneControler GetInstance() {
+	public static SceneController GetInstance() {
 		if (instance == null)
-			instance = new SceneControler();
+			instance = new SceneController();
 		return instance;
 	}
 
@@ -23,17 +23,21 @@ public final class SceneControler {
 	private Scene main = null;
 	private Stage primaryStage = null;
 
+	public Stage getCurrentStage() {
+		return primaryStage;
+	}
+
 	public void init(Stage primaryStage, Scene mainScene) {
 		main = mainScene;
 		this.primaryStage = primaryStage;
 	}
 
-	public void ReplaceScene(String scene) throws NullSceneException {
+	public void ReplaceScene(String scene) throws Exception {
 		String location;
 		if (scene.equals("Main"))
 			location = "../application/Main.fxml";
 		else
-			location = "../" + Character.toLowerCase(scene.charAt(0)) + scene.substring(1) + "/" + scene + ".fxml";
+			location = Helper.FXMLlocation(scene);
 		Pane replaceScene = screenMap.get(scene);
 		try {
 			if (replaceScene == null) {
@@ -41,7 +45,7 @@ public final class SceneControler {
 				screenMap.put(scene, replaceScene);
 			}
 		} catch (Exception e) {
-			throw new NullSceneException("Không tìm thấy scene " + scene + " tại " + location);
+			throw new NullSceneException("Không thể load scene " + scene + " tại " + location);
 		}
 		try {
 			main.setRoot(replaceScene);
@@ -50,12 +54,18 @@ public final class SceneControler {
 		} catch (Exception e) {
 			throw new NullSceneException("Scene chưa được khởi tạo");
 		}
+		if (replaceScene.getUserData()==null)
+			throw new Exception("Chưa đặt tên cho Scene");
+		else
+			primaryStage.setTitle(replaceScene.getUserData().toString());
 	}
 	
 	public void TryReplaceScene(String scene) {
 		try {
 			ReplaceScene(scene);
 		} catch (NullSceneException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

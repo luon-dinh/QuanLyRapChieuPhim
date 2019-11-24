@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ScheduleController">
+   <children>
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints />
+          <RowConstraints />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane stylesheets="@../css/Font.css" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Back.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+				  <HBox alignment="CENTER" GridPane.columnIndex="1">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="2">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="3">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="4">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="5">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="6">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" GridPane.columnIndex="7">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Thứ" />
+                                    <Label styleClass="fontBigSize" text="Ngày" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="8">
+                     <children>
+                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Next.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <ScrollPane style="-fx-background-color: transparent;" vbarPolicy="NEVER" GridPane.rowIndex="2">
+               <content>
+                  <Pane>
+                     <children>
+                        <Line fx:id="timeLine" endX="100.0" strokeWidth="10.0" />
+                        <HBox fx:id="schedulePane" spacing="10.0" />
+                     </children>
+                  </Pane>
+               </content>
+            </ScrollPane>
+            <HBox alignment="BOTTOM_LEFT">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11" underline="true">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fontBigSize" text="tháng-năm">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <MenuButton mnemonicParsing="false" text="Chức năng" GridPane.halignment="RIGHT">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#AddScheduleCard" text="Thêm phim vào lịch" />
+              </items>
+            </MenuButton>
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

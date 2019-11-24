@@ -1,0 +1,8 @@
+.menuButton{
+	-fx-border-color: transparent;	
+	-fx-background-color: transparent;
+}
+
+.menuButton:hover{	
+	-fx-background-color: #c7c7c7;
+}

@@ -1,5 +1,4 @@
 package application;
-	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -11,15 +10,15 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../Images/ApplicationIcon.png")));
-		primaryStage.setTitle("Login");
 		try {
-			Scene scene = new Scene(FXMLLoader.load(getClass().getResource("../login/Login.fxml")));
-			//Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Main.fxml")));
-			plugin.SceneControler.GetInstance().init(primaryStage, scene);
+			Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Init.fxml")));
 			primaryStage.setScene(scene);
+			plugin.SceneController.GetInstance().init(primaryStage, scene);
+			plugin.SceneController.GetInstance().ReplaceScene("Main");
+			//plugin.SceneController.GetInstance().ReplaceScene("Login");
 			primaryStage.centerOnScreen();
 			primaryStage.sizeToScene();
-			primaryStage.setResizable(false);
+			//primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

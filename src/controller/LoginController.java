@@ -1,4 +1,4 @@
-package login;
+package controller;
 
 import plugin.*;
 import javafx.event.ActionEvent;
@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 
-public class LoginControler {
+public class LoginController {
 	@FXML private TextField username;
 	@FXML private PasswordField password;
 
@@ -20,10 +20,10 @@ public class LoginControler {
 			return;
 		}
 		// check password
-		SceneControler.GetInstance().TryReplaceScene("Main");
+		SceneController.GetInstance().TryReplaceScene("Main");
 	}
 
 	public void SignUp_click(ActionEvent actionEvent) {
-		SceneControler.GetInstance().TryReplaceScene("SignUp");
+		SceneController.GetInstance().TryReplaceScene("SignUp");
 	}
 }

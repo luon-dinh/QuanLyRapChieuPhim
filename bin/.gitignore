@@ -1,5 +1,9 @@
+/control/
+/view/
+/controller/
 /application/
+/usercontrol/
 /plugin/
+/css/
 /images/
-/login/
-/signUp/
+/backup/
