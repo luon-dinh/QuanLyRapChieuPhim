@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ScheduleController">
+<AnchorPane minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ScheduleController">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -18,7 +18,7 @@
         <rowConstraints>
           <RowConstraints />
           <RowConstraints />
-            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <GridPane stylesheets="@../css/Font.css" GridPane.rowIndex="1">
@@ -44,7 +44,7 @@
                               <Font size="18.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/Back.png" />
                                  </image>
@@ -179,7 +179,7 @@
                               <Font size="18.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/Next.png" />
                                  </image>
@@ -195,7 +195,7 @@
                   <Pane>
                      <children>
                         <Line fx:id="timeLine" endX="100.0" strokeWidth="10.0" />
-                        <HBox fx:id="schedulePane" spacing="10.0" />
+                        <HBox fx:id="schedulePane" alignment="BOTTOM_LEFT" spacing="10.0" />
                      </children>
                   </Pane>
                </content>

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import control.ImageButton;
+import usercontrol.control.ImageButton;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.*;
 import javafx.scene.Node;
@@ -13,7 +13,8 @@ import javafx.scene.layout.*;
 import plugin.*;
 
 public class MainController implements Initializable {
-	private static final String[] menu = { "Home", "Schedule" };	
+	private String[] menu = { "Home", "Schedule", "Movies" };
+	public static Pane mainPage;
 	private HashMap<String, ImageButton> buttons = new HashMap<>();	
 	
 	@Override
@@ -44,6 +45,7 @@ public class MainController implements Initializable {
 		});
 		
 		SelectedButton.set("Home");
+		mainPage = MainPane;
 	}
 	
 	@FXML private VBox MainMenu;

@@ -13,15 +13,15 @@ import javafx.scene.text.Text;
 
 public class HomeController implements Initializable {
 	@FXML private Button schedule;
-	@FXML private Text scheduleTip;
+	@FXML private Button movies;
+	@FXML private Text scheduleTip1;
+	@FXML private Text scheduleTip2;
 	@FXML private GridPane pane;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		scheduleTip.wrappingWidthProperty().bind(schedule.widthProperty().add(-40));
-		pane.widthProperty().addListener((a, b, c)->{
-			System.out.println(c);
-		});
+		scheduleTip1.wrappingWidthProperty().bind(schedule.widthProperty().add(-40));
+		scheduleTip2.wrappingWidthProperty().bind(movies.widthProperty().add(-40));
 	}
 	
 	@FXML

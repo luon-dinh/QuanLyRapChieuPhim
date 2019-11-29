@@ -1,4 +1,4 @@
-package control;
+package usercontrol.control;
 
 import java.io.IOException;
 
@@ -11,11 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class ImageButton extends AnchorPane implements Comparable<ImageButton>{
-    @FXML private ImageView imageView;
+public class ImageButton extends AnchorPane implements Comparable<ImageButton> {
+	@FXML private ImageView imageView;
 	@FXML public Button button;
-    public SimpleBooleanProperty isSelected = new SimpleBooleanProperty();
-    private Image nonSelected, selected;
+	public SimpleBooleanProperty isSelected = new SimpleBooleanProperty();
+	private Image nonSelected, selected;
 
 	private static int counter = 0;
 	public int index;
@@ -33,7 +33,7 @@ public class ImageButton extends AnchorPane implements Comparable<ImageButton>{
 		}
 		selected = plugin.ImagesControler.getInstance().tryGetImage(name);
 		nonSelected = plugin.ImagesControler.getInstance().tryGetImage(name + "Invert");
-		
+
 		this.isSelected.addListener((observable, oldValue, newValue) -> {
 			if (oldValue == newValue)
 				return;
@@ -41,11 +41,9 @@ public class ImageButton extends AnchorPane implements Comparable<ImageButton>{
 				imageView.setImage(selected);
 				button.styleProperty().unbind();
 				button.setStyle("-fx-background-color: -fx-background");
-			}
-			else {
+			} else {
 				imageView.setImage(nonSelected);
-				button.styleProperty().bind(Bindings.when(button.hoverProperty())
-						.then("-fx-background-color: #c7c7c7")
+				button.styleProperty().bind(Bindings.when(button.hoverProperty()).then("-fx-background-color: #c7c7c7")
 						.otherwise("-fx-background-color: transparent"));
 			}
 		});

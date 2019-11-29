@@ -22,7 +22,7 @@
                            </image>
                         </ImageView>
                         <Label text="Lịch chiếu phim" />
-                        <Text fx:id="scheduleTip" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="Xem, quản lý, chỉnh sửa lịch chiếu phim" textAlignment="CENTER" />
+                        <Text fx:id="scheduleTip1" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="Xem, quản lý, chỉnh sửa lịch chiếu phim" textAlignment="CENTER" />
                      </children>
                   </VBox>
                </graphic>
@@ -34,26 +34,26 @@
       </AnchorPane>
       <AnchorPane GridPane.columnIndex="1">
          <children>
-            <Button mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="movies" UserData="Movies" mnemonicParsing="false" onAction="#JumpToWork" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Movies.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Phim bộ" />
+                        <Text fx:id="scheduleTip2" opacity="0.75" strokeType="OUTSIDE" strokeWidth="0.0" text="Xem, quản lý, chỉnh sửa các bộ phim" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+               </graphic>
+            </Button>
          </children>
          <padding>
-            <Insets top="5.0" />
+            <Insets left="5.0" top="5.0" />
          </padding>
       </AnchorPane>
-      <AnchorPane GridPane.columnIndex="2">
-         <children>
-            <Button mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-         <padding>
-            <Insets right="5.0" top="5.0" />
-         </padding>
-      </AnchorPane>
-      <AnchorPane GridPane.rowIndex="1" />
-      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <AnchorPane GridPane.rowIndex="2" />
-      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="2" />
    </children>
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

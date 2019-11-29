@@ -20,6 +20,8 @@ public class Main extends Application {
 			primaryStage.sizeToScene();
 			//primaryStage.setResizable(false);
 			primaryStage.show();
+			
+			primaryStage.widthProperty().addListener((o,ov,nv)->{System.out.println(nv);});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -14,13 +14,13 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@../../src/css/Font.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" stylesheets="@../../css/Font.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <ImageView fx:id="image" fitHeight="400.0" fitWidth="300.0" pickOnBounds="true">
+            <ImageView fx:id="image" fitHeight="250.0" fitWidth="180.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../src/images/ExampleImage.png" />
+                  <Image url="@../../../src/images/ExampleImage.png" />
                </image></ImageView>
-            <Text fx:id="name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fontBigSize" text="Tên phim" textAlignment="CENTER" wrappingWidth="300.0" />
+            <Text fx:id="name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fontBigSize" text="Tên phim" textAlignment="CENTER" wrappingWidth="180.0" />
             <Text fx:id="cost" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fontBigSize" text="Giá vé" />
             <Text fx:id="numberSeats" strokeType="OUTSIDE" strokeWidth="0.0" text="Số ghế">
                <VBox.margin>
@@ -29,5 +29,15 @@
             <Label fx:id="time" alignment="CENTER" minHeight="80.0" minWidth="80.0" style="-fx-background-radius: 50%; -fx-background-color: #69e9f5;" text="Thời gian" />
          </children>
       </VBox>
+      <Label>
+         <contextMenu>
+            <ContextMenu fx:id="contextMenu">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Sửa" />
+                  <MenuItem mnemonicParsing="false" onAction="#delete" text="Xóa" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </Label>
    </children>
 </fx:root>
