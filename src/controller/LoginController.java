@@ -2,10 +2,6 @@ package controller;
 
 import plugin.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import Connector.Connector;
@@ -50,14 +46,7 @@ public class LoginController {
 	
 	public boolean checkAccount(String username, String password) {
 		Connector<Account> connector=new Connector<Account>();
-		Connection con=connector.connect();
 		List<Account> accounts=connector.selectAccount("select * from account");
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		for(Account account:accounts) {
 			if(account.getUsername().equalsIgnoreCase(username)&&account.getPassword().equalsIgnoreCase(password))
 				return true;

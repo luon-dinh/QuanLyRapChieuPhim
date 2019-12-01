@@ -2,8 +2,6 @@ package controller;
 
 import plugin.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,22 +35,15 @@ public class SignUpController {
 		// signup & login
 		
 		Connector<Account> connector=new Connector<Account>();
-		Connection con=connector.connect();
 		Date date=new Date();
 		String d=new SimpleDateFormat("dd/MM/yyyy").format(date);
 		String user=username.getText().toString();
 		String pass=password.getText().toString();
-		List<Account> accounts=connector.selectAccount("select * from account");
+		List<Account> accounts=connector.select(Account.class,"select * from account");
 		int lenght=accounts.size();
 		String ID="ID"+lenght;
 		if(connector.insert(ID, user,pass,"user",d,"Active")>0)
 			SceneController.GetInstance().TryReplaceScene("Main");
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void Login_click(ActionEvent actionEvent) {

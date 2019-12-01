@@ -41,12 +41,15 @@ public class Connector<T> {
 			connect();
 			statement = connection.createStatement();
 			result=statement.executeQuery(query);
+			while(result.next()) {
+				list.add((T)result);
+			}
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return (List<T>) result;
+		return list;
 	}
 	
 	public List<Account> selectAccount(String query) {
@@ -79,6 +82,7 @@ public class Connector<T> {
 				Account account=new Account(ID,Username,Password,Type,date,Status);
 				list.add(account);
 			}
+			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
