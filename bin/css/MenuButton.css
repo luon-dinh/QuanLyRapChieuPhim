@@ -1,0 +1,4 @@
+.menu-item:focused {
+     /*-fx-background-color: #969A9F;*/
+     -fx-background-color: transparent;
+}

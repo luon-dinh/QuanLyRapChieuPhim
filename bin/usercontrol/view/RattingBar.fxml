@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root fx:id="hbox" alignment="CENTER" stylesheets="@../../css/Image.css" type="HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="Ratting1" UserData="1" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#ChangeRatting" pickOnBounds="true" styleClass="imageRattingBar" />
+      <ImageView fx:id="Ratting2" UserData="2" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#ChangeRatting" pickOnBounds="true" styleClass="imageRattingBar" />
+      <ImageView fx:id="Ratting3" UserData="3" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#ChangeRatting" pickOnBounds="true" styleClass="imageRattingBar" />
+      <ImageView fx:id="Ratting4" UserData="4" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#ChangeRatting" pickOnBounds="true" styleClass="imageRattingBar" />
+      <ImageView fx:id="Ratting5" UserData="5" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#ChangeRatting" pickOnBounds="true" styleClass="imageRattingBar" />
+      <Label fx:id="Info" />
+   </children>
+</fx:root>

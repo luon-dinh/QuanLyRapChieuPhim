@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root prefHeight="260.0" prefWidth="450.0" styleClass="pane" stylesheets="@../../css/Pane.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="image" fitHeight="250.0" fitWidth="180.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../images/ExampleRoom.png" />
+               </image>
+            </ImageView>
+            <GridPane vgap="4.0" GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints minHeight="35.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên phòng" wrappingWidth="250.0" />
+                  <Text fx:id="capacity" strokeType="OUTSIDE" strokeWidth="0.0" text="Sức chứa" wrappingWidth="250.0" GridPane.rowIndex="1" />
+                  <Text fx:id="chairs" strokeType="OUTSIDE" strokeWidth="0.0" text="Số ghế" GridPane.rowIndex="2" />
+                  <Text fx:id="status" strokeType="OUTSIDE" strokeWidth="0.0" text="Trạng thái" GridPane.rowIndex="3" />
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="158.0" prefWidth="238.0" styleClass="scrollpane" stylesheets="@../../css/Scrollpane.css" GridPane.rowIndex="4">
+                     <content>
+                        <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" text="Mô tả" wrappingWidth="250.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</fx:root>
