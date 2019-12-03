@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RoomController">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <top>
+      <AnchorPane fx:id="root" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.leftAnchor="0.0">
+               <children>
+                  <TextField onKeyPressed="#FindRooms" text="Tìm kiếm" />
+                  <Button mnemonicParsing="false" text="Tìm kiếm" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="scrollpane" stylesheets="@../css/Scrollpane.css" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+         <content>
+            <FlowPane fx:id="paneRoom" hgap="10.0" vgap="10.0" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

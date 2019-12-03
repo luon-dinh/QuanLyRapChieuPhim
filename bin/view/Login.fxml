@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController" UserData="Đăng nhập">
+   <center>
+      <VBox prefHeight="508.0" prefWidth="693.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Tên tài khoản" />
+            <TextField fx:id="username" />
+            <Label text="Mật khẩu">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></Label>
+            <PasswordField fx:id="password"/>
+            <BorderPane>
+               <center>
+                  <Button mnemonicParsing="false" onAction="#LoginButton_Press" text="Đăng nhập" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin></Button>
+               </center>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <top>
+                  <Hyperlink onAction="#SignUp_click" text="Chưa có tài khoản? Đăng ký tại đây" BorderPane.alignment="CENTER" />
+               </top>
+            </BorderPane>
+         </children>
+      </VBox>
+   </center>
+   <padding>
+      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+   </padding>
+</BorderPane>

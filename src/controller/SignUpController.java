@@ -1,6 +1,13 @@
 package controller;
 
 import plugin.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import Connector.Connector;
+import Model.Account;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,7 +34,16 @@ public class SignUpController {
 		}
 		// signup & login
 		
-		SceneController.GetInstance().TryReplaceScene("Main");
+		Connector<Account> connector=new Connector<Account>();
+		Date date=new Date();
+		String d=new SimpleDateFormat("dd/MM/yyyy").format(date);
+		String user=username.getText().toString();
+		String pass=password.getText().toString();
+		List<Account> accounts=connector.select(Account.class,"select * from account");
+		int lenght=accounts.size();
+		String ID="ID"+lenght;
+		if(connector.insert(ID, user,pass,"user",d,"Active")>0)
+			SceneController.GetInstance().TryReplaceScene("Main");
 	}
 
 	public void Login_click(ActionEvent actionEvent) {
