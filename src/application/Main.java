@@ -2,9 +2,9 @@ package application;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import plugin.Helper;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-
 
 public class Main extends Application {
 	@Override
@@ -26,6 +26,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		Helper.Init();
 		launch(args);
 	}
 }

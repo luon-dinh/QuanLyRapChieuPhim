@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AccountController">
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <children>
+      <BorderPane fx:id="pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox alignment="TOP_RIGHT" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Thông tin cá nhân">
+                     <VBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Hyperlink text="Đăng xuất" />
+                  <Hyperlink text="Thay đổi mật khẩu" />
+                  <Hyperlink text="Thay đổi tên hiển thị" />
+                  <Hyperlink text="Đổi avater" />
+               </children>
+               <BorderPane.margin>
+                  <Insets right="40.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <center>
+            <GridPane hgap="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Hyperlink alignment="CENTER" text="Cập nhật thông tin cá nhân" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
+                  <Label text="Tài khoản" GridPane.rowIndex="1" />
+                  <Label text="Mật khẩu" GridPane.rowIndex="2" />
+                  <Label text="Tên hiển thị" GridPane.rowIndex="3" />
+                  <Label text="Avatar" GridPane.rowIndex="4" />
+                  <Label text="Họ và tên" GridPane.rowIndex="5" />
+                  <Label text="Ngày sinh" GridPane.rowIndex="6" />
+                  <Label text="Email" GridPane.rowIndex="7" />
+                  <Label text="Số điện thoại" GridPane.rowIndex="8" />
+                  <Label text="Địa chỉ" GridPane.rowIndex="9" />
+                  <Label text="Ngày vào làm" GridPane.rowIndex="10" />
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                     <GridPane.margin>
+                        <Insets left="4.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Hyperlink text="Hyperlink" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <ImageView fitHeight="200.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints prefHeight="29.0" />
+               </rowConstraints>
+            </GridPane>
+         </center>
+      </BorderPane>
+      <Line fx:id="line" stroke="#dddddd" strokeWidth="4.0" />
+   </children>
+</AnchorPane>
