@@ -46,7 +46,7 @@ public class LoginController {
 	
 	public boolean checkAccount(String username, String password) {
 		Connector<Account> connector=new Connector<Account>();
-		List<Account> accounts=connector.selectAccount("select * from account");
+		List<Account> accounts=connector.select(Account.class,"select * from account");
 		for(Account account:accounts) {
 			if(account.getUsername().equalsIgnoreCase(username)&&account.getPassword().equalsIgnoreCase(password))
 				return true;

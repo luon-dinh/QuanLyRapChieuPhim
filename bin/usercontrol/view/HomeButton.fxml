@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="button" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      	<graphic>
+            <VBox alignment="CENTER">
+               <children>
+                  <ImageView fx:id="image" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="name"/>
+                  <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" />
+               </children>
+            </VBox>
+         </graphic>
+      </Button>
+   </children>
+</fx:root>

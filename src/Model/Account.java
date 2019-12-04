@@ -4,16 +4,27 @@ import java.util.Date;
 
 public class Account {
 
+	@DBTable(columnName = "ID")
 	private String ID;
+	
+	@DBTable(columnName = "Username")
 	private String Username;
+	
+	@DBTable(columnName = "Password")
 	private String Password;
+	
+	@DBTable(columnName = "Type")
 	private String Type;
-	private Date Date;
+	
+	@DBTable(columnName = "CreatedDate")
+	private String Date;
+	
+	@DBTable(columnName = "Status")
 	private String Status;
 	public Account() {
 		super();
 	}
-	public Account(String iD, String username, String password, String type, Date date, String status) {
+	public Account(String iD, String username, String password, String type, String date, String status) {
 		super();
 		ID = iD;
 		Username = username;
@@ -46,10 +57,10 @@ public class Account {
 	public void setType(String type) {
 		Type = type;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return Date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.Date = date;
 	}
 	public String getStatus() {

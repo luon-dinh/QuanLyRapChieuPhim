@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <TableView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn maxWidth="1.7976931348623157E308" prefWidth="140.0" text="Họ tên" />
+          <TableColumn maxWidth="1.7976931348623157E308" prefWidth="140.0" text="Email" />
+            <TableColumn maxWidth="1.7976931348623157E308" prefWidth="140.0" text="Số điện thoại" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>
-
