@@ -28,7 +28,7 @@ public class Connector<T> {
 	public Connection connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection=DriverManager.getConnection("jdbc:sqlite:Account.db");
+			connection=DriverManager.getConnection("jdbc:sqlite:QuanLyRapChieuPhim.db");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,12 +98,12 @@ public class Connector<T> {
 		}
 		return result;
 	}
-	public int insert(String ID, String username, String password, String type, String date, String status) {
+	public int insertAccount(String ID, String username, String password, String type, String date, String status) {
 		PreparedStatement statement;
 		int result=0;
 		try {
 			connect();
-			statement = connection.prepareStatement("insert into account values(?,?,?,?,?,?)");
+			statement = connection.prepareStatement("insert into TaiKhoan values(?,?,?,?,?,?)");
 			statement.setString(1, ID);
 			statement.setString(2, username);
 			statement.setString(3, password);

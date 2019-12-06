@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import Connector.Connector;
-import Model.Account;
+import Model.TaiKhoan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -34,15 +34,15 @@ public class SignUpController {
 		}
 		// signup & login
 		
-		Connector<Account> connector=new Connector<Account>();
+		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
 		Date date=new Date();
 		String d=new SimpleDateFormat("dd/MM/yyyy").format(date);
 		String user=username.getText().toString();
 		String pass=password.getText().toString();
-		List<Account> accounts=connector.select(Account.class,"select * from account");
+		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
 		int lenght=accounts.size();
 		String ID="ID"+lenght;
-		if(connector.insert(ID, user,pass,"user",d,"Active")>0)
+		if(connector.insertAccount(ID, user,pass,"user",d,"Active")>0)
 			SceneController.GetInstance().TryReplaceScene("Main");
 	}
 

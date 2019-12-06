@@ -5,7 +5,7 @@ import plugin.*;
 import java.util.List;
 
 import Connector.Connector;
-import Model.Account;
+import Model.TaiKhoan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -45,10 +45,10 @@ public class LoginController {
 	
 	
 	public boolean checkAccount(String username, String password) {
-		Connector<Account> connector=new Connector<Account>();
-		List<Account> accounts=connector.select(Account.class,"select * from account");
-		for(Account account:accounts) {
-			if(account.getUsername().equalsIgnoreCase(username)&&account.getPassword().equalsIgnoreCase(password))
+		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
+		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
+		for(TaiKhoan account:accounts) {
+			if(account.getTenDangNhap().equalsIgnoreCase(username)&&account.getMatKhau().equalsIgnoreCase(password))
 				return true;
 		}
 		return false;
