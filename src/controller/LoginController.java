@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 	@FXML private TextField username;
@@ -42,7 +44,12 @@ public class LoginController {
 	public void SignUp_click(ActionEvent actionEvent) {
 		SceneController.GetInstance().TryReplaceScene("SignUp");
 	}
-	
+
+	@FXML
+    void Pasword_KeyPress(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER)
+			LoginButton_Press(null);
+    }
 	
 	public boolean checkAccount(String username, String password) {
 		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
