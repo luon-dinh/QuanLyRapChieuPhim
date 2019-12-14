@@ -17,11 +17,13 @@ public class AdvanceMenuFilterContent extends AnchorPane{
 
 		public MenuNode(String name) {
 			super();
-			Label label = new Label(name);
-			label.styleProperty().bind(Bindings.when(label.hoverProperty())
-					.then("-fx-text-fill: black;")
-					.otherwise("-fx-text-fill: black;"));			
-			super.getChildren().add(label);
+			if (name != null) {
+				Label label = new Label(name);
+				label.styleProperty().bind(Bindings.when(label.hoverProperty())
+						.then("-fx-text-fill: black;")
+						.otherwise("-fx-text-fill: black;"));
+				super.getChildren().add(label);
+			}
 			super.getChildren().add(content);
 		}
 		
@@ -50,26 +52,30 @@ public class AdvanceMenuFilterContent extends AnchorPane{
 			return ret;
 		}
 	}
+
 	private HashMap<String, MenuNode> map = new HashMap<>();
 	private VBox pane = new VBox(10d);
-	
+
 	public AdvanceMenuFilterContent() {
 		super();
 		super.getChildren().add(pane);
 	}
-	
+
 	public void Add(String label, String content) {
 		try {
-		MenuNode node = map.get(label);
-		if (node == null) {
-			node = new MenuNode(label);
-			map.put(label, node);
-			pane.getChildren().add(node);
-		}
-		node.Add(content);
-		}
-		catch (Exception e) {
+			MenuNode node = map.get(label);
+			if (node == null) {
+				node = new MenuNode(label);
+				map.put(label, node);
+				pane.getChildren().add(node);
+			}
+			node.Add(content);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean IsCheck(String label, String content) {
+		return map.get(label).IsCheck(content);
 	}
 }

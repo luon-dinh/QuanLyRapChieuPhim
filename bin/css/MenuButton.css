@@ -1,4 +1,7 @@
 .menu-item:focused {
-     /*-fx-background-color: #969A9F;*/
      -fx-background-color: transparent;
+     -fx-text-fill: black;
+}
+.menu-item{
+	-fx-text-fill: black;
 }
