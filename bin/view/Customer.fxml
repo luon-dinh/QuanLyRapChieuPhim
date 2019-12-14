@@ -12,7 +12,7 @@
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <TableView fx:id="table_khachhang" BorderPane.alignment="CENTER">
+            <TableView fx:id="table" BorderPane.alignment="CENTER">
               <columns>
                   <TableColumn fx:id="column_makhachhang" prefWidth="130.0" text="Mã khách hàng" />
                   <TableColumn fx:id="column_mataiKhoan" prefWidth="119.0" text="Mã tài khoản" />

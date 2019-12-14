@@ -1,0 +1,7 @@
+.button{
+	-fx-min-width: 31;
+	-fx-min-height: 31;
+	-fx-max-width: 31;
+	-fx-max-height: 31;
+	-fx-label-padding: 0 -10 0 -10;
+}

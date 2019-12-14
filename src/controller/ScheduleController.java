@@ -8,8 +8,11 @@ import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
+import plugin.MyWindows;
+import usercontrol.control.MovieCard;
 import usercontrol.control.MovieScheduleCard;
 
 public class ScheduleController implements Initializable {
@@ -18,16 +21,20 @@ public class ScheduleController implements Initializable {
 
     @FXML
     void AddScheduleCard(ActionEvent event) {
+    	MyWindows w = new MyWindows("../view/AddMovieToSchedule.fxml");
+    	w.Resize(940, 600);
+    	w.Show();
     	MovieScheduleCard card = new MovieScheduleCard();
-		card.deleteObject.addListener((observable, oldValue, newValue) -> {
-			schedulePane.getChildren().remove(newValue);
-		});
-		if (schedulePane.getChildren().size() % 2 == 0)
-		card.name.setText("đây là một cái tên phim siêu siêu dài này, dài vê lờ luôn á");
-		else {
-			card.name.setText("Phim tên ngắn");
-		}
-		schedulePane.getChildren().add(card);
+    	try {
+    		card.setInfo((MovieCard) w.getUserData());
+    		schedulePane.getChildren().add(card);
+    		card.image.setOnMouseClicked(e->{
+				if (e.getButton() == MouseButton.PRIMARY) {
+					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", 50);
+    				bookTicket.Show();
+    			}
+    		});
+		} catch (NullPointerException e) {}    		
     }
     
 	@Override
@@ -35,5 +42,4 @@ public class ScheduleController implements Initializable {
 		timeLine.endXProperty().bind(Bindings.max(schedulePane.widthProperty(),MainController.mainPage.widthProperty().add(-105)));
 		timeLine.translateYProperty().bind(schedulePane.heightProperty().add(-40));
 	}
-
 }

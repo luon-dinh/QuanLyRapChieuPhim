@@ -30,6 +30,9 @@ public final class Helper {
 		HomeMenuInfo.put("Account", "Tài khoản");
 		HomeMenuDescription.put("Account", "Xem thông tin, cập nhật tài khoản cá nhân");
 		
+		HomeMenuInfo.put("CustomerCare", "Chăm sóc khách hàng");
+		HomeMenuDescription.put("CustomerCare", "Phản hồi xử lý phản hồi");
+		
 //		HomeMenuInfo.put("", "");
 //		HomeMenuDescription.put("", "");
 	}

@@ -7,5 +7,5 @@
 	-fx-background-color: #c7c7c7;
 }
 .button{
-	-fx-pref-width: 80.0; 
+	-fx-min-width: 80.0; 
 }
