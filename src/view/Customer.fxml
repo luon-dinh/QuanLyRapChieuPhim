@@ -8,17 +8,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <TableView BorderPane.alignment="CENTER">
+            <TableView fx:id="table_khachhang" BorderPane.alignment="CENTER">
               <columns>
-                  <TableColumn prefWidth="130.0" text="Mã khách hàng" />
-                  <TableColumn prefWidth="119.0" text="Mã tài khoản" />
-                <TableColumn maxWidth="1.7976931348623157E308" prefWidth="200.0" text="Họ tên" />
-                <TableColumn maxWidth="1.7976931348623157E308" prefWidth="199.0" text="Email" />
-                  <TableColumn maxWidth="1.7976931348623157E308" prefWidth="119.0" text="Số điện thoại" />
+                  <TableColumn fx:id="column_makhachhang" prefWidth="130.0" text="Mã khách hàng" />
+                  <TableColumn fx:id="column_mataiKhoan" prefWidth="119.0" text="Mã tài khoản" />
+                <TableColumn fx:id="column_hoten" maxWidth="1.7976931348623157E308" prefWidth="200.0" text="Họ tên" />
+                <TableColumn fx:id="column_email" maxWidth="1.7976931348623157E308" prefWidth="199.0" text="Email" />
+                  <TableColumn fx:id="column_sodienthoai" maxWidth="1.7976931348623157E308" prefWidth="119.0" text="Số điện thoại" />
               </columns>
                <BorderPane.margin>
                   <Insets bottom="10.0" />

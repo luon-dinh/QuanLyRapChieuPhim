@@ -1,0 +1,7 @@
+.hyperlink{
+	-fx-text-fill: DeepSkyBlue;
+}
+.hyperlink:hover {
+    -fx-underline: true;
+	-fx-text-fill: DodgerBlue;
+}
