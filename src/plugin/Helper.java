@@ -33,8 +33,8 @@ public final class Helper {
 		HomeMenuInfo.put("CustomerCare", "Chăm sóc khách hàng");
 		HomeMenuDescription.put("CustomerCare", "Phản hồi xử lý phản hồi");
 		
-//		HomeMenuInfo.put("", "");
-//		HomeMenuDescription.put("", "");
+		HomeMenuInfo.put("Service", "Dịch vụ");
+		HomeMenuDescription.put("Service", "Mua thức ăn, nước uống, combo");
 	}
 	
 	public static HashMap<String, String> HomeMenuInfo = new HashMap<>();

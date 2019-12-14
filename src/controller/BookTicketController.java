@@ -5,8 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,7 +18,6 @@ public class BookTicketController implements Initializable {
 	@FXML private Label ticketCounter;
 
 	private IntegerProperty counter = new SimpleIntegerProperty(0);
-	private StringProperty counterToString = new SimpleStringProperty("0");
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -38,11 +35,7 @@ public class BookTicketController implements Initializable {
 					counter.set(counter.get() - 1);
 			});
 		}
-
-		counter.addListener((observable, oldValue, newValue)->{
-			counterToString.set(newValue.toString());
-		});
-		ticketCounter.textProperty().bind(counterToString);
+		ticketCounter.textProperty().bind(counter.asString());
 	}
 
 }
