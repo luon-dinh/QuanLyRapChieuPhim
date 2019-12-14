@@ -3,6 +3,7 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CustomMenuItem;
@@ -11,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import plugin.MyWindows;
 import usercontrol.control.AdvanceMenuFilterContent;
 import usercontrol.control.MovieCard;
 
@@ -32,9 +34,13 @@ public class MoviesController implements Initializable {
 		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(20));
 	}
 	
-	@FXML
-	private void FindMovies(KeyEvent event) {
+	@FXML private void FindMovies(KeyEvent event) {
 		if (event.getCode()==KeyCode.ENTER)
 			paneMovie.getChildren().add(new MovieCard());
+    }
+	
+	@FXML void AddNewMovie(ActionEvent event) {
+		MyWindows w = new MyWindows("../view/AddNewMovie.fxml");
+		w.Show();
     }
 }

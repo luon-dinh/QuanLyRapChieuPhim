@@ -1,6 +1,7 @@
 .pane{
-	-fx-background-color:  white;
+	-fx-background-color: white;
 	-fx-background-radius: 10;
+	-fx-border-radius: 10;
+	-fx-border-color: black;
 	-fx-padding: 5 5 5 5;
-	
 }

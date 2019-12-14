@@ -9,17 +9,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane UserData="Đăng nhập" prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<BorderPane UserData="Đăng nhập" prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <center>
       <VBox prefHeight="508.0" prefWidth="693.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="Tên tài khoản" />
-            <TextField fx:id="username" />
+            <TextField fx:id="username" promptText="Nhập tên tài khoản" />
             <Label text="Mật khẩu">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin></Label>
-            <PasswordField fx:id="password" onKeyPressed="#Pasword_KeyPress" />
+            <PasswordField fx:id="password" onKeyPressed="#Pasword_KeyPress" promptText="Nhập mật khẩu" />
             <BorderPane>
                <center>
                   <Button mnemonicParsing="false" onAction="#LoginButton_Press" text="Đăng nhập" BorderPane.alignment="CENTER">
@@ -31,7 +31,7 @@
                   <Insets top="5.0" />
                </VBox.margin>
                <top>
-                  <Hyperlink onAction="#SignUp_click" text="Chưa có tài khoản? Đăng ký tại đây" BorderPane.alignment="CENTER" />
+                  <Hyperlink onAction="#SignUp_click" stylesheets="@../css/hyperlink.css" text="Chưa có tài khoản? Đăng ký tại đây" BorderPane.alignment="CENTER" />
                </top>
             </BorderPane>
          </children>

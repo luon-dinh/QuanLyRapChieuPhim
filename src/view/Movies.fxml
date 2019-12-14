@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="root" minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MoviesController">
+<AnchorPane fx:id="root" minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MoviesController">
    <children>
       <BorderPane prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <Pane BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="5.0">
-                     <children>
-                        <MenuButton fx:id="advance" mnemonicParsing="false" stylesheets="@../css/MenuButton.css" text="+" />
-                        <TextField onKeyPressed="#FindMovies" />
-                        <Button mnemonicParsing="false" text="Tìm kiếm" />
-                     </children>
-                  </HBox>
-               </children>
-            </Pane>
-         </top>
          <center>
             <ScrollPane hbarPolicy="NEVER" styleClass="scrollpane" stylesheets="@../css/Scrollpane.css" BorderPane.alignment="CENTER">
                <content>
@@ -33,6 +23,20 @@
                </padding>
             </ScrollPane>
          </center>
+         <top>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.leftAnchor="0.0">
+                     <children>
+                        <MenuButton fx:id="advance" mnemonicParsing="false" stylesheets="@../css/MenuButton.css" text="+" />
+                        <TextField onKeyPressed="#FindMovies" styleClass="textField" stylesheets="@../css/SearchTextField.css" />
+                        <Button mnemonicParsing="false" text="Tìm kiếm" />
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#AddNewMovie" stylesheets="@../css/button.css" text="Thêm phim" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </top>
       </BorderPane>
    </children>
    <padding>

@@ -41,4 +41,13 @@ public class MovieScheduleCard extends AnchorPane {
     void delete(ActionEvent event) {
 		deleteObject.setValue(this);		
     }
+	
+	public void setInfo(MovieCard card) throws NullPointerException {
+		if (card == null)
+			throw new NullPointerException("Card không tồn tại");
+		else {
+			image.setImage(card.image.getImage());
+			name.setText(card.title.getText());
+		}
+	}
 }
