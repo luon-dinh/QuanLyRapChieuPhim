@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatisticController">
+   <center>
+      		<LineChart fx:id="lineChart1" BorderPane.alignment="CENTER">
+      			<xAxis>
+      				<CategoryAxis fx:id="xAxis1" side="BOTTOM" />
+      			</xAxis>
+      			<yAxis>
+      				<NumberAxis side="LEFT" fx:id="yAxis1" />
+      			</yAxis>
+      		</LineChart>
+   </center>
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Loại doanh thu" />
+            <MenuButton mnemonicParsing="false" text="Tổng">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Tổng" />
+                <MenuItem mnemonicParsing="false" text="Phim" />
+                  <MenuItem mnemonicParsing="false" text="Dịch vụ khác" />
+              </items>
+            </MenuButton>
+            <Region prefWidth="20.0" />
+            <Label text="Thời gian" />
+            <MenuButton mnemonicParsing="false" text="Chọn tháng" />
+            <MenuButton mnemonicParsing="false" text="Chọn năm" />
+         </children>
+      </HBox>
+   </top>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</BorderPane>

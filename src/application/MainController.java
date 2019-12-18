@@ -13,7 +13,7 @@ import javafx.scene.layout.*;
 import plugin.*;
 
 public class MainController implements Initializable {
-	public static final String[] menu = { "Home", "Schedule", "Movies", "CustomerCare", "Rooms", "Customer", "Service", "Account" };
+	public static final String[] menu = { "Home", "Schedule", "Movies", "CustomerCare", "Rooms", "Customer", "Service", "Account","Statistic" };
 	public static Pane mainPage;
 	private HashMap<String, ImageButton> buttons = new HashMap<>();	
 	

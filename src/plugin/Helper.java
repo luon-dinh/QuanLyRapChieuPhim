@@ -35,6 +35,9 @@ public final class Helper {
 		
 		HomeMenuInfo.put("Service", "Dịch vụ");
 		HomeMenuDescription.put("Service", "Mua thức ăn, nước uống, combo");
+		
+		HomeMenuInfo.put("Statistic","Thống kê");
+		HomeMenuDescription.put("Statistic","Thống kê doanh thu theo thời gian");
 	}
 	
 	public static HashMap<String, String> HomeMenuInfo = new HashMap<>();
