@@ -1,0 +1,8 @@
+.pane{
+	-fx-background-color: white;
+	-fx-background-radius: 10;
+	-fx-border-radius: 15;
+	-fx-border-color: black;
+	-fx-min-height: 31;
+	-fx-padding: 0 3 0 5;
+}

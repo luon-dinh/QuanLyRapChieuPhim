@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root alignment="CENTER" spacing="5.0" styleClass="pane" stylesheets="@../../css/chip.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="content" text="Label" />
+      <ImageView fx:id="DeleteButton" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../images/ChipX.png" />
+         </image>
+      </ImageView>
+   </children>
+</fx:root>

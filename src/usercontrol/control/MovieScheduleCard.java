@@ -18,7 +18,7 @@ public class MovieScheduleCard extends AnchorPane {
     @FXML public Text name;
     @FXML public Text numberSeats;
     @FXML public Label time;
-    @FXML private ContextMenu contextMenu;
+    @FXML public ContextMenu contextMenu;
     
     public SimpleObjectProperty<MovieScheduleCard> deleteObject = new SimpleObjectProperty<>(null);
 	

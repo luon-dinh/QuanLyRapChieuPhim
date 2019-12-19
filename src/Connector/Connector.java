@@ -26,6 +26,8 @@ public class Connector<T> {
 
 	public static Connection connection=null;
 	public Connection connect() {
+		if(connection!=null)
+			return connection;
 		try {
 			Class.forName("org.sqlite.JDBC");
 			connection=DriverManager.getConnection("jdbc:sqlite:QuanLyRapChieuPhim.db");
@@ -83,6 +85,19 @@ public class Connector<T> {
 		return result;
 	}
 	
+	
+	public void query(String query) {
+		Statement statement;
+		try {
+			connect();
+			statement = connection.createStatement();
+			statement.executeUpdate(query);
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public int insert(String query) {
 		Statement statement;

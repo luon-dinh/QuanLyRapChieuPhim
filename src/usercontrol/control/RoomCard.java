@@ -14,13 +14,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import plugin.AlertBox;
+import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
 
 public class RoomCard extends AnchorPane implements Initializable{ 
 	@FXML private ImageView image;
     @FXML public Text title, capacity, chairs, status, description;
 	private ContextMenu menu;
-
 	public RoomCard() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/RoomCard.fxml"));
 		fxmlLoader.setRoot(this);
@@ -40,7 +40,8 @@ public class RoomCard extends AnchorPane implements Initializable{
 		menu = new ContextMenu();
 		MenuItem edit = new MenuItem("Sửa");
 		edit.setOnAction(e->{
-			
+			MyWindows w = new MyWindows("../view/AddNewRoom.fxml");
+			w.Show();
 		});
 		MenuItem delete = new MenuItem("Xóa");
 		delete.setOnAction(e -> {
