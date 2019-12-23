@@ -1,5 +1,7 @@
 package plugin;
 
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
@@ -8,14 +10,14 @@ public class AlertBox {
 	public static void show(AlertType type, String title) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
-		alert.show();
+		alert.showAndWait();
 	}
 
 	public static void show(AlertType type, String title, String header) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
-		alert.show();
+		alert.showAndWait();
 	}
 
 	public static void show(AlertType type, String title, String header, String content) {
@@ -23,11 +25,11 @@ public class AlertBox {
 		alert.setTitle(title);
 		alert.setHeaderText(header);
 		alert.setContentText(content);
-		alert.show();
+		alert.showAndWait();
 	}
 	
 	public enum MyButtonType { YesNo, ApplyCancel }
-	public static void show(AlertType type, String title, String header, MyButtonType buttonType) {
+	public static Optional<ButtonType> show(AlertType type, String title, String header, MyButtonType buttonType) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
@@ -44,6 +46,6 @@ public class AlertBox {
 		default:
 			break;
 		}
-		alert.show();
+		return alert.showAndWait();
 	}
 }
