@@ -3,6 +3,7 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Model.SanPham;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -69,32 +70,35 @@ public class ServiceController implements Initializable {
 	@FXML
     void SearchKeyPress(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
-			SellingCard card = new SellingCard();
-			card.costProperty().set(10000);
-			card.nameProperty().set("Bỏng ngô");
-			card.descriptionProperty().set("Bỏng ngô giòn tan siêu ngon siêu ngọt không ngon không tính tiền");
-			card.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override public void handle(MouseEvent event) {
-					if (event.getButton() == MouseButton.PRIMARY) {
-						CartItem item = new CartItem(card);
-						item.NumberProperty().addListener((observable, oldValue, newValue) -> {
-							number.set(number.get() - (int) oldValue + (int) newValue);
-							if ((int) newValue == 0)
-								cart.getChildren().remove(item);
-						});
-						item.SumCostProperty().addListener((observable, oldValue, newValue) -> {
-							cost.set(cost.get() - (int) oldValue + (int) newValue);
-						});
-						number.set(number.get() + 1);
-						cost.set(cost.get() + card.costProperty().get());
-						cart.getChildren().add(item);
-					}
-				}
-			});
-			pane.getChildren().add(card);
+			//xử lí tìm kiếm
 		}
     }
 	
+	private void addNewCard(SanPham sp) {
+		SellingCard card = new SellingCard();
+		card.costProperty().set(sp.getGiaSanPham());
+		card.nameProperty().set(sp.getTenSanPham());
+		card.descriptionProperty().set(sp.getMoTa());
+		card.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					CartItem item = new CartItem(card);
+					item.NumberProperty().addListener((observable, oldValue, newValue) -> {
+						number.set(number.get() - (int) oldValue + (int) newValue);
+						if ((int) newValue == 0)
+							cart.getChildren().remove(item);
+					});
+					item.SumCostProperty().addListener((observable, oldValue, newValue) -> {
+						cost.set(cost.get() - (int) oldValue + (int) newValue);
+					});
+					number.set(number.get() + 1);
+					cost.set(cost.get() + card.costProperty().get());
+					cart.getChildren().add(item);
+				}
+			}
+		});
+		pane.getChildren().add(card);
+	}
 	@FXML
     void AddNewServive(ActionEvent event) {
 		MyWindows w = new MyWindows("../view/AddNewService.fxml");

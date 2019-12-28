@@ -1,7 +1,13 @@
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -37,7 +44,16 @@ public class AddNewMovieController implements Initializable{
 		newGenre.setItems(list);
 		image.setOnMouseClicked(e -> {
 			FileChooser fileChooser = new FileChooser();
-			fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			File f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			if(f!=null) {
+				try {
+					BufferedImage img=ImageIO.read(f);
+					//Image i=(Image)img;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		});
 	}    
 	

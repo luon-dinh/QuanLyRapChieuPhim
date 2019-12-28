@@ -12,19 +12,24 @@ public class SanPham {
 	private String tenSanPham;
 	
 	@DBTable(columnName = "GiaSanPham")
-	private float giaSanPham;
+	private int giaSanPham;
+	
+	@DBTable(columnName = "MoTa")
+	private String moTa;
 
+	
 	public SanPham() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, float giaSanPham) {
+	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, int giaSanPham, String moTa) {
 		super();
 		this.maSanPham = maSanPham;
 		this.maNhaCungCap = maNhaCungCap;
 		this.tenSanPham = tenSanPham;
 		this.giaSanPham = giaSanPham;
+		this.moTa = moTa;
 	}
 
 	public String getMaSanPham() {
@@ -51,12 +56,20 @@ public class SanPham {
 		this.tenSanPham = tenSanPham;
 	}
 
-	public float getGiaSanPham() {
+	public int getGiaSanPham() {
 		return giaSanPham;
 	}
 
-	public void setGiaSanPham(float giaSanPham) {
+	public void setGiaSanPham(int giaSanPham) {
 		this.giaSanPham = giaSanPham;
+	}
+	
+	public String getMoTa() {
+		return moTa;
+	}
+
+	public void setMoTa(String moTa) {
+		this.moTa = moTa;
 	}
 
 }

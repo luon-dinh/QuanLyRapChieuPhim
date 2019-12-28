@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefWidth="330.0" userData="Thêm dịch vụ mới" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefWidth="330.0" userData="Thêm dịch vụ mới" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddNewServiceController">
    <left>
-      <ImageView fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imgv_newservice" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../images/DefaultImage.png" />
          </image>
@@ -22,9 +22,9 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField promptText="Tên sản phẩm" />
-            <TextArea promptText="Mô tả" wrapText="true" VBox.vgrow="ALWAYS" />
-            <TextField promptText="Giá" />
+            <TextField fx:id="txt_ten" promptText="Tên sản phẩm" />
+            <TextArea fx:id="txt_mota" promptText="Mô tả" wrapText="true" VBox.vgrow="ALWAYS" />
+            <TextField fx:id="txt_gia" promptText="Giá" />
          </children>
          <padding>
             <Insets left="10.0" />
@@ -39,8 +39,8 @@
          <children>
             <HBox spacing="10.0" stylesheets="@../css/button.css" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" text="Đồng ý" />
-                  <Button mnemonicParsing="false" text="Hủy" />
+                  <Button fx:id="btn_dongy" mnemonicParsing="false" text="Đồng ý" />
+                  <Button fx:id="btn_huy" mnemonicParsing="false" text="Hủy" />
                </children>
                <padding>
                   <Insets top="10.0" />
