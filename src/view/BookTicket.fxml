@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="591.0" userData="Lựa chọn ghế ngồi" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookTicketController">
+<BorderPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="591.0" userData="Lựa chọn ghế ngồi" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookTicketController">
    <top>
-      <Label styleClass="fontBigSize" stylesheets="@../css/Font.css" text="Tên phim" BorderPane.alignment="CENTER" />
+      <Label fx:id="lb_tenphim" styleClass="fontBigSize" stylesheets="@../css/Font.css" text="Tên phim" BorderPane.alignment="CENTER" />
    </top>
    <center>
       <VBox BorderPane.alignment="CENTER">
@@ -37,7 +42,7 @@
                   <HBox>
                      <children>
                         <Label text="Phòng: " />
-                        <Label text="Tên phòng" />
+                        <Label fx:id="lb_tenphong" text="Tên phòng" />
                      </children>
                   </HBox>
                   <HBox>
@@ -49,15 +54,15 @@
                   <HBox>
                      <children>
                         <Label text="Thành tiền: " />
-                        <Label text="Số tiền" />
+                        <Label fx:id="lb_sotien" text="Số tiền" />
                      </children>
                   </HBox>
                </children>
             </VBox>
             <HBox spacing="10.0" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" text="Đồng ý" />
-                  <Button mnemonicParsing="false" text="Hủy" />
+                  <Button fx:id="btn_dongy" mnemonicParsing="false" text="Đồng ý" />
+                  <Button fx:id="btn_huy" mnemonicParsing="false" text="Hủy" />
                </children>
             </HBox>
          </children>

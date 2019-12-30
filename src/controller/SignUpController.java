@@ -42,7 +42,7 @@ public class SignUpController {
 		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
 		int lenght=accounts.size();
 		String ID="ID"+lenght;
-		if(connector.insertAccount(ID, user,pass,"user",d,"Active")>0)
+		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"',Active)")>0)
 			SceneController.GetInstance().TryReplaceScene("Main");
 	}
 

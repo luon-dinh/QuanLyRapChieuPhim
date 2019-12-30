@@ -34,6 +34,7 @@
       <VBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="name" promptText="Tên phim" />
+            <TextField fx:id="nuocsanxuat" promptText="Nước sản xuất" />
             <TextField fx:id="year" promptText="Năm" />
             <FlowPane fx:id="genre" hgap="10.0" maxHeight="93.0" vgap="10.0">
                <children>
@@ -66,8 +67,8 @@
          <children>
             <HBox spacing="10.0" stylesheets="@../css/button.css" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" text="Đồng ý" />
-                  <Button mnemonicParsing="false" text="Hủy" />
+                  <Button fx:id="btn_dongy" mnemonicParsing="false" text="Đồng ý" />
+                  <Button fx:id="btn_huy" mnemonicParsing="false" text="Hủy" />
                </children>
                <padding>
                   <Insets top="10.0" />

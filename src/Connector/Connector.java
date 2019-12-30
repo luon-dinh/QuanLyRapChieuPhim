@@ -3,8 +3,11 @@ package Connector;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +20,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.DBTable;
+import Model.Phim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import sun.misc.BASE64Decoder;
@@ -26,8 +30,6 @@ public class Connector<T> {
 
 	public static Connection connection=null;
 	public Connection connect() {
-		if(connection!=null)
-			return connection;
 		try {
 			Class.forName("org.sqlite.JDBC");
 			connection=DriverManager.getConnection("jdbc:sqlite:QuanLyRapChieuPhim.db");
@@ -86,19 +88,6 @@ public class Connector<T> {
 	}
 	
 	
-	public void query(String query) {
-		Statement statement;
-		try {
-			connect();
-			statement = connection.createStatement();
-			statement.executeUpdate(query);
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public int insert(String query) {
 		Statement statement;
 		int result=0;
@@ -106,26 +95,6 @@ public class Connector<T> {
 			connect();
 			statement = connection.createStatement();
 			result=statement.executeUpdate(query);
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-	public int insertAccount(String ID, String username, String password, String type, String date, String status) {
-		PreparedStatement statement;
-		int result=0;
-		try {
-			connect();
-			statement = connection.prepareStatement("insert into TaiKhoan values(?,?,?,?,?,?)");
-			statement.setString(1, ID);
-			statement.setString(2, username);
-			statement.setString(3, password);
-			statement.setString(4, type);
-			statement.setString(5, date);
-			statement.setString(6, status);
-			result=statement.executeUpdate();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -149,6 +118,35 @@ public class Connector<T> {
 		return result;
 	}
 	
+	//select dành cho các class có hình ảnh
+	public ArrayList<Phim> selectPhim(String query) {
+		Statement statement;
+		ResultSet rs;
+		ArrayList<Phim> dsPhim=new ArrayList<Phim>();
+		try {
+			connect();
+			statement = connection.createStatement();
+			rs=statement.executeQuery(query);
+			while(rs.next()) {
+				String maPhim=rs.getString("MaPhim");
+				String tenPhim=rs.getString("TenPhim");
+				int namSanXuat=rs.getInt("NamSanXuat");
+				String nuocSanXuat=rs.getString("TenNuocSanXuat");
+				String theLoai=rs.getString("TheLoai");
+				String thoiLuong=rs.getString("ThoiLuong");
+				String daoDien=rs.getString("TenDaoDien");
+				String moTa=rs.getString("MoTa");
+				byte[] hinhAnh=rs.getBytes("HinhAnh");
+				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,theLoai,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsPhim;
+	}
+	
 	public static void loadResultSetIntoObject(ResultSet rst, Object object)
 	        throws IllegalArgumentException, IllegalAccessException, SQLException {
 	    Class<?> zclass = object.getClass();
@@ -164,7 +162,6 @@ public class Connector<T> {
 	        field.set(object, value);
 	    }
 	}
-	
 	
 	public static boolean isPrimitive(Class<?> type) {
 	    return (type == int.class || type == long.class || type == double.class || type == float.class
@@ -195,38 +192,37 @@ public class Connector<T> {
 	}
 
 	
-	public static Image decodeToImage(String imageString) {
-		 
-        BufferedImage image = null;
-        byte[] imageByte;
+	public static byte[] convertFileToByte(File image) {
+		byte[] person_image = null;
+       
+        byte[] buf = new byte[1024];
         try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            imageByte = decoder.decodeBuffer(imageString);
-            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-            image = ImageIO.read(bis);
-            bis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        	 FileInputStream fis = new FileInputStream(image);
+             ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            for (int readNum; (readNum = fis.read(buf)) != -1;)
+            {
+                bos.write(buf, 0, readNum);
+                //no doubt here is 0
+                /*Writes len bytes from the specified byte array starting at offset
+                off to this byte array output stream.*/
+                System.out.println("read " + readNum + " bytes,");
+            }
+            person_image = bos.toByteArray();
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
         }
-        Image img = SwingFXUtils.toFXImage(image, null);
-        return img;
-    }
+        return person_image;
+	}
 	
-	public static String encodeToString(BufferedImage image, String type) {
-        String imageString = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
- 
-        try {
-            ImageIO.write(image, type, bos);
-            byte[] imageBytes = bos.toByteArray();
- 
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
- 
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageString;
-    }
+	public static BufferedImage convertToBufferImage(byte[] imagebytes) {
+		BufferedImage theImage=null;
+		try {
+			theImage=ImageIO.read(new ByteArrayInputStream(imagebytes));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return theImage;
+	}
+	
 }

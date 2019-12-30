@@ -1,14 +1,20 @@
 package controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Connector.Connector;
+import Model.PhongChieuPhim;
 import application.MainController;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -22,9 +28,9 @@ public class ScheduleController implements Initializable {
 	private static final String[] contents = { "Giá vé", "Số ghế", "Thời gian" };
     @FXML private Line timeLine;
     @FXML private HBox schedulePane;
+    @FXML private ComboBox<String> cb_phong;
 
 	private AddEditInfo w2 = new AddEditInfo("Sửa lịch chiếu phim");
-    
     @FXML
     void AddScheduleCard(ActionEvent event) {
     	MyWindows w = new MyWindows("../view/AddMovieToSchedule.fxml");
@@ -62,8 +68,27 @@ public class ScheduleController implements Initializable {
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initControls();
+		addEvents();
 		timeLine.endXProperty().bind(Bindings.max(schedulePane.widthProperty(),MainController.mainPage.widthProperty().add(-105)));
 		timeLine.translateYProperty().bind(schedulePane.heightProperty().add(-40));
 		w2.AddAll(contents);
+	}
+
+	private void addEvents() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void initControls() {
+		// TODO Auto-generated method stub
+		ObservableList<String> dsPhong=FXCollections.observableArrayList();
+		ArrayList<PhongChieuPhim> dsPhongChieu=new ArrayList<PhongChieuPhim>();
+		dsPhongChieu.addAll(new Connector<PhongChieuPhim>().select(PhongChieuPhim.class, "select * from PHONGCHIEUPHIM"));
+		for(PhongChieuPhim pc:dsPhongChieu) {
+			dsPhong.add(pc.getTenPhong());
+		}
+		cb_phong.setItems(dsPhong);
+		
 	}
 }

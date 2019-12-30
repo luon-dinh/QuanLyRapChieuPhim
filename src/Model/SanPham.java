@@ -16,7 +16,6 @@ public class SanPham {
 	
 	@DBTable(columnName = "MoTa")
 	private String moTa;
-
 	
 	public SanPham() {
 		super();

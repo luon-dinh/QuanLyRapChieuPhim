@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.Blob;
+
 public class Phim {
 
 	@DBTable(columnName = "MaPhim")
@@ -8,8 +10,30 @@ public class Phim {
 	@DBTable(columnName = "TenPhim")
 	private String tenPhim;
 	
+	@DBTable(columnName = "NamSanXuat")
+	private int namSanXuat;
+	
+	public int getNamSanXuat() {
+		return namSanXuat;
+	}
+
+	public void setNamSanXuat(int namSanXuat) {
+		this.namSanXuat = namSanXuat;
+	}
+
+	@DBTable(columnName = "TheLoai")
+	private String theLoai;
+	
+	public String getTheLoai() {
+		return theLoai;
+	}
+
+	public void setTheLoai(String theLoai) {
+		this.theLoai = theLoai;
+	}
+
 	@DBTable(columnName = "ThoiLuong")
-	private int thoiLuong;
+	private String thoiLuong;
 	
 	@DBTable(columnName = "TenDaoDien")
 	private String tenDaoDien;
@@ -21,18 +45,22 @@ public class Phim {
 	private String mota;
 	
 	@DBTable(columnName = "HinhAnh")
-	private String hinhAnh;
+	private byte[] hinhAnh;
+
+	
 
 	public Phim() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Phim(String maPhim, String tenPhim, int thoiLuong, String tenDaoDien, String tenNuocSanXuat, String mota,
-			String hinhAnh) {
+	public Phim(String maPhim, String tenPhim, int namSanXuat, String theLoai, String thoiLuong, String tenDaoDien,
+			String tenNuocSanXuat, String mota, byte[] hinhAnh) {
 		super();
 		this.maPhim = maPhim;
 		this.tenPhim = tenPhim;
+		this.namSanXuat = namSanXuat;
+		this.theLoai = theLoai;
 		this.thoiLuong = thoiLuong;
 		this.tenDaoDien = tenDaoDien;
 		this.tenNuocSanXuat = tenNuocSanXuat;
@@ -56,11 +84,11 @@ public class Phim {
 		this.tenPhim = tenPhim;
 	}
 
-	public int getThoiLuong() {
+	public String getThoiLuong() {
 		return thoiLuong;
 	}
 
-	public void setThoiLuong(int thoiLuong) {
+	public void setThoiLuong(String thoiLuong) {
 		this.thoiLuong = thoiLuong;
 	}
 
@@ -88,11 +116,11 @@ public class Phim {
 		this.mota = mota;
 	}
 
-	public String getHinhAnh() {
+	public byte[] getHinhAnh() {
 		return hinhAnh;
 	}
 
-	public void setHinhAnh(String hinhAnh) {
+	public void setHinhAnh(byte[] hinhAnh) {
 		this.hinhAnh = hinhAnh;
 	}
 

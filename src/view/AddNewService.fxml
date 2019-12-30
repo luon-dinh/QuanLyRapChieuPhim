@@ -13,7 +13,7 @@
 
 <BorderPane prefWidth="330.0" userData="Thêm dịch vụ mới" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddNewServiceController">
    <left>
-      <ImageView fx:id="imgv_newservice" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="img_v" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../images/DefaultImage.png" />
          </image>
