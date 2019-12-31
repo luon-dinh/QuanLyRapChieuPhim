@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -50,6 +51,7 @@ public class AddNewMovieController implements Initializable{
     ObservableList<String> list = FXCollections.observableArrayList();
 	ArrayList<LoaiPhim> dsLoaiPhim=new ArrayList<LoaiPhim>();
 	File f=null;
+	Image img=null;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initial();
@@ -70,7 +72,7 @@ public class AddNewMovieController implements Initializable{
 			if(f!=null) {
 				try {
 					BufferedImage bimg=ImageIO.read(f);
-					Image img=SwingFXUtils.toFXImage(bimg, null);
+					img=SwingFXUtils.toFXImage(bimg, null);
 					image.setImage(img);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -127,18 +129,29 @@ public class AddNewMovieController implements Initializable{
 		String daoDien=director.getText();
 		String thoiLuong=during.getText();
 		String tomTat=summary.getText();
-		String theLoai=newGenre.getValue();
-		String maLoai="";
-		for(LoaiPhim lp:dsLoaiPhim) {
-			if(lp.getTenLoai().equals(theLoai)) {
-				maLoai=lp.getMaLoai();
+		String []theLoais=new String[10];
+		ArrayList<String> maLoais=new ArrayList<String>();
+		for(int i=0;i<genre.getChildren().size();i++) {
+			Label l=(Label)genre.getChildren().get(i);
+			for(int j=0;j<dsLoaiPhim.size();j++) {
+				LoaiPhim lp=dsLoaiPhim.get(i);
+				String ml=l.getText();
+				if(lp.getTenLoai().equals(ml)) {
+					if(!maLoais.contains(ml)) {
+						maLoais.add(ml);
+					}
+				}
 			}
 		}
+		
 		byte[] hinhAnh=null;
-		if(f!=null) {
+		if(img!=null) {
 			hinhAnh=Connector.convertFileToByte(f);
 		}
-		new Connector<Phim>().insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+theLoai+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"','"+hinhAnh+"')");
+		c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"','"+hinhAnh+"')");
+		for(String ma:maLoais) {
+			c.insert("insert into PHIM_LOAIPHIM values('"+maPhim+"','"+ma+"')");
+		}
 	}
 	
 }

@@ -1,13 +1,19 @@
 package usercontrol.control;
 
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.LoaiPhim;
 import Model.Phim;
+import Model.Phim_LoaiPhim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +42,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 	@FXML private BorderPane ratting;
 	public RattingBar rattingBar = new RattingBar();
 	public ContextMenu menu = new ContextMenu();
+	public Phim phim=null;
 
 	public MovieCard() {
 		super();
@@ -55,7 +62,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 	
 	public MovieCard(Phim p) {
 		super();
-		
+		phim=p;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/MovieCard.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -67,13 +74,14 @@ public class MovieCard extends AnchorPane implements Initializable {
 		image.setOnContextMenuRequested(e -> {
 			menu.show(this, e.getScreenX(), e.getScreenY());
 		});
-		
-		BufferedImage bimg=Connector.convertToBufferImage(p.getHinhAnh());
-		//Image img=SwingFXUtils.toFXImage(bimg, null);
-		//image.setImage(img);
 		title.setText(" "+p.getTenPhim());
-		Label lb=new Label(" "+p.getTheLoai());
-		category.getChildren().add(lb);
+		Connector<Phim_LoaiPhim> c=new Connector<Phim_LoaiPhim>();
+		Image img=c.convertToBufferImage(p.getHinhAnh());
+		image.setImage(img);
+		Connector<LoaiPhim> cl=new Connector<LoaiPhim>();
+		List<Phim_LoaiPhim> loais=c.select(Phim_LoaiPhim.class, "select * from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"'");
+		//hiển thị thể loại
+		//category.getChildren().add(lb);
 		director.getChildren().add(new Label(" "+p.getTenDaoDien()));
 		length.setText("Thời lượng: "+p.getThoiLuong());
 		sumary.setText("Mô tả: "+p.getMota());

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.Phim;
 import Model.PhongChieuPhim;
 import application.MainController;
 import javafx.beans.binding.Bindings;
@@ -31,6 +32,7 @@ public class ScheduleController implements Initializable {
     @FXML private ComboBox<String> cb_phong;
 
 	private AddEditInfo w2 = new AddEditInfo("Sửa lịch chiếu phim");
+	
     @FXML
     void AddScheduleCard(ActionEvent event) {
     	MyWindows w = new MyWindows("../view/AddMovieToSchedule.fxml");

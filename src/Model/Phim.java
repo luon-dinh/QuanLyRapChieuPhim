@@ -1,6 +1,5 @@
 package Model;
 
-import java.sql.Blob;
 
 public class Phim {
 
@@ -19,17 +18,6 @@ public class Phim {
 
 	public void setNamSanXuat(int namSanXuat) {
 		this.namSanXuat = namSanXuat;
-	}
-
-	@DBTable(columnName = "TheLoai")
-	private String theLoai;
-	
-	public String getTheLoai() {
-		return theLoai;
-	}
-
-	public void setTheLoai(String theLoai) {
-		this.theLoai = theLoai;
 	}
 
 	@DBTable(columnName = "ThoiLuong")
@@ -54,13 +42,12 @@ public class Phim {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Phim(String maPhim, String tenPhim, int namSanXuat, String theLoai, String thoiLuong, String tenDaoDien,
+	public Phim(String maPhim, String tenPhim, int namSanXuat, String thoiLuong, String tenDaoDien,
 			String tenNuocSanXuat, String mota, byte[] hinhAnh) {
 		super();
 		this.maPhim = maPhim;
 		this.tenPhim = tenPhim;
 		this.namSanXuat = namSanXuat;
-		this.theLoai = theLoai;
 		this.thoiLuong = thoiLuong;
 		this.tenDaoDien = tenDaoDien;
 		this.tenNuocSanXuat = tenNuocSanXuat;

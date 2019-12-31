@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import com.sun.prism.Graphics;
 
 import Model.DBTable;
 import Model.Phim;
@@ -132,12 +136,11 @@ public class Connector<T> {
 				String tenPhim=rs.getString("TenPhim");
 				int namSanXuat=rs.getInt("NamSanXuat");
 				String nuocSanXuat=rs.getString("TenNuocSanXuat");
-				String theLoai=rs.getString("TheLoai");
 				String thoiLuong=rs.getString("ThoiLuong");
 				String daoDien=rs.getString("TenDaoDien");
 				String moTa=rs.getString("MoTa");
 				byte[] hinhAnh=rs.getBytes("HinhAnh");
-				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,theLoai,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh));
+				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -202,9 +205,7 @@ public class Connector<T> {
             for (int readNum; (readNum = fis.read(buf)) != -1;)
             {
                 bos.write(buf, 0, readNum);
-                //no doubt here is 0
-                /*Writes len bytes from the specified byte array starting at offset
-                off to this byte array output stream.*/
+                
                 System.out.println("read " + readNum + " bytes,");
             }
             person_image = bos.toByteArray();
@@ -214,14 +215,19 @@ public class Connector<T> {
         return person_image;
 	}
 	
-	public static BufferedImage convertToBufferImage(byte[] imagebytes) {
-		BufferedImage theImage=null;
-		try {
-			theImage=ImageIO.read(new ByteArrayInputStream(imagebytes));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static Image convertToBufferImage(byte[] image) {
+		Image theImage=null;
+		ImageIcon ico=null;
+		ico=new ImageIcon(image);
+		BufferedImage bi = new BufferedImage(
+	            ico.getIconWidth(),
+	            ico.getIconHeight(),
+	            BufferedImage.TYPE_INT_RGB);
+	        java.awt.Graphics g = bi.createGraphics();
+	        ico.paintIcon(null,g,0,0);
+	        g.dispose();
+	        theImage = SwingFXUtils.toFXImage(bi,null);
+
 	    return theImage;
 	}
 	

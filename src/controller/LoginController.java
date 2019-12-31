@@ -16,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 public class LoginController {
 	@FXML private TextField username;
 	@FXML private PasswordField password;
+	public TaiKhoan taikhoan=null;
 
 	public void LoginButton_Press(ActionEvent event) {
 		if (username.getLength() == 0) {
@@ -55,8 +56,10 @@ public class LoginController {
 		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
 		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
 		for(TaiKhoan account:accounts) {
-			if(account.getTenDangNhap().equalsIgnoreCase(username)&&account.getMatKhau().equalsIgnoreCase(password))
+			if(account.getTenDangNhap().equalsIgnoreCase(username)&&account.getMatKhau().equalsIgnoreCase(password)) {
+				taikhoan=account;
 				return true;
+			}
 		}
 		return false;
 	}
