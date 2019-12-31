@@ -8,7 +8,7 @@ import javafx.scene.layout.*;
 public final class ImagesControler {
 	private ImagesControler() {
 	}
-	private static ImagesControler Instance = null;
+	private static ImagesControler Instance = null; 
 	public static ImagesControler getInstance() {
 		if (Instance == null)
 			Instance = new ImagesControler();
