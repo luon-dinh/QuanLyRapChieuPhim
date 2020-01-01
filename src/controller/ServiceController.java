@@ -53,7 +53,11 @@ public class ServiceController implements Initializable {
 		
 		initial(null);
 		addEvents();
-		
+		styleControls();
+	}
+	
+	private void styleControls() {
+		// TODO Auto-generated method stub
 		food.styleProperty().bind(Bindings.when(food.hoverProperty())
 				.then("-fx-text-fill: black;")
 				.otherwise("-fx-text-fill: black;"));
@@ -80,7 +84,7 @@ public class ServiceController implements Initializable {
 				cartString.textProperty().set("Giỏ hàng (" + newValue + ")");
 		});
 	}
-	
+
 	private void addEvents() {
 		// TODO Auto-generated method stub
 		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {

@@ -20,6 +20,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
+import plugin.AutoCompleteComboBoxListener;
 import plugin.MyWindows;
 import usercontrol.control.AddEditInfo;
 import usercontrol.control.MovieCard;
@@ -91,6 +92,7 @@ public class ScheduleController implements Initializable {
 			dsPhong.add(pc.getTenPhong());
 		}
 		cb_phong.setItems(dsPhong);
-		
+		cb_phong.setEditable(true);
+		new AutoCompleteComboBoxListener<String>(cb_phong);
 	}
 }

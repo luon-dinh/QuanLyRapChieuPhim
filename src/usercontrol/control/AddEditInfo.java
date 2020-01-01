@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +27,7 @@ public class AddEditInfo {
 	private Scene scene;
 	private GridPane grid = new GridPane();
 	private HashMap<String, TextField> map = new HashMap<>();
+	private HashMap<String, ComboBox> mapComboBox = new HashMap<>();
 	public ButtonType boxReturn = null;
 	
 	public AddEditInfo(String title) {
@@ -126,6 +128,17 @@ public class AddEditInfo {
 	
 	public void show() {
 		stage.showAndWait();
+	}
+	
+	public void AddComboBox(String content) {
+		grid.add(new Label(content), 0, map.size());
+		ComboBox<String> comboBox = new ComboBox<String>();
+		grid.add(comboBox, 1, map.size());
+		mapComboBox.put(content, comboBox);
+	}
+	
+	public ComboBox getComboBox(String contenKey) {
+		return mapComboBox.get(contenKey);
 	}
 	
 	public void Add(String content) {

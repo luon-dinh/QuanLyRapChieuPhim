@@ -29,6 +29,7 @@ import javafx.scene.layout.FlowPane;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
+import usercontrol.control.AddEditInfo;
 import usercontrol.control.AdvanceMenuFilterContent;
 import usercontrol.control.MovieCard;
 
@@ -96,7 +97,7 @@ public class MoviesController implements Initializable {
 			MovieCard card=new MovieCard(p);
 			MenuItem edit = new MenuItem("Sửa");
 			edit.setOnAction(e->{
-				
+				editPhim(p);
 			});
 			MenuItem delete = new MenuItem("Xóa");
 			delete.setOnAction(e -> {
@@ -119,6 +120,34 @@ public class MoviesController implements Initializable {
 		
 		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(20));
 		
+	}
+
+	private void editPhim(Phim p) {
+		// TODO Auto-generated method stub
+		AddEditInfo sua=new AddEditInfo("Sửa thông tin phim");
+		String[] info= {"Tên phim", "Nước sản xuất", "Năm sản xuất", "Đạo diễn", "Thời lượng", "Mô tả"};
+		sua.AddAll(info);
+		
+		sua.Get("Tên phim").setText(p.getTenPhim());
+		sua.Get("Nước sản xuất").setText(p.getTenNuocSanXuat());
+		sua.Get("Năm sản xuất").setText(p.getNamSanXuat()+"");
+		sua.Get("Đạo diễn").setText(p.getTenDaoDien());
+		sua.Get("Thời lượng").setText(p.getThoiLuong());
+		sua.Get("Mô tả").setText(p.getMota());
+		sua.show();
+		if(sua.boxReturn==ButtonType.CANCEL)
+			return;
+		if(sua.boxReturn==ButtonType.OK)
+		{
+			String tenPhim=sua.Get("Tên phim").getText();
+			String nuocSanXuat=sua.Get("Nước sản xuất").getText();
+			String namSanXuat=sua.Get("Năm sản xuất").getText();
+			String daoDien=sua.Get("Đạo diễn").getText();
+			String thoiLuong=sua.Get("Thời lượng").getText();
+			String moTa=sua.Get("Mô tả").getText();
+			new Connector<Phim>().update("update PHIM set TenPhim='"+tenPhim+"', TenNuocSanXuat='"+nuocSanXuat+"', NamSanXuat='"+namSanXuat+"', TenDaoDien='"+daoDien+"', ThoiLuong='"+thoiLuong+"', MoTa='"+moTa+"' where MaPhim='"+p.getMaPhim()+"'");
+			initial(null);
+		}
 	}
 
 	@FXML private void FindMovies(KeyEvent event) {

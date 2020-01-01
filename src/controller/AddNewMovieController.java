@@ -35,6 +35,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import plugin.MyWindows;
 import plugin.SceneController;
 import usercontrol.control.Chip;
 
@@ -71,7 +72,8 @@ public class AddNewMovieController implements Initializable{
 		newGenre.setItems(list);
 		image.setOnMouseClicked(e -> {
 			FileChooser fileChooser = new FileChooser();
-			f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			//f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			f=fileChooser.showOpenDialog(MyWindows.lastStage);
 			if(f!=null) {
 				try {
 					BufferedImage bimg=ImageIO.read(f);
@@ -156,18 +158,7 @@ public class AddNewMovieController implements Initializable{
 		if(f!=null) {
 			hinhAnh=Connector.convertFileToByte(f);
 		}
-		try {
-			c.connect();
-			PreparedStatement pst=c.connection.prepareStatement("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?)");
-			pst.setBytes(1, hinhAnh);
-			pst.execute();
-			c.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		//c.insert();
+		c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?)",hinhAnh);
 		for(String ma:maLoais) {
 			c.insert("insert into PHIM_LOAIPHIM values('"+maPhim+"','"+ma+"')");
 		}

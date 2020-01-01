@@ -92,6 +92,21 @@ public class Connector<T> {
 		return result;
 	}
 	
+	public int insert(String query,byte[] bytes) {
+		int result=0;
+		try {
+			connect();
+			PreparedStatement pst=connection.prepareStatement(query);
+			pst.setBytes(1, bytes);
+			result=pst.executeUpdate();
+			connection.close();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	public int insert(String query) {
 		Statement statement;
