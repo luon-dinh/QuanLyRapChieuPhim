@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -196,38 +197,40 @@ public class Connector<T> {
 
 	
 	public static byte[] convertFileToByte(File image) {
-		byte[] person_image = null;
-       
-        byte[] buf = new byte[1024];
-        try {
-        	 FileInputStream fis = new FileInputStream(image);
-             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            for (int readNum; (readNum = fis.read(buf)) != -1;)
-            {
-                bos.write(buf, 0, readNum);
-                
-                System.out.println("read " + readNum + " bytes,");
-            }
-            person_image = bos.toByteArray();
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return person_image;
+		
+		FileInputStream fis;
+		 byte[]image_user=null;
+		try {
+			fis = new FileInputStream(image);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	        byte[] buf = new byte[1024];
+	        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+	            bos.write(buf, 0, readNum);
+	        }
+	        image_user= bos.toByteArray();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	
+        return image_user;
 	}
 	
-	public static Image convertToBufferImage(byte[] image) {
+	public static Image convertToBufferImage(byte[] data) {
 		Image theImage=null;
-		ImageIcon ico=null;
-		ico=new ImageIcon(image);
-		BufferedImage bi = new BufferedImage(
-	            ico.getIconWidth(),
-	            ico.getIconHeight(),
-	            BufferedImage.TYPE_INT_RGB);
-	        java.awt.Graphics g = bi.createGraphics();
-	        ico.paintIcon(null,g,0,0);
-	        g.dispose();
-	        theImage = SwingFXUtils.toFXImage(bi,null);
-
+		try {
+			ByteArrayInputStream bis = new ByteArrayInputStream(data);
+			BufferedImage bImage2 = ImageIO.read(bis);
+//			ImageIO.write(bImage2, "jpg", new File("output.jpg") );
+			theImage = SwingFXUtils.toFXImage(bImage2, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    return theImage;
 	}
 	

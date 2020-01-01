@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 public class LoginController {
 	@FXML private TextField username;
 	@FXML private PasswordField password;
-	public TaiKhoan taikhoan=null;
+	public static TaiKhoan taikhoan=null;
 
 	public void LoginButton_Press(ActionEvent event) {
 		if (username.getLength() == 0) {

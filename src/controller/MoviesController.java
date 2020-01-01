@@ -65,7 +65,7 @@ public class MoviesController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				initial(null);
+				condition.setText("");
 			}
 		});
 		

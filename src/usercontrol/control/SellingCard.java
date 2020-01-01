@@ -2,6 +2,7 @@ package usercontrol.control;
 
 import java.io.IOException;
 
+import Model.SanPham;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,6 +21,7 @@ public class SellingCard extends BorderPane {
     @FXML private Text description;
     @FXML private Label _cost;
     
+    public SanPham sp=null;
     private IntegerProperty cost = new SimpleIntegerProperty(0);
 
     public SellingCard() {

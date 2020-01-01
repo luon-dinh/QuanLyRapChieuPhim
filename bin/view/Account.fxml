@@ -37,7 +37,7 @@
             </VBox>
          </left>
          <center>
-            <GridPane hgap="5.0" BorderPane.alignment="CENTER">
+            <GridPane fx:id="gp" hgap="5.0" BorderPane.alignment="CENTER">
                <children>
                   <Hyperlink alignment="CENTER" onAction="#UpdateInfo" text="Cập nhật thông tin cá nhân" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
                   <Label text="Tài khoản" GridPane.rowIndex="1" />

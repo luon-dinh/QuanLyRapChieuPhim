@@ -17,6 +17,17 @@ public class NhanVien {
 	@DBTable(columnName = "DiaChi")
 	private String diaChi;
 	
+	@DBTable(columnName = "GioiTinh")
+	private String gioTinh;
+	
+	public String getGioTinh() {
+		return gioTinh;
+	}
+
+	public void setGioTinh(String gioTinh) {
+		this.gioTinh = gioTinh;
+	}
+
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}
@@ -26,14 +37,15 @@ public class NhanVien {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NhanVien(String maNhanVien, String maTaiKhoan, String hoTen, String ngaySinh, String diaChi, String email,
-			String soDienThoai, String ngayVaoLam) {
+	public NhanVien(String maNhanVien, String maTaiKhoan, String hoTen, String ngaySinh, String diaChi, String gioTinh,
+			String email, String soDienThoai, String ngayVaoLam) {
 		super();
 		this.maNhanVien = maNhanVien;
 		this.maTaiKhoan = maTaiKhoan;
 		this.hoTen = hoTen;
 		this.ngaySinh = ngaySinh;
 		this.diaChi = diaChi;
+		this.gioTinh = gioTinh;
 		this.email = email;
 		this.soDienThoai = soDienThoai;
 		this.ngayVaoLam = ngayVaoLam;

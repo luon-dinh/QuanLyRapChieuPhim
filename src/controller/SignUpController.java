@@ -41,8 +41,12 @@ public class SignUpController {
 		String pass=password.getText().toString();
 		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
 		int lenght=accounts.size();
-		String ID="ID"+lenght;
-		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"',Active)")>0)
+		int index=0;
+		if(lenght>0) {
+			index=Integer.parseInt(accounts.get(lenght-1).getMaTaiKhoan().substring(2, accounts.get(lenght-1).getMaTaiKhoan().length()));
+		}
+		String ID="ID"+(index+1);
+		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"',Active,user)")>0)
 			SceneController.GetInstance().TryReplaceScene("Main");
 	}
 

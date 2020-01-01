@@ -15,8 +15,8 @@ public class Main extends Application {
 			Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Init.fxml")));
 			primaryStage.setScene(scene);
 			plugin.SceneController.GetInstance().init(primaryStage, scene);
-			plugin.SceneController.GetInstance().ReplaceScene("Main");
-			//plugin.SceneController.GetInstance().ReplaceScene("Login");
+			//plugin.SceneController.GetInstance().ReplaceScene("Main");
+			plugin.SceneController.GetInstance().ReplaceScene("Login");
 			primaryStage.centerOnScreen();
 			primaryStage.sizeToScene();
 			//primaryStage.setResizable(false);

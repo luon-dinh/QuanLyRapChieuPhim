@@ -21,6 +21,10 @@ public class TaiKhoan {
 	
 	@DBTable(columnName = "TrangThai")
 	private String trangThai;
+	
+	@DBTable(columnName = "TenHienThi")
+	private String tenHienThi;
+	
 	public TaiKhoan() {
 		super();
 	}
@@ -37,6 +41,16 @@ public class TaiKhoan {
 		this.trangThai = trangThai;
 	}
 
+
+
+	public String getTenHienThi() {
+		return tenHienThi;
+	}
+
+
+	public void setTenHienThi(String tenHienThi) {
+		this.tenHienThi = tenHienThi;
+	}
 
 
 	public String getMaTaiKhoan() {

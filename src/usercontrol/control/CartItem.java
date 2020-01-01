@@ -2,6 +2,8 @@ package usercontrol.control;
 
 import java.io.IOException;
 
+import Model.SanPham;
+import controller.ServiceController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -26,6 +28,8 @@ public class CartItem extends BorderPane {
     @FXML private Label _cost;
     @FXML private Label _number;
 
+    public SanPham sp=null;
+    public int nb=0;
     private IntegerProperty number = new SimpleIntegerProperty(1);
     private IntegerProperty cost = new SimpleIntegerProperty();
     private SimpleIntegerProperty sumCost = new SimpleIntegerProperty();
@@ -63,11 +67,18 @@ public class CartItem extends BorderPane {
 
 	@FXML void decrease(ActionEvent event) {
 		number.set(number.get() - 1);
+		if(number.get()==0) {
+			ServiceController.cartItems.remove(this);
+		}
     }
 
 	@FXML void increase(ActionEvent event) {
 		number.set(number.get() + 1);
     }
+	
+	public void reset() {
+		number.set(number.get()+1);
+	}
 	
 	public ReadOnlyIntegerProperty SumCostProperty() {
 		return sumCost;

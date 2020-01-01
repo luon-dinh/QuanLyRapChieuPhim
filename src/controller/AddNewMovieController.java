@@ -4,7 +4,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -121,7 +124,12 @@ public class AddNewMovieController implements Initializable{
 	
 	private void xuLiThemPhim() {
 		Connector<Phim> c=new Connector<Phim>();
-		String maPhim="P"+c.selectPhim( "select * from PHIM").size();
+		List<Phim> dsPhim=c.selectPhim( "select * from PHIM");
+		int index=0;
+		if(dsPhim.size()>0) {
+			index=Integer.parseInt(dsPhim.get(dsPhim.size()-1).getMaPhim().substring(1,dsPhim.get(dsPhim.size()-1).getMaPhim().length()));
+		}
+		String maPhim="P"+(index+1);
 		// TODO Auto-generated method stub
 		String tenPhim=name.getText();
 		String nuocSanXuat=nuocsanxuat.getText();
@@ -145,13 +153,25 @@ public class AddNewMovieController implements Initializable{
 		}
 		
 		byte[] hinhAnh=null;
-		if(img!=null) {
+		if(f!=null) {
 			hinhAnh=Connector.convertFileToByte(f);
 		}
-		c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"','"+hinhAnh+"')");
+		try {
+			c.connect();
+			PreparedStatement pst=c.connection.prepareStatement("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?)");
+			pst.setBytes(1, hinhAnh);
+			pst.execute();
+			c.connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//c.insert();
 		for(String ma:maLoais) {
 			c.insert("insert into PHIM_LOAIPHIM values('"+maPhim+"','"+ma+"')");
 		}
 	}
 	
 }
+
