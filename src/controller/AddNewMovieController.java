@@ -95,25 +95,37 @@ public class AddNewMovieController implements Initializable {
 		}
 		newGenre.setItems(list);
 		image.setOnMouseClicked(e -> {
-
 			openFile();
 		});
 		newGenre.setItems(loais);
-		newGenre.valueProperty().addListener(new ChangeListener<String>() {
-
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				// TODO Auto-generated method stub
-				// genre.getChildren().add(new Label(newValue));
-				Chip chip = new Chip(newGenre.getValue());
-				chip.setOnMouseClickedDelete(e -> {
-					genre.getChildren().remove(chip);
-				});
-				genre.getChildren().add(chip);
-
-			}
-		});
+		newGenre.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+            	if(t.getCode()==KeyCode.ENTER) {
+                   Chip chip = new Chip(newGenre.getValue());
+            	   chip.setOnMouseClickedDelete(e -> {
+            		   genre.getChildren().remove(chip);
+            	   });
+            	   genre.getChildren().add(chip);
+            	}
+            }
+        });
 		new AutoCompleteComboBoxListener<String>(newGenre);
+	}
+
+	protected void xuLiThemLoaiPhim(String loai) {
+		// TODO Auto-generated method stub
+		Connector<LoaiPhim> c=new Connector<LoaiPhim>();
+		dsLoaiPhim.clear();
+		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
+		int lenght=dsLoaiPhim.size();
+		String maLoai=dsLoaiPhim.get(lenght-1).getMaLoai();
+		int index=Integer.parseInt(maLoai.substring(2,maLoai.length()))+1;
+		String ma="LP"+index;
+		dsLoaiPhim.add(new LoaiPhim("LP"+index,loai,"Mô tả"));
+		c.insert("insert into LOAIPHIM values('"+ma+"','"+loai+"','Mô tả')");
+		dsLoaiPhim.clear();
+		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
 	}
 
 	private void openFile() {
@@ -136,18 +148,6 @@ public class AddNewMovieController implements Initializable {
 		}
 	}
 
-//	@FXML
-//    void genreKeyPress(KeyEvent event) {
-//		if (event.getCode() == KeyCode.ENTER) {			
-//			Chip chip = new Chip(newGenre.getValue());
-//			chip.setOnMouseClickedDelete(e->{
-//				genre.getChildren().remove(chip); 
-//			});
-//			genre.getChildren().add(chip);
-//			newGenre.setValue("");
-//		}
-//	}
-//	
 	private void addEvents() {
 		// TODO Auto-generated method stub
 		btn_dongy.setOnAction(new EventHandler<ActionEvent>() {
@@ -190,25 +190,35 @@ public class AddNewMovieController implements Initializable {
 			String daoDien = director.getText();
 			String thoiLuong = during.getText();
 			String tomTat = summary.getText();
-			ArrayList<String> maLoais = new ArrayList<String>();
-			int max = genre.getChildren().size();
-			for (int i = 0; i < max; i++) {
-				Chip l = (Chip) genre.getChildren().get(i);
-				String ml = l.getTextProperty().get();
-				for (int j = 0; j < dsLoaiPhim.size(); j++) {
-					LoaiPhim lp = dsLoaiPhim.get(j);
-					if (lp.getTenLoai().equals(ml)) {
-						if (!maLoais.contains(ml)) {
-							maLoais.add(lp.getMaLoai());
-						}
-					}
-				}
-			}
 			byte[] hinhAnh = null;
 			if (f != null) {
 				hinhAnh = Connector.convertFileToByte(f);
 			}
-			c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?, '"+0.0f+"')",hinhAnh);
+			c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?, '"+0.0f+"','"+0+"')",hinhAnh);
+			ArrayList<String> maLoais = new ArrayList<String>();
+			int max = genre.getChildren().size();
+			for (int i = 0; i < max; i++) {
+				Chip l = (Chip) genre.getChildren().get(i);
+				String tl = l.getTextProperty().get();
+				boolean has=false;
+				for (int j = 0; j < dsLoaiPhim.size(); j++) {
+					LoaiPhim lp = dsLoaiPhim.get(j);
+					if (lp.getTenLoai().equalsIgnoreCase(tl)) {
+						has=true;
+						if (!maLoais.contains(tl)) {
+							maLoais.add(lp.getMaLoai());
+						}
+					}
+				}
+				if(!has) {
+					String ml=dsLoaiPhim.get(dsLoaiPhim.size()-1).getMaLoai();
+					int lenght=ml.length();
+					int indexMaPhim=Integer.parseInt(ml.substring(2, lenght));
+					String mlp="MP"+indexMaPhim;
+					new Connector<LoaiPhim>().insert("insert into LOAIPHIM values('"+mlp+"', '"+tl+"','Mô tả')");
+					maLoais.add(mlp);
+				}
+			}
 			for (String ma : maLoais) {
 				c.insert("insert into PHIM_LOAIPHIM values('" + maPhim + "','" + ma + "')");
 			}

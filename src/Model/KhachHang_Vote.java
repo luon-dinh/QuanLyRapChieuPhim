@@ -9,9 +9,9 @@ public class KhachHang_Vote {
 	private String maPhim;
 
 	@DBTable(columnName = "Vote")
-	private String vote;
+	private int vote;
 
-	public KhachHang_Vote(String maTaiKhoan, String maPhim, String vote) {
+	public KhachHang_Vote(String maTaiKhoan, String maPhim, int vote) {
 		super();
 		this.maTaiKhoan = maTaiKhoan;
 		this.maPhim = maPhim;
@@ -39,11 +39,11 @@ public class KhachHang_Vote {
 		this.maPhim = maPhim;
 	}
 
-	public String getVote() {
+	public int getVote() {
 		return vote;
 	}
 
-	public void setVote(String vote) {
+	public void setVote(int vote) {
 		this.vote = vote;
 	}
 

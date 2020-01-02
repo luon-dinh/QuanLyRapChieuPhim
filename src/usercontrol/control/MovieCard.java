@@ -91,20 +91,44 @@ public class MovieCard extends AnchorPane implements Initializable {
 		image.setOnContextMenuRequested(e -> {
 			menu.show(this, e.getScreenX(), e.getScreenY());
 		});
+		rattingBar.info.set("(" + p.getRating() + " - " + p.getNumberVote() + " vote)");
 		rattingBar.ratting.set(p.getRating());
+		rattingBar.vote.set(p.getNumberVote());
 	}
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ratting.setCenter(rattingBar);
-		rattingBar.ratting.addListener((O, oldValue, newValue )->{
-			if(!newValue.equals(oldValue)) {
+		
+		for(int i=0;i<rattingBar.bar.length;i++) {
+			ImageView imgv=rattingBar.bar[i];
+			int j=i;
+			imgv.setOnMouseClicked(e->{
+				float oldValue=rattingBar.ratting.get();
+				float newValue=j+1;
+				float rating=(float)oldValue;
 				Connector<KhachHang_Vote> c=new Connector<KhachHang_Vote>();
-				if(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'").size()==0);{
-						
+				Connector<Phim>cp=new Connector<Phim>();
+				List<Phim> ps=cp.selectPhim("select * from PHIM where MaPhim='"+phim.getMaPhim()+"'");
+				if(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'").size()==0){
+					int numVote=ps.get(ps.size()-1).getNumberVote();
+					rating=(rating*numVote+(float)newValue)/(numVote+1);
+					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
+					rattingBar.ratting.set(rating);
+					rattingBar.vote.set(numVote);
+					cp.update("update PHIM set Rating='"+rating+"', NumberVote='"+(numVote+1)+"' where MaPhim='"+phim.getMaPhim()+"'");
+					c.insert("insert into KHACHHANG_VOTE values('"+LoginController.taikhoan.getMaTaiKhoan()+"','"+phim.getMaPhim()+"','"+(int)newValue+"')");
 				}
-			}
-		});
+				else {
+					int numVote=ps.get(ps.size()-1).getNumberVote();
+					rating=(rating*numVote+((float)newValue-rating))/numVote;
+					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
+					rattingBar.ratting.set(rating);
+					rattingBar.vote.set(numVote);
+					c.update("update KHACHHANG_VOTE set Vote='"+(int)newValue+"' where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'");
+				}
+			});
+		}
 	}
 }

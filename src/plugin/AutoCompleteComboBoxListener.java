@@ -22,19 +22,19 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
         data = comboBox.getItems();
 
         this.comboBox.setEditable(true);
-        this.comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent t) {
-                comboBox.hide();
-                //handle(t);
-            }
-        });
+//        this.comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//
+//            @Override
+//            public void handle(KeyEvent t) {
+//                comboBox.hide();
+//                //handle(t);
+//            }
+//        });
         this.comboBox.setOnKeyReleased(AutoCompleteComboBoxListener.this);
     }
 
     @Override
-    public void handle(KeyEvent event) {
+    public void handle(KeyEvent event) {    	
         if (event.getCode()==KeyCode.ENTER||event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT
                 || event.isControlDown() || event.getCode() == KeyCode.HOME
                 || event.getCode() == KeyCode.END || event.getCode() == KeyCode.TAB) {

@@ -28,6 +28,8 @@ public class AdvanceMenuFilterContent extends AnchorPane{
 		}
 		
 		public void Add(String content) {
+			if (map.get(content) != null)
+				return;
 			CheckBox child = new CheckBox(content);
 			child.styleProperty().bind(Bindings.when(child.hoverProperty())
 					.then("-fx-text-fill: black;")

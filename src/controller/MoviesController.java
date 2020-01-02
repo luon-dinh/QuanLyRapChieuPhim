@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import Connector.Connector;
+import Model.LoaiPhim;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import javafx.beans.value.ChangeListener;
@@ -47,13 +48,27 @@ public class MoviesController implements Initializable {
     
     private AdvanceMenuFilterContent menuContent = new AdvanceMenuFilterContent();
     private ArrayList<Phim> dsPhim;
-
+    private ArrayList<LoaiPhim> dsLoaiPhim;
+    private String cond1="";
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initial(null);
+		//menuContent.getChildren().remove(menuContent.getChildren());
+		//menuContent.Add("Năm", "2018");
+		//menuContent.Add("Năm", "2018");
+		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(20));
 		addEvents();
 	}
 	
+	private void loadLoaiPhim() {
+		// TODO Auto-generated method stub
+		Connector<LoaiPhim> c=new Connector<LoaiPhim>();
+		dsLoaiPhim=new ArrayList<LoaiPhim>();
+		dsLoaiPhim.clear();
+		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
+	}
+
 	private void addEvents() {
 		// TODO Auto-generated method stub
 		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
@@ -72,14 +87,19 @@ public class MoviesController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				condition.setText("");
+				xuLiTimKiem("");
 			}
 		});
 		
-		condition.textProperty().addListener(new ChangeListener<String>() {
+		condition.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void handle(KeyEvent event) {
 				// TODO Auto-generated method stub
-				xuLiTimKiem(newValue);
+				if(event.getCode()==KeyCode.ENTER) {
+					String cond=condition.getText();
+					xuLiTimKiem(cond);
+				}
 			}
 		});
 		
@@ -87,9 +107,16 @@ public class MoviesController implements Initializable {
 
 	private void initial(ArrayList<Phim> ps) {
 		// TODO Auto-generated method stub
+		loadLoaiPhim();
+		advance.getItems().add(new CustomMenuItem(menuContent, false));
+		cond1="";
+		for(LoaiPhim lp:dsLoaiPhim) {
+			menuContent.Add("Thể loại", lp.getTenLoai());
+		}
 		paneMovie.getChildren().removeAll(paneMovie.getChildren());
 		dsPhim=new ArrayList<Phim>();
 		dsPhim.addAll(new Connector().selectPhim( "select * from PHIM"));
+		//dsPhim.addAll(new Connector().select(Phim.class, "select * from PHIM"));
 		ArrayList<Phim> temp=new ArrayList<Phim>();
 		if(ps==null) {
 			temp=dsPhim;
@@ -117,13 +144,6 @@ public class MoviesController implements Initializable {
 			card.menu.getItems().add(delete);
 			paneMovie.getChildren().add(card);
 		}
-		advance.getItems().add(new CustomMenuItem(menuContent, false));
-		
-		menuContent.Add("Thể loại", "Hài hước");
-		menuContent.Add("Thể loại", "Hành động");
-		menuContent.Add("Năm", "2018");
-		
-		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(20));
 		
 	}
 
@@ -178,9 +198,23 @@ public class MoviesController implements Initializable {
 	private void xuLiTimKiem(String cond) {
 		// TODO Auto-generated method stub
 		ArrayList<Phim> ds=new ArrayList<Phim>();
+		for(LoaiPhim lp:dsLoaiPhim) {
+			String tenLoai=lp.getTenLoai();
+			if(menuContent.IsCheck("Thể loại",tenLoai )) {
+				cond1+=tenLoai;
+			}
+		}
 		cond=cond.toLowerCase();
 		for(Phim p:dsPhim) {
-			if(p.getTenPhim().toLowerCase().contains(cond)) {
+			ArrayList<String> checkCond=Connector.getLoaiPhimByMaPhim(p.getMaPhim());
+			boolean contain=false;
+			for(String s:checkCond) {
+				if(cond1.contains(s)) {
+					contain=true;
+					break;
+				}
+			}
+			if(p.getTenPhim().toLowerCase().contains(cond)&&contain) {
 				ds.add(p);
 			}
 		}

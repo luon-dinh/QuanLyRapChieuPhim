@@ -3,6 +3,26 @@ package Model;
 
 public class Phim {
 
+	public Phim() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Phim(String maPhim, String tenPhim, int namSanXuat, String thoiLuong, String tenDaoDien,
+			String tenNuocSanXuat, String mota, byte[] hinhAnh, float rating, int numberVote) {
+		super();
+		this.maPhim = maPhim;
+		this.tenPhim = tenPhim;
+		this.namSanXuat = namSanXuat;
+		this.thoiLuong = thoiLuong;
+		this.tenDaoDien = tenDaoDien;
+		this.tenNuocSanXuat = tenNuocSanXuat;
+		this.mota = mota;
+		this.hinhAnh = hinhAnh;
+		this.rating = rating;
+		this.numberVote = numberVote;
+	}
+
 	@DBTable(columnName = "MaPhim")
 	private String maPhim;
 	
@@ -11,14 +31,6 @@ public class Phim {
 	
 	@DBTable(columnName = "NamSanXuat")
 	private int namSanXuat;
-	
-	public int getNamSanXuat() {
-		return namSanXuat;
-	}
-
-	public void setNamSanXuat(int namSanXuat) {
-		this.namSanXuat = namSanXuat;
-	}
 
 	@DBTable(columnName = "ThoiLuong")
 	private String thoiLuong;
@@ -38,31 +50,31 @@ public class Phim {
 	@DBTable(columnName = "Rating")
 	private float rating;
 
+	@DBTable(columnName = "NumberVote")
+	private int numberVote;
+	
+	public int getNamSanXuat() {
+		return namSanXuat;
+	}
+
+	public void setNamSanXuat(int namSanXuat) {
+		this.namSanXuat = namSanXuat;
+	}
+	
+	public int getNumberVote() {
+		return numberVote;
+	}
+
+	public void setNumberVote(int numberVote) {
+		this.numberVote = numberVote;
+	}
+
 	public float getRating() {
 		return rating;
 	}
 
 	public void setRating(float rating) {
 		this.rating = rating;
-	}
-
-
-	public Phim() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Phim(String maPhim, String tenPhim, int namSanXuat, String thoiLuong, String tenDaoDien,
-			String tenNuocSanXuat, String mota, byte[] hinhAnh, float rating) {
-		super();
-		this.maPhim = maPhim;
-		this.tenPhim = tenPhim;
-		this.namSanXuat = namSanXuat;
-		this.thoiLuong = thoiLuong;
-		this.tenDaoDien = tenDaoDien;
-		this.tenNuocSanXuat = tenNuocSanXuat;
-		this.mota = mota;
-		this.hinhAnh = hinhAnh;
 	}
 
 	public String getMaPhim() {

@@ -29,6 +29,12 @@
          <children>
             <ComboBox fx:id="cb_nhacungcap" prefWidth="150.0" promptText="Nhà cung cấp" />
             <TextField fx:id="lb_ten" promptText="Tên sản phẩm" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <CheckBox fx:id="chk_thucan" mnemonicParsing="false" text="Thức ăn" />
+                  <CheckBox fx:id="chk_nuocuong" mnemonicParsing="false" text="Nước uống" />
+               </children>
+            </HBox>
             <TextArea fx:id="lb_mota" promptText="Mô tả" wrapText="true" VBox.vgrow="ALWAYS" />
             <TextField fx:id="lb_gia" promptText="Giá" />
          </children>
