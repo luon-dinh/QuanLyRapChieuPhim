@@ -32,13 +32,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import plugin.SceneController;
 import usercontrol.control.Chip;
 
 public class AddNewMovieController implements Initializable{
+	@FXML private BorderPane addNewMovie_borderPane;
     @FXML private ImageView image;
     @FXML private TextField name;
     @FXML private TextField year;
@@ -70,8 +73,12 @@ public class AddNewMovieController implements Initializable{
 		}
 		newGenre.setItems(list);
 		image.setOnMouseClicked(e -> {
+			Stage stage  = (Stage) addNewMovie_borderPane.getScene().getWindow();
 			FileChooser fileChooser = new FileChooser();
-			f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			FileChooser.ExtensionFilter filter = new ExtensionFilter("Image Files", "*.png", "*.jpg");
+			fileChooser.getExtensionFilters().add(filter);
+			f = fileChooser.showOpenDialog(stage);
+			
 			if(f!=null) {
 				try {
 					BufferedImage bimg=ImageIO.read(f);

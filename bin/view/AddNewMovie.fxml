@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane userData="Thêm một phim mới" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddNewMovieController">
+<BorderPane fx:id = "addNewMovie_borderPane" userData="Thêm một phim mới" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddNewMovieController">
    <left>
       <AnchorPane>
          <children>

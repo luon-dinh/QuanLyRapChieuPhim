@@ -26,6 +26,7 @@ import com.sun.prism.Graphics;
 
 import Model.DBTable;
 import Model.Phim;
+import Model.PhongChieuPhim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import sun.misc.BASE64Decoder;
@@ -33,11 +34,12 @@ import sun.misc.BASE64Encoder;
 
 public class Connector<T> {
 
-	public static Connection connection=null;
+	public static Connection connection = null;
+
 	public Connection connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection=DriverManager.getConnection("jdbc:sqlite:QuanLyRapChieuPhim.db");
+			connection = DriverManager.getConnection("jdbc:sqlite:QuanLyRapChieuPhim.db");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,21 +49,20 @@ public class Connector<T> {
 		}
 		return connection;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	public List<T> select(Class<T> type,String query){
+	public List<T> select(Class<T> type, String query) {
 		Statement statement;
-		ResultSet result=null;
-		List<T> list = new ArrayList<T>(); 
+		ResultSet result = null;
+		List<T> list = new ArrayList<T>();
 		try {
 			connect();
 			statement = connection.createStatement();
-			result=statement.executeQuery(query);
-			while(result.next()) {
-				T t=type.newInstance();
+			result = statement.executeQuery(query);
+			while (result.next()) {
+				T t = type.newInstance();
 				loadResultSetIntoObject(result, t);
-                list.add(t);
+				list.add(t);
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -76,14 +77,14 @@ public class Connector<T> {
 		}
 		return list;
 	}
-	
+
 	public int update(String query) {
 		Statement statement;
-		int result=0;
+		int result = 0;
 		try {
 			connect();
 			statement = connection.createStatement();
-			result=statement.executeUpdate(query);
+			result = statement.executeUpdate(query);
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -91,15 +92,14 @@ public class Connector<T> {
 		}
 		return result;
 	}
-	
-	
+
 	public int insert(String query) {
 		Statement statement;
-		int result=0;
+		int result = 0;
 		try {
 			connect();
 			statement = connection.createStatement();
-			result=statement.executeUpdate(query);
+			result = statement.executeUpdate(query);
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -107,14 +107,14 @@ public class Connector<T> {
 		}
 		return result;
 	}
-	
+
 	public int delete(String query) {
 		Statement statement;
-		int result=0;
+		int result = 0;
 		try {
 			connect();
 			statement = connection.createStatement();
-			result=statement.executeUpdate(query);
+			result = statement.executeUpdate(query);
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -122,26 +122,26 @@ public class Connector<T> {
 		}
 		return result;
 	}
-	
-	//select dành cho các class có hình ảnh
+
+	// select dành cho các class có hình ảnh
 	public ArrayList<Phim> selectPhim(String query) {
 		Statement statement;
 		ResultSet rs;
-		ArrayList<Phim> dsPhim=new ArrayList<Phim>();
+		ArrayList<Phim> dsPhim = new ArrayList<Phim>();
 		try {
 			connect();
 			statement = connection.createStatement();
-			rs=statement.executeQuery(query);
-			while(rs.next()) {
-				String maPhim=rs.getString("MaPhim");
-				String tenPhim=rs.getString("TenPhim");
-				int namSanXuat=rs.getInt("NamSanXuat");
-				String nuocSanXuat=rs.getString("TenNuocSanXuat");
-				String thoiLuong=rs.getString("ThoiLuong");
-				String daoDien=rs.getString("TenDaoDien");
-				String moTa=rs.getString("MoTa");
-				byte[] hinhAnh=rs.getBytes("HinhAnh");
-				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh));
+			rs = statement.executeQuery(query);
+			while (rs.next()) {
+				String maPhim = rs.getString("MaPhim");
+				String tenPhim = rs.getString("TenPhim");
+				int namSanXuat = rs.getInt("NamSanXuat");
+				String nuocSanXuat = rs.getString("TenNuocSanXuat");
+				String thoiLuong = rs.getString("ThoiLuong");
+				String daoDien = rs.getString("TenDaoDien");
+				String moTa = rs.getString("MoTa");
+				byte[] hinhAnh = rs.getBytes("HinhAnh");
+				dsPhim.add(new Phim(maPhim, tenPhim, namSanXuat, thoiLuong, daoDien, nuocSanXuat, moTa, hinhAnh));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -150,64 +150,91 @@ public class Connector<T> {
 		}
 		return dsPhim;
 	}
-	
-	public static void loadResultSetIntoObject(ResultSet rst, Object object)
-	        throws IllegalArgumentException, IllegalAccessException, SQLException {
-	    Class<?> zclass = object.getClass();
-	    for (Field field : zclass.getDeclaredFields()) {
-	        field.setAccessible(true);
-	        DBTable column = field.getAnnotation(DBTable.class);
-	        Object value = rst.getObject(column.columnName());
-	        Class<?> type = field.getType();
-	        if (isPrimitive(type)) {//check primitive type(Point 5)
-	            Class<?> boxed = boxPrimitiveClass(type);//box if primitive(Point 6)
-	            value = boxed.cast(value);
-	        }
-	        field.set(object, value);
-	    }
-	}
-	
-	public static boolean isPrimitive(Class<?> type) {
-	    return (type == int.class || type == long.class || type == double.class || type == float.class
-	            || type == boolean.class || type == byte.class || type == char.class || type == short.class);
-	}
-	
-	public static Class<?> boxPrimitiveClass(Class<?> type) {
-	    if (type == int.class) {
-	        return Integer.class;
-	    } else if (type == long.class) {
-	        return Long.class;
-	    } else if (type == double.class) {
-	        return Double.class;
-	    } else if (type == float.class) {
-	        return Float.class;
-	    } else if (type == boolean.class) {
-	        return Boolean.class;
-	    } else if (type == byte.class) {
-	        return Byte.class;
-	    } else if (type == char.class) {
-	        return Character.class;
-	    } else if (type == short.class) {
-	        return Short.class;
-	    } else {
-	        String string = "class '" + type.getName() + "' is not a primitive";
-	        throw new IllegalArgumentException(string);
-	    }
+
+	// select dành cho các class có hình ảnh
+	public ArrayList<PhongChieuPhim> selectPhongChieuPhim(String query) {
+		Statement statement;
+		ResultSet rs;
+		ArrayList<PhongChieuPhim> dsPhongChieuPhim = new ArrayList<PhongChieuPhim>();
+		try {
+			connect();
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
+			while (rs.next()) {
+				String maPhongChieuPhim = rs.getString("MaPhong");
+				String tenPhongChieuPhim = rs.getString("TenPhong");
+				String trangThai = rs.getString("TrangThai");
+				int soGhe = rs.getInt("SoGhe");
+				int sucChua = rs.getInt("SucChua");
+				String moTa = rs.getString("MoTa");
+				byte[] hinhAnh = rs.getBytes("HinhAnh");
+				dsPhongChieuPhim.add(new PhongChieuPhim(maPhongChieuPhim, tenPhongChieuPhim, trangThai, soGhe, sucChua,
+						moTa, hinhAnh));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dsPhongChieuPhim;
 	}
 
-	
+	public static void loadResultSetIntoObject(ResultSet rst, Object object)
+			throws IllegalArgumentException, IllegalAccessException, SQLException {
+		Class<?> zclass = object.getClass();
+		for (Field field : zclass.getDeclaredFields()) {
+			field.setAccessible(true);
+			DBTable column = field.getAnnotation(DBTable.class);
+			Object value = rst.getObject(column.columnName());
+			Class<?> type = field.getType();
+			if (isPrimitive(type)) {// check primitive type(Point 5)
+				Class<?> boxed = boxPrimitiveClass(type);// box if primitive(Point 6)
+				value = boxed.cast(value);
+			}
+			field.set(object, value);
+		}
+	}
+
+	public static boolean isPrimitive(Class<?> type) {
+		return (type == int.class || type == long.class || type == double.class || type == float.class
+				|| type == boolean.class || type == byte.class || type == char.class || type == short.class);
+	}
+
+	public static Class<?> boxPrimitiveClass(Class<?> type) {
+		if (type == int.class) {
+			return Integer.class;
+		} else if (type == long.class) {
+			return Long.class;
+		} else if (type == double.class) {
+			return Double.class;
+		} else if (type == float.class) {
+			return Float.class;
+		} else if (type == boolean.class) {
+			return Boolean.class;
+		} else if (type == byte.class) {
+			return Byte.class;
+		} else if (type == char.class) {
+			return Character.class;
+		} else if (type == short.class) {
+			return Short.class;
+		} else {
+			String string = "class '" + type.getName() + "' is not a primitive";
+			throw new IllegalArgumentException(string);
+		}
+	}
+
 	public static byte[] convertFileToByte(File image) {
-		
+
 		FileInputStream fis;
-		 byte[]image_user=null;
+		byte[] image_user = null;
 		try {
 			fis = new FileInputStream(image);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	        byte[] buf = new byte[1024];
-	        for (int readNum; (readNum = fis.read(buf)) != -1;) {
-	            bos.write(buf, 0, readNum);
-	        }
-	        image_user= bos.toByteArray();
+			byte[] buf = new byte[1024];
+			for (int readNum; (readNum = fis.read(buf)) != -1;) {
+				bos.write(buf, 0, readNum);
+			}
+			image_user = bos.toByteArray();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -215,13 +242,12 @@ public class Connector<T> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-	
-        return image_user;
+
+		return image_user;
 	}
-	
+
 	public static Image convertToBufferImage(byte[] data) {
-		Image theImage=null;
+		Image theImage = null;
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			BufferedImage bImage2 = ImageIO.read(bis);
@@ -231,7 +257,7 @@ public class Connector<T> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    return theImage;
+		return theImage;
 	}
-	
+
 }

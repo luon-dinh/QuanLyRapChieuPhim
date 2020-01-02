@@ -18,7 +18,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.leftAnchor="0.0">
                <children>
-                  <TextField onKeyPressed="#FindRooms" text="Tìm kiếm" />
+                  <TextField fx:id = "searchTextField" promptText="Tìm kiếm" />
                   <Button mnemonicParsing="false" text="Tìm kiếm" />
                </children>
             </HBox>
