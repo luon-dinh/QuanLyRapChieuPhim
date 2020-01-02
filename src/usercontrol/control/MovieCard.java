@@ -14,6 +14,8 @@ import Connector.Connector;
 import Model.LoaiPhim;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
+import Model.KhachHang_Vote;
+import controller.LoginController;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,11 +88,23 @@ public class MovieCard extends AnchorPane implements Initializable {
 		director.getChildren().add(new Label(" "+p.getTenDaoDien()));
 		length.setText("Thời lượng: "+p.getThoiLuong());
 		sumary.setText("Mô tả: "+p.getMota());
+		image.setOnContextMenuRequested(e -> {
+			menu.show(this, e.getScreenX(), e.getScreenY());
+		});
+		rattingBar.ratting.set(p.getRating());
 	}
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ratting.setCenter(rattingBar);
+		rattingBar.ratting.addListener((O, oldValue, newValue )->{
+			if(!newValue.equals(oldValue)) {
+				Connector<KhachHang_Vote> c=new Connector<KhachHang_Vote>();
+				if(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'").size()==0);{
+						
+				}
+			}
+		});
 	}
 }

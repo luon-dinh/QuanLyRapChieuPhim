@@ -35,7 +35,17 @@ public class Phim {
 	@DBTable(columnName = "HinhAnh")
 	private byte[] hinhAnh;
 
-	
+	@DBTable(columnName = "Rating")
+	private float rating;
+
+	public float getRating() {
+		return rating;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
 
 	public Phim() {
 		super();
@@ -43,7 +53,7 @@ public class Phim {
 	}
 
 	public Phim(String maPhim, String tenPhim, int namSanXuat, String thoiLuong, String tenDaoDien,
-			String tenNuocSanXuat, String mota, byte[] hinhAnh) {
+			String tenNuocSanXuat, String mota, byte[] hinhAnh, float rating) {
 		super();
 		this.maPhim = maPhim;
 		this.tenPhim = tenPhim;

@@ -208,8 +208,7 @@ public class AddNewMovieController implements Initializable {
 			if (f != null) {
 				hinhAnh = Connector.convertFileToByte(f);
 			}
-			c.insert("insert into PHIM values('" + maPhim + "','" + tenPhim + "','" + nuocSanXuat + "','" + namSanXuat
-					+ "','" + thoiLuong + "','" + daoDien + "','" + tomTat + "',?)", hinhAnh);
+			c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?, '"+0.0f+"')",hinhAnh);
 			for (String ma : maLoais) {
 				c.insert("insert into PHIM_LOAIPHIM values('" + maPhim + "','" + ma + "')");
 			}

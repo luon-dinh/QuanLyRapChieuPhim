@@ -175,7 +175,8 @@ public class Connector<T> {
 				String daoDien = rs.getString("TenDaoDien");
 				String moTa = rs.getString("MoTa");
 				byte[] hinhAnh = rs.getBytes("HinhAnh");
-				dsPhim.add(new Phim(maPhim, tenPhim, namSanXuat, thoiLuong, daoDien, nuocSanXuat, moTa, hinhAnh));
+				float rating=rs.getFloat("Rating");
+				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh,rating));
 			}
 			connection.close();
 		} catch (SQLException e) {
