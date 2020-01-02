@@ -27,7 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import plugin.SceneController;
+import plugin.MyWindows;
 
 public class AddNewServiceController implements Initializable{
 
@@ -39,8 +39,9 @@ public class AddNewServiceController implements Initializable{
 	@FXML private TextArea lb_mota;
 	@FXML private ComboBox<String> cb_nhacungcap;
 	
+	private File f;
 	private Image img;
-	private List<NhaCungCap> dsNhaCungCap=null;
+	private List<NhaCungCap> dsNhaCungCap;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -50,6 +51,9 @@ public class AddNewServiceController implements Initializable{
 	}
 
 	private void initial() {
+		f=null;
+		dsNhaCungCap=null;
+		img=null;
 		// TODO Auto-generated method stub
 		Connector<NhaCungCap> c=new Connector<NhaCungCap>();
 		dsNhaCungCap=c.select(NhaCungCap.class, "select * from NHACUNGCAP");
@@ -67,36 +71,7 @@ public class AddNewServiceController implements Initializable{
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				try {
-					String tenSanPhan=lb_ten.getText();
-					int gia=Integer.parseInt(lb_gia.getText());
-					String moTa=lb_mota.getText();
-					String maNhaCungCap="";
-					for(NhaCungCap ncc:dsNhaCungCap) {
-						if(ncc.getTenNhaCungCap().equalsIgnoreCase(cb_nhacungcap.getValue())) {
-							maNhaCungCap=ncc.getMaNhaCungCap();
-							break;
-						}
-					}
-					Connector<SanPham> c=new Connector<SanPham>();
-					List<SanPham> dsSanPham=c.select(SanPham.class, "select * from SANPHAM");
-					int index=0;
-					if(dsSanPham.size()>0) {
-						int to=dsSanPham.get(dsSanPham.size()-1).getMaSanPham().length();
-						index=Integer.parseInt(dsSanPham.get(dsSanPham.size()-1).getMaSanPham().substring(2,to ));
-					}
-					String maSanPham="SP"+(index+1);
-					//xử lí lây hình ảnh và thêm vào csdl
-					c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',null)");
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-				finally {
-					Stage stage=(Stage)btn_dongy.getScene().getWindow();
-					stage.close();
-				}
-				
+				addService();
 			}
 		});
 		btn_huy.setOnAction(new EventHandler<ActionEvent>() {
@@ -110,19 +85,62 @@ public class AddNewServiceController implements Initializable{
 		});
 		
 		img_v.setOnMouseClicked(e->{
-			FileChooser fileChooser = new FileChooser();
-			File f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
-			if(f!=null) {
-				try {
-					BufferedImage bimg=ImageIO.read(f);
-					img=SwingFXUtils.toFXImage(bimg, null);
-					img_v.setImage(img);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			chooseFile();
+		});
+	}
+
+	private void chooseFile() {
+		// TODO Auto-generated method stub
+		FileChooser fileChooser = new FileChooser();
+		//File f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+		f=fileChooser.showOpenDialog(MyWindows.lastStage);
+		if(f!=null) {
+			try {
+				BufferedImage bimg=ImageIO.read(f);
+				img=SwingFXUtils.toFXImage(bimg, null);
+				img_v.setImage(img);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	protected void addService() {
+		// TODO Auto-generated method stub
+		try {
+			Connector<SanPham> c=new Connector<SanPham>();
+			List<SanPham> dsSanPham=c.select(SanPham.class, "select * from SANPHAM");
+			int index=0;
+			if(dsSanPham.size()>0) {
+				int to=dsSanPham.get(dsSanPham.size()-1).getMaSanPham().length();
+				index=Integer.parseInt(dsSanPham.get(dsSanPham.size()-1).getMaSanPham().substring(2,to ));
+			}
+			String maSanPham="SP"+(index+1);
+			String tenSanPhan=lb_ten.getText();
+			int gia=Integer.parseInt(lb_gia.getText());
+			String moTa=lb_mota.getText();
+			String maNhaCungCap="";
+			for(NhaCungCap ncc:dsNhaCungCap) {
+				if(ncc.getTenNhaCungCap().equalsIgnoreCase(cb_nhacungcap.getValue())) {
+					maNhaCungCap=ncc.getMaNhaCungCap();
+					break;
 				}
 			}
-		});
+			byte[] hinhAnh=null;
+			if(f!=null) {
+				hinhAnh=Connector.convertFileToByte(f);
+			}
+			//xử lí lây hình ảnh và thêm vào csdl
+			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?)",hinhAnh);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			Stage stage=(Stage)btn_dongy.getScene().getWindow();
+			stage.close();
+		}
 	}
 
 }

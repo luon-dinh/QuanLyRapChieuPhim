@@ -78,10 +78,11 @@ public class MovieCard extends AnchorPane implements Initializable {
 		Connector<Phim_LoaiPhim> c=new Connector<Phim_LoaiPhim>();
 		Image img=c.convertToBufferImage(p.getHinhAnh());
 		image.setImage(img);
-//		Connector<LoaiPhim> cl=new Connector<LoaiPhim>();
-//		List<Phim_LoaiPhim> loais=c.select(Phim_LoaiPhim.class, "select * from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"'");
-		//hiển thị thể loại
-		//category.getChildren().add(lb);
+		Connector<LoaiPhim> cloai=new Connector<LoaiPhim>();
+		List<LoaiPhim> loais=cloai.select(LoaiPhim.class, "select * from LOAIPHIM where MaLoai in(select MaLoai from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"')");
+		for(LoaiPhim lp:loais) {
+			category.getChildren().add(new Label(lp.getTenLoai()+" "));
+		}
 		director.getChildren().add(new Label(" "+p.getTenDaoDien()));
 		length.setText("Thời lượng: "+p.getThoiLuong());
 		sumary.setText("Mô tả: "+p.getMota());
@@ -91,6 +92,5 @@ public class MovieCard extends AnchorPane implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ratting.setCenter(rattingBar);
-		
 	}
 }

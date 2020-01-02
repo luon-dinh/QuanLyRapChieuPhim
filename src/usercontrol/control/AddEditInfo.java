@@ -1,24 +1,35 @@
 package usercontrol.control;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+
 import Model.Phim;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import plugin.ImagesControler;
+import plugin.MyWindows;
 import plugin.SceneController;
 
 public class AddEditInfo {
@@ -26,7 +37,11 @@ public class AddEditInfo {
 	private Scene scene;
 	private GridPane grid = new GridPane();
 	private HashMap<String, TextField> map = new HashMap<>();
+	private HashMap<String, ComboBox> mapComboBox = new HashMap<>();
+	private HashMap<String, ImageView> mapImageView = new HashMap<>();
 	public ButtonType boxReturn = null;
+	private int sumSize=0;
+	public File f;
 	
 	public AddEditInfo(String title) {
 		BorderPane pane = new BorderPane();
@@ -128,11 +143,55 @@ public class AddEditInfo {
 		stage.showAndWait();
 	}
 	
+	
+	public void addImageView(String content, Image image) {
+		grid.add(new Label(content), 0, sumSize);
+		ImageView imgv=new ImageView(image);
+		imgv.setFitWidth(80);
+		imgv.setFitHeight(80);
+		imgv.setOnMouseClicked(e->{
+			FileChooser fileChooser = new FileChooser();
+			//f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			f=fileChooser.showOpenDialog(MyWindows.lastStage);
+			if(f!=null) {
+				try {
+					BufferedImage bimg=ImageIO.read(f);
+					Image img=SwingFXUtils.toFXImage(bimg, null);
+					imgv.setImage(img);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		imgv.setVisible(true);
+		grid.add(imgv, 1, sumSize);
+		sumSize++;
+		mapImageView.put(content, imgv);
+	}
+	
+	public ImageView getImageView(String contentKey) {
+		return mapImageView.get(contentKey);
+	}
+	
+	public void AddComboBox(String content) {
+		grid.add(new Label(content), 0, sumSize);
+		ComboBox<String> comboBox = new ComboBox<String>();
+		grid.add(comboBox, 1, sumSize);
+		sumSize++;
+		mapComboBox.put(content, comboBox);
+	}
+	
+	public ComboBox getComboBox(String contenKey) {
+		return mapComboBox.get(contenKey);
+	}
+	
 	public void Add(String content) {
-		grid.add(new Label(content), 0, map.size());
+		grid.add(new Label(content), 0, sumSize);
 		TextField textField = new TextField();
-		grid.add(textField, 1, map.size());
+		grid.add(textField, 1,sumSize);
 		map.put(content, textField);
+		sumSize++;
 	}
 	
 	public void AddAll(String[] contents) {

@@ -43,7 +43,7 @@
             </FlowPane>
             <AnchorPane>
                <children>
-                  <ComboBox fx:id="newGenre" editable="true" onKeyPressed="#genreKeyPress" promptText="Nhập tên thể loại" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <ComboBox fx:id="newGenre" editable="true" promptText="Nhập tên thể loại" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
             <TextField fx:id="director" promptText="Đạo diễn" />

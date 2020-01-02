@@ -17,18 +17,15 @@ public class SanPham {
 	@DBTable(columnName = "MoTa")
 	private String moTa;
 	
-	public SanPham() {
-		super();
-		// TODO Auto-generated constructor stub
+	@DBTable(columnName = "HinhAnh")
+	private byte[] hinhAnh;
+	
+	public byte[] getHinhAnh() {
+		return hinhAnh;
 	}
 
-	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, int giaSanPham, String moTa) {
-		super();
-		this.maSanPham = maSanPham;
-		this.maNhaCungCap = maNhaCungCap;
-		this.tenSanPham = tenSanPham;
-		this.giaSanPham = giaSanPham;
-		this.moTa = moTa;
+	public void setHinhAnh(byte[] hinhAnh) {
+		this.hinhAnh = hinhAnh;
 	}
 
 	public String getMaSanPham() {
@@ -41,6 +38,21 @@ public class SanPham {
 
 	public String getMaNhaCungCap() {
 		return maNhaCungCap;
+	}
+
+	public SanPham() {
+		super();
+	}
+
+	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, int giaSanPham, String moTa,
+			byte[] hinhAnh) {
+		super();
+		this.maSanPham = maSanPham;
+		this.maNhaCungCap = maNhaCungCap;
+		this.tenSanPham = tenSanPham;
+		this.giaSanPham = giaSanPham;
+		this.moTa = moTa;
+		this.hinhAnh = hinhAnh;
 	}
 
 	public void setMaNhaCungCap(String maNhaCungCap) {
