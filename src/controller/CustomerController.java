@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Connector.Connector;
 import Model.KhachHang;
+import Model.LoaiTaiKhoan;
 import Model.TaiKhoan;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import plugin.AutoCompleteComboBoxListener;
 import plugin.MyWindows;
 import usercontrol.control.AddEditInfo;
 
@@ -55,7 +57,9 @@ public class CustomerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		String[] tmp = { "Mã tài khoản", "Họ tên", "Email", "Số điện thoại" };
+		String[] tmp = { "Họ tên", "Email", "Số điện thoại" };
+		add.AddComboBox("Mã tài khoản");
+		edit.AddComboBox("Mã tài khoản");
 		add.AddAll(tmp);
 		edit.AddAll(tmp);
 		initialize();
@@ -73,11 +77,24 @@ public class CustomerController implements Initializable {
 	
 	
 	public void initialize() {
-		loadTableKhachHang();
 		inItTableKhachHang();
+		loadTableKhachHang();
 		loadDanhSachTaiKhoan();
+		inItComboBoxMaTaiKhoan();
 	}
 	
+	private void inItComboBoxMaTaiKhoan() {
+		// TODO Auto-generated method stub
+		ObservableList<String> mas=FXCollections.observableArrayList();
+		for(TaiKhoan tk:dsTaiKhoan) {
+			mas.add(tk.getMaTaiKhoan());
+		}
+		add.getComboBox("Mã tài khoản").setItems(mas);
+		edit.getComboBox("Mã tài khoản").setItems(mas);
+		new AutoCompleteComboBoxListener<String>(add.getComboBox("Mã tài khoản"));
+		new AutoCompleteComboBoxListener<String>(edit.getComboBox("Mã tài khoản"));
+	}
+
 	private void loadDanhSachTaiKhoan() {
 		// TODO Auto-generated method stub
 		dsTaiKhoan=new ArrayList<TaiKhoan>();

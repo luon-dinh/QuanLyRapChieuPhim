@@ -32,21 +32,24 @@
                </children>
             </AnchorPane>
          </bottom>
-         <top>
-            <TableView fx:id="table_khachhang" BorderPane.alignment="CENTER">
+         <center>
+            <TableView fx:id="table_khachhang" layoutX="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
               <columns>
-              <TableColumn fx:id="column_sothutu" prefWidth="30.0" text="STT" />
-                  <TableColumn fx:id="column_makhachhang" prefWidth="130.0" text="Mã khách hàng" />
-                  <TableColumn fx:id="column_mataiKhoan" prefWidth="119.0" text="Mã tài khoản" />
-                <TableColumn fx:id="column_hoten" maxWidth="1.7976931348623157E308" prefWidth="200.0" text="Họ tên" />
-                <TableColumn fx:id="column_email" maxWidth="1.7976931348623157E308" prefWidth="199.0" text="Email" />
-                  <TableColumn fx:id="column_sodienthoai" maxWidth="1.7976931348623157E308" prefWidth="119.0" text="Số điện thoại" />
+              <TableColumn fx:id="column_sothutu" prefWidth="28.0" text="STT" />
+                  <TableColumn fx:id="column_makhachhang" prefWidth="152.0" text="Mã khách hàng" />
+                  <TableColumn fx:id="column_mataiKhoan" prefWidth="200.0" text="Mã tài khoản" />
+                <TableColumn fx:id="column_hoten" prefWidth="200.0" text="Họ tên" />
+                <TableColumn fx:id="column_email" prefWidth="200.0" text="Email" />
+                  <TableColumn fx:id="column_sodienthoai" prefWidth="119.0" text="Số điện thoại" />
               </columns>
+              <columnResizePolicy>
+                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+              </columnResizePolicy>
                <BorderPane.margin>
                   <Insets bottom="10.0" />
                </BorderPane.margin>
             </TableView>
-         </top>
+         </center>
       </BorderPane>
    </children>
    <padding>
