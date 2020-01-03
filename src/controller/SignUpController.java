@@ -33,20 +33,25 @@ public class SignUpController {
 			return;
 		}
 		// signup & login
-		
-		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
 		Date date=new Date();
 		String d=new SimpleDateFormat("dd/MM/yyyy").format(date);
 		String user=username.getText().toString();
 		String pass=password.getText().toString();
+		Connector<TaiKhoan> connector=new Connector<TaiKhoan>();
 		List<TaiKhoan> accounts=connector.select(TaiKhoan.class,"select * from TaiKhoan");
+		for(TaiKhoan ac:accounts) {
+			if(ac.getMatKhau().equals(pass)&&ac.getTenDangNhap().equals(user)) {
+				AlertBox.show(AlertType.ERROR, "Lỗi", "Tài khoản và mật khẩu đã được sử dụng");
+				return;
+			}
+		}
 		int lenght=accounts.size();
 		int index=0;
 		if(lenght>0) {
 			index=Integer.parseInt(accounts.get(lenght-1).getMaTaiKhoan().substring(2, accounts.get(lenght-1).getMaTaiKhoan().length()));
 		}
 		String ID="ID"+(index+1);
-		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"',Active,user)")>0)
+		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"','Active','user')")>0)
 			SceneController.GetInstance().TryReplaceScene("Main");
 	}
 

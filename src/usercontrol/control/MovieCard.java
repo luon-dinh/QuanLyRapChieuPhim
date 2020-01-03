@@ -106,27 +106,32 @@ public class MovieCard extends AnchorPane implements Initializable {
 			int j=i;
 			imgv.setOnMouseClicked(e->{
 				float oldValue=rattingBar.ratting.get();
-				float newValue=j+1;
+				int newValue=j+1;
 				float rating=(float)oldValue;
 				Connector<KhachHang_Vote> c=new Connector<KhachHang_Vote>();
 				Connector<Phim>cp=new Connector<Phim>();
 				List<Phim> ps=cp.selectPhim("select * from PHIM where MaPhim='"+phim.getMaPhim()+"'");
-				if(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'").size()==0){
+				ArrayList<KhachHang_Vote> kh_v=new ArrayList<KhachHang_Vote>();
+				kh_v.addAll(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'"));
+				if(kh_v.size()==0){
 					int numVote=ps.get(ps.size()-1).getNumberVote();
-					rating=(rating*numVote+(float)newValue)/(numVote+1);
+					numVote++;
+					rating=(rating*(numVote-1)+(float)newValue)/numVote;
+					cp.update("update PHIM set Rating='"+rating+"', NumberVote='"+numVote+"' where MaPhim='"+phim.getMaPhim()+"'");
+					c.insert("insert into KHACHHANG_VOTE values('"+LoginController.taikhoan.getMaTaiKhoan()+"','"+phim.getMaPhim()+"','"+newValue+"')");
 					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
 					rattingBar.ratting.set(rating);
 					rattingBar.vote.set(numVote);
-					cp.update("update PHIM set Rating='"+rating+"', NumberVote='"+(numVote+1)+"' where MaPhim='"+phim.getMaPhim()+"'");
-					c.insert("insert into KHACHHANG_VOTE values('"+LoginController.taikhoan.getMaTaiKhoan()+"','"+phim.getMaPhim()+"','"+(int)newValue+"')");
 				}
 				else {
 					int numVote=ps.get(ps.size()-1).getNumberVote();
-					rating=(rating*numVote+((float)newValue-rating))/numVote;
+					int vote=kh_v.get(kh_v.size()-1).getVote();
+					rating=(rating*numVote+((float)newValue-vote))/numVote;
+					cp.update("update PHIM set Rating='"+rating+"' where MaPhim='"+phim.getMaPhim()+"'");
+					c.update("update KHACHHANG_VOTE set Vote='"+newValue+"' where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'");
 					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
 					rattingBar.ratting.set(rating);
 					rattingBar.vote.set(numVote);
-					c.update("update KHACHHANG_VOTE set Vote='"+(int)newValue+"' where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'");
 				}
 			});
 		}

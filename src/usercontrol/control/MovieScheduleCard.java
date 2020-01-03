@@ -2,6 +2,7 @@ package usercontrol.control;
 
 import java.io.IOException;
 
+import Model.Phim;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ public class MovieScheduleCard extends AnchorPane {
     @FXML public Label time;
     @FXML public ContextMenu contextMenu;
     
+    public Phim phim=null;
     public SimpleObjectProperty<MovieScheduleCard> deleteObject = new SimpleObjectProperty<>(null);
 	
 	public MovieScheduleCard() {

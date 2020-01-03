@@ -58,6 +58,12 @@ public class ServiceController implements Initializable {
 	private IntegerProperty cost = new SimpleIntegerProperty(0);
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+			btn_themsanpham.setVisible(false);
+		}
+		else {
+			cartString.setVisible(false);
+		}
 		initial(null);
 		addEvents();
 		styleControls();
@@ -131,12 +137,6 @@ public class ServiceController implements Initializable {
 
 	private void initial(ArrayList<SanPham> sps) {
 		// TODO Auto-generated method stub
-		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
-			btn_themsanpham.setVisible(false);
-		}
-		else {
-			cartString.setVisible(false);
-		}
 		pane.getChildren().removeAll(pane.getChildren());
 		ArrayList<SanPham> temp=null;
 		if(sps==null) {

@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -16,6 +17,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -31,7 +35,10 @@ public class ScheduleController implements Initializable {
     @FXML private Line timeLine;
     @FXML private HBox schedulePane;
     @FXML private ComboBox<String> cb_phong;
-
+    @FXML private Label lb_ngay, lb_thang, lb_nam;
+    @FXML HBox hbox;
+    
+    private DatePicker datePicker;
 	private AddEditInfo w2 = new AddEditInfo("Sửa lịch chiếu phim");
 	
     @FXML
@@ -39,7 +46,7 @@ public class ScheduleController implements Initializable {
     	MyWindows w = new MyWindows("../view/AddMovieToSchedule.fxml");
     	w.Resize(940, 600);
     	w.Show();
-    	w2.show();
+    	//w2.show();
     	MovieScheduleCard card = new MovieScheduleCard();
     	try {
     		card.setInfo((MovieCard) w.getUserData());
@@ -80,7 +87,6 @@ public class ScheduleController implements Initializable {
 
 	private void addEvents() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	private void initControls() {
@@ -94,5 +100,8 @@ public class ScheduleController implements Initializable {
 		cb_phong.setItems(dsPhong);
 		cb_phong.setEditable(true);
 		new AutoCompleteComboBoxListener<String>(cb_phong);
+		datePicker=new DatePicker(LocalDate.now());
+		datePicker.setEditable(true);
+		hbox.getChildren().add(datePicker);
 	}
 }
