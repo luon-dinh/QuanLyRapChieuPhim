@@ -14,6 +14,8 @@ import java.util.stream.IntStream;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.CategoryAxis;
@@ -50,13 +52,17 @@ public class StatisticController implements Initializable {
 
 	private ObservableList<String> monthsList = FXCollections.observableArrayList("Tháng 1", "Tháng 2", "Tháng 3",
 			"Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12");
-
+	private ObservableList<Integer> dayOfMonthsList = FXCollections.observableArrayList(31, 28, 31, 30, 31, 30, 31, 31,
+			30, 31, 30, 31);
 	static final int START_DAY = 1;
 	static final int START_MONTH = 1;
 	static final int START_YEAR = 2019;
 	int CUR_DAY;
 	int CUR_MONTH;
 	int CUR_YEAR;
+	int choosenYear;
+	int choosenMonth;
+	int choosenType;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -69,38 +75,132 @@ public class StatisticController implements Initializable {
 
 	private void KhoiTaoMenu() {
 		// TODO Auto-generated method stub
+		// Loai doanh thu
 		tong.setText("Tổng");
-		phim.setText("Phim");
-		dvKhac.setText("Dịch vụ khác");
+		phim.setText("Doanh thu phim");
+		dvKhac.setText("Doanh thu dịch vụ");
 
 		revenueTypeMenu.getItems().add(tong);
 		revenueTypeMenu.getItems().add(phim);
 		revenueTypeMenu.getItems().add(dvKhac);
 
+		// Thang
 		for (String month : monthsList)
 			monthsMenu.getItems().add(new MenuItem(month));
 
+		// Nam
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		LocalDate now = LocalDate.now();
 		CUR_DAY = now.getDayOfMonth();
 		CUR_MONTH = now.getMonthValue();
 		CUR_YEAR = now.getYear();
-		List<LocalDate> dateList = getDatesBetweenUsingJava8(LocalDate.of(START_YEAR, START_MONTH, START_DAY), now);
-		for (LocalDate date : dateList) {
-			System.out.println(simpleDateFormat.format(convertToDateViaSqlDate(date)));
+
+		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
+			yearsMenu.getItems().add(new MenuItem(i + ""));
 		}
 
 	}
 
 	private void KhoiTaoBieuDo() {
 		// TODO Auto-generated method stub
-		xAxis1.setLabel("Năm");
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		LocalDate now = LocalDate.now();
+		List<LocalDate> dateList = getDatesBetweenUsingJava8(LocalDate.of(START_YEAR, START_MONTH, START_DAY), now);
+
+		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
+			if (i % 4 == 0) {
+				if (i % 100 == 0) {
+					if (i % 400 == 0) {
+						dayOfMonthsList.set(1, 29);
+					} else {
+						dayOfMonthsList.set(1, 28);
+					}
+				} else {
+					dayOfMonthsList.set(1, 29);
+				}
+			} else {
+				dayOfMonthsList.set(1, 28);
+			}
+		}
+
+		// Lay doanh thu
+
+//		dateList.get(dateList.size()-1).getYear();		
+		// for (LocalDate date : dateList) {
+//			System.out.println(simpleDateFormat.format(convertToDateViaSqlDate(date)));
+//			
+//		}
+
+		// default value
+		choosenYear = now.getYear();
+		choosenMonth = now.getMonthValue();
+		choosenType = 0;
+
+		// type
+		revenueTypeMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				revenueTypeMenu.setText("Tổng");
+				choosenType = 0;
+			}
+		});
+
+		revenueTypeMenu.getItems().get(1).setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				revenueTypeMenu.setText("Doanh thu phim");
+				choosenType = 1;
+			}
+		});
+
+		revenueTypeMenu.getItems().get(2).setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				revenueTypeMenu.setText("Doanh thu dịch vụ");
+				choosenType = 2;
+			}
+		});
+
+		// year
+//		EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent e) {
+//				choosenYear = Integer.parseInt(((MenuItem) e.getSource()).getText().substring(0, 3));
+//			}
+//		};
+//		for (int i = 0; i <= CUR_YEAR - START_YEAR + 1; i++)
+//			yearsMenu.getItems().get(i).setOnAction(event1);
+
+//		// month
+//		EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
+//			public void handle(ActionEvent e) {
+//				choosenMonth = Integer.parseInt(((MenuItem) e.getSource()).getText());
+//			}
+//		};
+//		for (int i = 1; i <= 12; i++)
+//			monthsMenu.getItems().get(i).setOnAction(event2);
+
+		String Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
+		
+		if (choosenType == 0) {
+			Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
+		}
+		if (choosenType == 1) {
+			Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
+		}
+
+		if (choosenType == 2) {
+			Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
+		}
+
+		// Set up strings
+		xAxis1.setLabel("Tháng");
 		yAxis1.setLabel("Doanh thu");
-		lineChart1.setTitle("Demo_Năm");
+		lineChart1.setTitle(Title);
 
 		XYChart.Series<String, Number> series = new XYChart.Series();
 
-		series.setName("Demo_1");
+		series.setName("Tổng doanh thu");
 		// populating the series with data
 
 		series.getData().add(new XYChart.Data("1", 23));
@@ -142,9 +242,9 @@ public class StatisticController implements Initializable {
 		return IntStream.iterate(0, i -> i + 1).limit(numOfDaysBetween).mapToObj(i -> startDate.plusDays(i))
 				.collect(Collectors.toList());
 	}
-	
+
 	public Date convertToDateViaSqlDate(LocalDate dateToConvert) {
-	    return java.sql.Date.valueOf(dateToConvert);
+		return java.sql.Date.valueOf(dateToConvert);
 	}
 
 }
