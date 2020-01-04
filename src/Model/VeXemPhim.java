@@ -21,7 +21,7 @@ public class VeXemPhim {
 	@DBTable(columnName = "NgayDat")
 	private String ngayDat;
 	
-	@DBTable(columnName = "TangThai")
+	@DBTable(columnName = "TrangThai")
 	private String trangThai;
 
 	public VeXemPhim() {

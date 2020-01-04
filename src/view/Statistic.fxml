@@ -29,8 +29,8 @@
 				</MenuButton>
 				<Region prefWidth="20.0" />
 				<Label text="Thời gian" />
-				<MenuButton fx:id="monthsMenu" mnemonicParsing="false" text="Chọn tháng" />
-				<MenuButton fx:id="yearsMenu" mnemonicParsing="false" text="Chọn năm" />
+				<MenuButton fx:id="monthsMenu" mnemonicParsing="false" prefWidth="100.0" text="Chọn tháng" />
+				<MenuButton fx:id="yearsMenu" mnemonicParsing="false" prefWidth="90.0" text="Chọn năm" />
 			</children>
 		</HBox>
 	</top>
