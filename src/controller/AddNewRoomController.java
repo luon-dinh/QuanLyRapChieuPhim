@@ -44,24 +44,15 @@ import javafx.stage.Stage;
 import plugin.SceneController;
 
 public class AddNewRoomController implements Initializable {
-	@FXML
-	private ImageView image;
-	@FXML
-	private TextField name;
-	@FXML
-	private TextField capacity;
-	@FXML
-	private TextField chairs;
-	@FXML
-	private ComboBox<String> status;
-	@FXML
-	private TextArea description;
-	@FXML
-	private BorderPane addNewRoom_borderPane;
-	@FXML
-	private Button btn_dongy;
-	@FXML
-	private Button btn_huy;
+	@FXML private ImageView image;
+	@FXML private TextField name;
+	@FXML private TextField capacity;
+	@FXML private TextField chairs;
+	@FXML private ComboBox<String> status;
+	@FXML private TextArea description;
+	@FXML private BorderPane addNewRoom_borderPane;
+	@FXML private Button btn_dongy;
+	@FXML private Button btn_huy;
 
 	private File file = null;
 	private Image img = null;

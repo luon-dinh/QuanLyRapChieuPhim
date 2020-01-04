@@ -20,6 +20,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -38,6 +39,7 @@ public class AddNewServiceController implements Initializable{
 	@FXML private TextField lb_gia;
 	@FXML private TextArea lb_mota;
 	@FXML private ComboBox<String> cb_nhacungcap;
+	@FXML private CheckBox chk_thucan, chk_nuocuong;
 	
 	private File f;
 	private Image img;
@@ -131,8 +133,15 @@ public class AddNewServiceController implements Initializable{
 			if(f!=null) {
 				hinhAnh=Connector.convertFileToByte(f);
 			}
+			String loai="";
+			if(chk_thucan.isSelected()) {
+				loai+="Thức ăn";
+			}
+			if(chk_nuocuong.isSelected()) {
+				loai+="Nước uống";
+			}
 			//xử lí lây hình ảnh và thêm vào csdl
-			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?)",hinhAnh);
+			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?,'"+loai+"')",hinhAnh);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

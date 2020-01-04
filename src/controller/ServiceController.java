@@ -56,9 +56,14 @@ public class ServiceController implements Initializable {
 	private ArrayList<SanPham> dsSanPham;
 	private IntegerProperty number = new SimpleIntegerProperty(0);
 	private IntegerProperty cost = new SimpleIntegerProperty(0);
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+			btn_themsanpham.setVisible(false);
+		}
+		else {
+			cartString.setVisible(false);
+		}
 		initial(null);
 		addEvents();
 		styleControls();
@@ -94,6 +99,9 @@ public class ServiceController implements Initializable {
 	}
 
 	private void addEvents() {
+		
+		combo.setVisible(false);
+		
 		// TODO Auto-generated method stub
 		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -109,15 +117,19 @@ public class ServiceController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-			search.setText("");
+				initial(null);
 			}
 		});
-		
-		search.textProperty().addListener(new ChangeListener<String>() {
+
+		search.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void handle(KeyEvent event) {
 				// TODO Auto-generated method stub
-				xuLiTimKiem(newValue);
+				if(event.getCode()==KeyCode.ENTER) {
+					String condition=search.getText();
+					xuLiTimKiem(condition);
+				}
 			}
 		});
 		
@@ -125,12 +137,6 @@ public class ServiceController implements Initializable {
 
 	private void initial(ArrayList<SanPham> sps) {
 		// TODO Auto-generated method stub
-		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
-			btn_themsanpham.setVisible(false);
-		}
-		else {
-			cartString.setVisible(false);
-		}
 		pane.getChildren().removeAll(pane.getChildren());
 		ArrayList<SanPham> temp=null;
 		if(sps==null) {
@@ -144,6 +150,9 @@ public class ServiceController implements Initializable {
 		for(SanPham sp:temp) {
 			addNewCard(sp);
 		}
+		
+		// load giá trị cho filter
+		//ArrayList<String> loaiSanPham=Loai.getLoaiSanPham();
 	}
 
 	@FXML
@@ -160,7 +169,15 @@ public class ServiceController implements Initializable {
 		ArrayList<SanPham> sps=new ArrayList<SanPham>();
 		condition=condition.toLowerCase();
 		for(SanPham sp:dsSanPham) {
-			if(sp.getTenSanPham().toLowerCase().contains(condition)) {
+			String cond1="";
+			String cond2="";
+			if(food.isSelected()) {
+				cond1+="Thức ăn";
+			}
+			if(water.isSelected()) {
+				cond2+="Nước uống";
+			}
+			if(sp.getTenSanPham().toLowerCase().contains(condition)&&sp.getLoai().contains(cond1)&&sp.getLoai().contains(cond2)) {
 				sps.add(sp);	
 			}
 		}

@@ -2,6 +2,31 @@ package Model;
 
 public class SanPham {
 	
+	public SanPham() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, int giaSanPham, String moTa,
+			byte[] hinhAnh, String loai) {
+		super();
+		this.maSanPham = maSanPham;
+		this.maNhaCungCap = maNhaCungCap;
+		this.tenSanPham = tenSanPham;
+		this.giaSanPham = giaSanPham;
+		this.moTa = moTa;
+		this.hinhAnh = hinhAnh;
+		this.loai = loai;
+	}
+
+	public String getLoai() {
+		return loai;
+	}
+
+	public void setLoai(String loai) {
+		this.loai = loai;
+	}
+
 	@DBTable(columnName = "MaSanPham")
 	private String maSanPham;
 	
@@ -23,6 +48,10 @@ public class SanPham {
 	public byte[] getHinhAnh() {
 		return hinhAnh;
 	}
+	
+	@DBTable(columnName = "Loai")
+	private String loai;
+	
 
 	public void setHinhAnh(byte[] hinhAnh) {
 		this.hinhAnh = hinhAnh;
@@ -38,21 +67,6 @@ public class SanPham {
 
 	public String getMaNhaCungCap() {
 		return maNhaCungCap;
-	}
-
-	public SanPham() {
-		super();
-	}
-
-	public SanPham(String maSanPham, String maNhaCungCap, String tenSanPham, int giaSanPham, String moTa,
-			byte[] hinhAnh) {
-		super();
-		this.maSanPham = maSanPham;
-		this.maNhaCungCap = maNhaCungCap;
-		this.tenSanPham = tenSanPham;
-		this.giaSanPham = giaSanPham;
-		this.moTa = moTa;
-		this.hinhAnh = hinhAnh;
 	}
 
 	public void setMaNhaCungCap(String maNhaCungCap) {

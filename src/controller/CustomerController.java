@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import Connector.Connector;
 import Model.KhachHang;
-import Model.LoaiTaiKhoan;
 import Model.TaiKhoan;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;

@@ -25,7 +25,9 @@ import javax.swing.ImageIcon;
 import com.sun.prism.Graphics;
 
 import Model.DBTable;
+import Model.LoaiPhim;
 import Model.Phim;
+import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -175,7 +177,9 @@ public class Connector<T> {
 				String daoDien = rs.getString("TenDaoDien");
 				String moTa = rs.getString("MoTa");
 				byte[] hinhAnh = rs.getBytes("HinhAnh");
-				dsPhim.add(new Phim(maPhim, tenPhim, namSanXuat, thoiLuong, daoDien, nuocSanXuat, moTa, hinhAnh));
+				float rating=rs.getFloat("Rating");
+				int numberVote=rs.getInt("NumberVote");
+				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh,rating, numberVote));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -184,7 +188,27 @@ public class Connector<T> {
 		}
 		return dsPhim;
 	}
-
+	
+	public String getTenPhimByMaPhim(String maPhim) {
+		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
+		if(dsPhim.size()==0)
+			return null;
+		return dsPhim.get(0).getTenPhim();
+	}
+	public String getTenPhongByMaPhong(String maPhong) {
+		List<PhongChieuPhim> dsPhongChieuPhims=new Connector().select(PhongChieuPhim.class,"select * from PHONGCHIEUPHIM where MaPhong='"+maPhong+"'");
+		if(dsPhongChieuPhims.size()==0)
+			return null;
+		return dsPhongChieuPhims.get(0).getTenPhong();
+	}
+	
+	public Image getimageByMaPhim(String maPhim) {
+		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
+		if(dsPhim.size()==0)
+			return null;
+		return convertToBufferImage(dsPhim.get(0).getHinhAnh());
+	}
+	
 	// select dành cho các class có hình ảnh
 	public ArrayList<PhongChieuPhim> selectPhongChieuPhim(String query) {
 		Statement statement;
@@ -213,6 +237,21 @@ public class Connector<T> {
 		return dsPhongChieuPhim;
 	}
 
+	
+	public static ArrayList<String> getLoaiPhimByMaPhim(String maPhim){
+		ArrayList<LoaiPhim> dsLoaiPhim=new ArrayList<LoaiPhim>();
+		ArrayList<Phim_LoaiPhim> dsPhimLoaiPhim=new ArrayList<Phim_LoaiPhim>();
+		ArrayList<String> result=new ArrayList<String>();
+		dsPhimLoaiPhim.addAll(new Connector().select(Phim_LoaiPhim.class,"select * from PHIM_LOAIPHIM where MaPhim='"+maPhim+"'"));
+		for(Phim_LoaiPhim plp:dsPhimLoaiPhim) {
+			dsLoaiPhim.addAll(new Connector().select(LoaiPhim.class,"select * from LOAIPHIM where MaLoai='"+plp.getMaLoai()+"'"));
+		}
+		for(LoaiPhim lp:dsLoaiPhim) {
+			result.add(lp.getTenLoai());
+		}
+		return result;
+	}
+	
 	public static void loadResultSetIntoObject(ResultSet rst, Object object)
 			throws IllegalArgumentException, IllegalAccessException, SQLException {
 		Class<?> zclass = object.getClass();

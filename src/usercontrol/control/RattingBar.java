@@ -36,13 +36,13 @@ public class RattingBar extends HBox implements Initializable {
 	public SimpleBooleanProperty showVote = new SimpleBooleanProperty(true);
 	public SimpleRangeIntProperty vote = new SimpleRangeIntProperty(0, Integer.MAX_VALUE);
 
-	private SimpleRangeIntProperty intRatting = new SimpleRangeIntProperty(1, 5);
-	public SimpleRangeFloatProperty ratting = new SimpleRangeFloatProperty(1f,5f);
+	private SimpleRangeIntProperty intRatting = new SimpleRangeIntProperty(0, 5);
+	public SimpleRangeFloatProperty ratting = new SimpleRangeFloatProperty(0f,5f);
 	
-	private SimpleStringProperty info = new SimpleStringProperty("");
+	public SimpleStringProperty info = new SimpleStringProperty("");
 	public SimpleDoubleProperty starSize = new SimpleDoubleProperty(30);
 	
-	private ImageView[] bar;
+	public ImageView[] bar;
 	
     public RattingBar() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/RattingBar.fxml"));
