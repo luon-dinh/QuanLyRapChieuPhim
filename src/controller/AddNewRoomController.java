@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -33,6 +34,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -108,8 +111,28 @@ public class AddNewRoomController implements Initializable {
 				if (file != null) {
 					try {
 						BufferedImage bimg = ImageIO.read(file);
-						img = SwingFXUtils.toFXImage(bimg, null);
+						
+						img = SwingFXUtils.toFXImage(bimg, null );
+//						PixelReader reader =img.getPixelReader();
+//						if()
+//						WritableImage newImage = new WritableImage(reader, img., y, width, height);
+						int height = 250;
+						int width = 180;
+						if(img.getWidth()/180.0>img.getHeight()/250.0)
+						{
+
+							Rectangle2D croppedPortion = new Rectangle2D(img.getWidth()/2,img.getHeight(), width, height);
+						
+						}
+			
+						// target width and height:
+						double scaledWidth = 180 ;
+						double scaledHeight = 250 ;
 						image.setImage(img);
+						//image.setViewport(croppedPortion);
+						image.setFitWidth(scaledWidth);
+						image.setFitHeight(scaledHeight);
+						image.setSmooth(false);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
