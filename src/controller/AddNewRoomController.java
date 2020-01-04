@@ -32,6 +32,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -41,18 +42,29 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.ir.CatchNode;
+import plugin.AlertBox;
 import plugin.SceneController;
 
 public class AddNewRoomController implements Initializable {
-	@FXML private ImageView image;
-	@FXML private TextField name;
-	@FXML private TextField capacity;
-	@FXML private TextField chairs;
-	@FXML private ComboBox<String> status;
-	@FXML private TextArea description;
-	@FXML private BorderPane addNewRoom_borderPane;
-	@FXML private Button btn_dongy;
-	@FXML private Button btn_huy;
+	@FXML
+	private ImageView image;
+	@FXML
+	private TextField name;
+	@FXML
+	private TextField capacity;
+	@FXML
+	private TextField chairs;
+	@FXML
+	private ComboBox<String> status;
+	@FXML
+	private TextArea description;
+	@FXML
+	private BorderPane addNewRoom_borderPane;
+	@FXML
+	private Button btn_dongy;
+	@FXML
+	private Button btn_huy;
 
 	private File file = null;
 	private Image img = null;
@@ -102,25 +114,29 @@ public class AddNewRoomController implements Initializable {
 				if (file != null) {
 					try {
 						BufferedImage bimg = ImageIO.read(file);
-						
-						img = SwingFXUtils.toFXImage(bimg, null );
+
+						img = SwingFXUtils.toFXImage(bimg, null);
 //						PixelReader reader =img.getPixelReader();
 //						if()
 //						WritableImage newImage = new WritableImage(reader, img., y, width, height);
-						int height = 250;
-						int width = 180;
-						if(img.getWidth()/180.0>img.getHeight()/250.0)
-						{
+//						int height = 250;
+//						int width = 180;
+						Rectangle2D croppedPortion;
+						if (img.getWidth() / 180.0 > img.getHeight() / 250.0) {
 
-							Rectangle2D croppedPortion = new Rectangle2D(img.getWidth()/2,img.getHeight(), width, height);
-						
+							croppedPortion = new Rectangle2D(img.getWidth() / 2.0 - img.getHeight() / 250.0 * 90.0, 0,
+									img.getHeight()/250.0*180.0, img.getHeight());
+
+						} else {
+							croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 180.0 * 125.0,
+									img.getWidth(), img.getWidth() / 180.0*250.0);
 						}
-			
+
 						// target width and height:
-						double scaledWidth = 180 ;
-						double scaledHeight = 250 ;
+						double scaledWidth = 180;
+						double scaledHeight = 250;
 						image.setImage(img);
-						//image.setViewport(croppedPortion);
+						image.setViewport(croppedPortion);
 						image.setFitWidth(scaledWidth);
 						image.setFitHeight(scaledHeight);
 						image.setSmooth(false);
@@ -138,17 +154,17 @@ public class AddNewRoomController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				XuLyThemPhongChieu();
-				Stage stage=(Stage)btn_dongy.getScene().getWindow();
+				Stage stage = (Stage) btn_dongy.getScene().getWindow();
 				stage.close();
 			}
 		});
-		
+
 		btn_huy.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				Stage stage=(Stage)btn_huy.getScene().getWindow();
+				Stage stage = (Stage) btn_huy.getScene().getWindow();
 				stage.close();
 			}
 		});
@@ -162,37 +178,42 @@ public class AddNewRoomController implements Initializable {
 	}
 
 	private void XuLyThemPhongChieu() {
-		Connector<PhongChieuPhim> c = new Connector<PhongChieuPhim>();
-		List<PhongChieuPhim> dsPhongChieuPhim = c.selectPhongChieuPhim("select * from PHONGCHIEUPHIM");
-		int index = 0;
-		if (dsPhongChieuPhim.size() > 0) {
-			index = Integer.parseInt(dsPhongChieuPhim.get(dsPhongChieuPhim.size() - 1).getMaPhong().substring(1,
-					dsPhongChieuPhim.get(dsPhongChieuPhim.size() - 1).getMaPhong().length()));
-		}
-		String maPhongChieuPhim = "R" + (index + 1);
-		// TODO Auto-generated method stub
-		String tenPhongChieuPhim = name.getText();
-		String trangThai = status.getValue();
-		int sucChua = Integer.parseInt(capacity.getText());
-		int soGhe = Integer.parseInt(chairs.getText());
-		String moTa = description.getText();
-		
-		byte[] hinhAnh = null;
-		if (file != null) {
-			hinhAnh = Connector.convertFileToByte(file);
-		}
 		try {
-			c.connect();
-			PreparedStatement pst = c.connection
-					.prepareStatement("insert into PHONGCHIEUPHIM values('" + maPhongChieuPhim + "','" + tenPhongChieuPhim + "','" + trangThai
-							+ "','" + sucChua + "','" + soGhe + "','" + moTa + "',?)");
-			pst.setBytes(1, hinhAnh);
-			pst.execute();
-			c.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Connector<PhongChieuPhim> c = new Connector<PhongChieuPhim>();
+			List<PhongChieuPhim> dsPhongChieuPhim = c.selectPhongChieuPhim("select * from PHONGCHIEUPHIM");
+			int index = 0;
+			if (dsPhongChieuPhim.size() > 0) {
+				index = Integer.parseInt(dsPhongChieuPhim.get(dsPhongChieuPhim.size() - 1).getMaPhong().substring(1,
+						dsPhongChieuPhim.get(dsPhongChieuPhim.size() - 1).getMaPhong().length()));
+			}
+			String maPhongChieuPhim = "R" + (index + 1);
+			// TODO Auto-generated method stub
+			String tenPhongChieuPhim = name.getText();
+			String trangThai = status.getValue();
+			int sucChua = Integer.parseInt(capacity.getText());
+			int soGhe = Integer.parseInt(chairs.getText());
+			String moTa = description.getText();
+
+			byte[] hinhAnh = null;
+			if (file != null) {
+				hinhAnh = Connector.convertFileToByte(file);
+			}
+			try {
+				c.connect();
+				PreparedStatement pst = c.connection.prepareStatement(
+						"insert into PHONGCHIEUPHIM values('" + maPhongChieuPhim + "','" + tenPhongChieuPhim + "','"
+								+ trangThai + "','" + sucChua + "','" + soGhe + "','" + moTa + "',?)");
+				pst.setBytes(1, hinhAnh);
+				pst.execute();
+				c.connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				AlertBox.show(AlertType.ERROR, "Nhập sai");
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			AlertBox.show(AlertType.ERROR, "Nhập sai");
 		}
 	}
-
 }

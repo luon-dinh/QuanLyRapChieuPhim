@@ -11,6 +11,8 @@ import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +29,8 @@ import javafx.scene.layout.FlowPane;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
+import usercontrol.control.AddEditInfo;
+import usercontrol.control.AddEditRoomInfo;
 import usercontrol.control.AdvanceMenuFilterContent;
 import usercontrol.control.MovieCard;
 import usercontrol.control.RoomCard;
@@ -40,7 +44,8 @@ public class RoomController implements Initializable {
 	@FXML
 	private TextField searchTextField;
 
-	ArrayList<PhongChieuPhim> dsPhong = null;
+	private ArrayList<PhongChieuPhim> dsPhong = null;
+	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -76,10 +81,12 @@ public class RoomController implements Initializable {
 		for (PhongChieuPhim p : temp) {
 			RoomCard card = new RoomCard(p);
 			MenuItem edit = new MenuItem("Sửa");
-			edit.setOnAction(e -> {
-				// sua
-			});
 			MenuItem delete = new MenuItem("Xóa");
+
+			edit.setOnAction(e -> {
+				editPhong(card);
+			});
+
 			delete.setOnAction(e -> {
 				Optional<ButtonType> result = AlertBox.show(AlertType.CONFIRMATION, "Xác nhận",
 						"Bạn có thực sự muốn xóa phòng chiếu này?", MyButtonType.YesNo);
@@ -98,10 +105,60 @@ public class RoomController implements Initializable {
 		paneRoom.prefWidthProperty().bind(root.widthProperty().subtract(20));
 	}
 
+	@SuppressWarnings("unchecked")
+	private void editPhong(RoomCard card) {
+		// TODO Auto-generated method stub
+		PhongChieuPhim p = card.phong;
+		AddEditRoomInfo sua = new AddEditRoomInfo("Sửa thông tin phòng");
+		String[] info_1 = { "Tên phòng", "Sức chứa" };
+		String[] info_2 = { "Số ghế", "Mô tả" }; // , "Trạng thái"
+		String status = "Trạng thái";
+
+		sua.AddAll(info_1);
+		sua.AddComboBox(status);
+		sua.AddAll(info_2);
+		sua.addImageView("Ảnh phim", card.image.getImage());
+		sua.Get("Tên phòng").setText(p.getTenPhong());
+		sua.getComboBox(status).setPromptText(p.getTrangThai());
+		sua.getComboBox(status).setItems(list);
+		sua.Get("Sức chứa").setText(p.getSucChua() + "");
+		sua.Get("Số ghế").setText(p.getSoGhe() + "");
+		sua.Get("Mô tả").setText(p.getMoTa());
+		sua.show();
+		if (sua.boxReturn == ButtonType.CANCEL)
+			return;
+		if (sua.boxReturn == ButtonType.OK) {
+			try {
+				String tenPhong = sua.Get("Tên phòng").getText();
+				String trangThai = sua.getComboBox("Trạng thái").getValue().toString();
+				String sucChua = sua.Get("Sức chứa").getText();
+				String soGhe = sua.Get("Số ghế").getText();
+				String moTa = sua.Get("Mô tả").getText();
+
+				if (sua.f != null) {
+					new Connector<Phim>().update(
+							"update PHONGCHIEUPHIM set TenPhong='" + tenPhong + "', TrangThai='" + trangThai
+									+ "', SucChua='" + sucChua + "', SoGhe='" + soGhe + "', MoTa='" + moTa
+									+ "', HinhAnh=? where MaPhong='" + p.getMaPhong() + "'",
+							Connector.convertFileToByte(sua.f));
+				} else {
+					new Connector<Phim>().update("update PHONGCHIEUPHIM set TenPhong='" + tenPhong + "', TrangThai='"
+							+ trangThai + "', SucChua='" + sucChua + "',  SoGhe='" + soGhe + "', MoTa='" + moTa
+							+ "', MoTa='" + moTa + "' where MaPhong='" + p.getMaPhong() + "'");
+				}
+				initial(null);
+			} catch (Exception e) {
+				// TODO: handle exception
+				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+			}
+		}
+	}
+
 	@FXML
 	void AddNewRoomAction(ActionEvent event) {
 		MyWindows w = new MyWindows("../view/AddNewRoom.fxml");
 		w.Show();
+		initial(null);
 	}
 
 	private void xuLiTimKiem(String cond) {
