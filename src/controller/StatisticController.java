@@ -79,6 +79,11 @@ public class StatisticController implements Initializable {
 	String Title;
 	int numbersDayOfChoosenMonth;
 
+	// init chart
+	XYChart.Series<String, Number> sum_series = new XYChart.Series();
+	XYChart.Series<String, Number> movie_series = new XYChart.Series();
+	XYChart.Series<String, Number> service_series = new XYChart.Series();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -135,6 +140,9 @@ public class StatisticController implements Initializable {
 		// menu
 		monthsMenu.getItems().clear();
 		setUpMonthMenuFromYear(CUR_YEAR);
+		
+		//chart
+		setUpSumChart(sum_series, choosenMonth, choosenYear);
 
 		// type
 		revenueTypeMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
@@ -144,6 +152,7 @@ public class StatisticController implements Initializable {
 				choosenType = 0;
 				Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
+				setUpSumChart(sum_series, choosenMonth, choosenYear);
 
 			}
 		});
@@ -155,6 +164,7 @@ public class StatisticController implements Initializable {
 				choosenType = 1;
 				Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
+				setUpSumChart(sum_series, choosenMonth, choosenYear);
 			}
 		});
 
@@ -165,31 +175,9 @@ public class StatisticController implements Initializable {
 				choosenType = 2;
 				Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
+				setUpSumChart(sum_series, choosenMonth, choosenYear);
 			}
 		});
-
-		// year
-		EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				choosenYear = Integer.parseInt(((MenuItem) e.getSource()).getText());
-				yearsMenu.setText(choosenYear + "");
-				if (choosenType == 0) {
-					Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
-					lineChart1.setTitle(Title);
-				}
-				if (choosenType == 1) {
-					Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
-					lineChart1.setTitle(Title);
-				}
-				if (choosenType == 1) {
-					Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
-					lineChart1.setTitle(Title);
-				}
-				setUpMonthMenuFromYear(choosenYear);
-			}
-		};
-		for (int i = 0; i < CUR_YEAR - START_YEAR + 1; i++)
-			yearsMenu.getItems().get(i).setOnAction(event1);
 
 		// month
 		EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
@@ -199,41 +187,174 @@ public class StatisticController implements Initializable {
 				if (choosenType == 0) {
 					Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
 				}
 				if (choosenType == 1) {
 					Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
 				}
 				if (choosenType == 1) {
 					Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
 				}
+
 			}
 		};
+		
+		// year
+		EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				choosenYear = Integer.parseInt(((MenuItem) e.getSource()).getText());
+				yearsMenu.setText(choosenYear + "");
+				if (choosenType == 0) {
+					Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
+					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
+				}
+				if (choosenType == 1) {
+					Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
+					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
+				}
+				if (choosenType == 1) {
+					Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
+					lineChart1.setTitle(Title);
+					setUpSumChart(sum_series, choosenMonth, choosenYear);
+				}
+				setUpMonthMenuFromYear(choosenYear);
+				for (int i = 0; i <= 11; i++)
+					monthsMenu.getItems().get(i).setOnAction(event2);
+			}
+		};
+		
+		for (int i = 0; i < CUR_YEAR - START_YEAR + 1; i++)
+			yearsMenu.getItems().get(i).setOnAction(event1);
 
-		for (int i = 0; i <= 11; i++)
-			monthsMenu.getItems().get(i).setOnAction(event2);
+	
+
+		
 
 		// Set up strings
 		xAxis1.setLabel("Tháng");
 		yAxis1.setLabel("Doanh thu");
 
-		// Set up chart
-		XYChart.Series<String, Number> sum_series = new XYChart.Series();
-		XYChart.Series<String, Number> movie_series = new XYChart.Series();
-		XYChart.Series<String, Number> service_series = new XYChart.Series();
-
 		sum_series.setName("Tổng doanh thu");
 
-		// load from database
-
-		setUpSumChart(sum_series, choosenMonth, choosenYear);
-//		sum_series.getData().add(new XYChart.Data("30", 33));
-		lineChart1.getData().add((Series<String, Number>) sum_series);
 	}
 
 	@SuppressWarnings("deprecation")
 	private void setUpSumChart(Series<String, Number> sum_series, int choosenMonth2, int choosenYear2) {
+		// TODO Auto-generated method stub
+		// load from database
+		lineChart1.getData().clear();
+		sum_series = new Series<String, Number>();
+		if (choosenYear2 % 4 == 0) {
+			if (choosenYear2 % 100 == 0) {
+				if (choosenYear2 % 400 == 0) {
+					dayOfMonthsList.set(1, 29);
+				} else {
+					dayOfMonthsList.set(1, 28);
+				}
+			} else {
+				dayOfMonthsList.set(1, 29);
+			}
+		} else {
+			dayOfMonthsList.set(1, 28);
+		}
+		ArrayList<Date> listDate = new ArrayList<Date>();
+		ArrayList<Integer> listIncome = new ArrayList<Integer>();
+		ResultSet result = null;
+		Connector<VeXemPhim> connector = new Connector<VeXemPhim>();
+		try {
+			Connection connection = connector.connect();
+			Statement statement = connection.createStatement();
+			result = statement.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
+			while (result.next()) {
+				try {
+					listDate.add(new SimpleDateFormat("dd-MM-yyyy").parse(result.getString("NgayDat")));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				listIncome.add(result.getInt("Sum"));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		int count = 0;
+		for (int j = 0; j <= listDate.size() - 1; j++) {
+			if ((listDate.get(j).getMonth() == choosenMonth2 - 1)
+					&& (listDate.get(j).getYear() == choosenYear2 - 1900)) {
+				sum_series.getData().add(new XYChart.Data(listDate.get(j).getDate() + "", listIncome.get(j)));
+				count++;
+			}
+		}
+
+		for (int i = count; i <= dayOfMonthsList.get(choosenMonth2 - 1); i++) {
+			sum_series.getData().add(new XYChart.Data(i + "", 0));
+		}
+		
+		lineChart1.getData().add((Series<String, Number>) sum_series);
+	}
+	private void setUpMovieChart(Series<String, Number> movie_series, int choosenMonth2, int choosenYear2) {
+		// TODO Auto-generated method stub
+		// load from database
+		if (choosenYear2 % 4 == 0) {
+			if (choosenYear2 % 100 == 0) {
+				if (choosenYear2 % 400 == 0) {
+					dayOfMonthsList.set(1, 29);
+				} else {
+					dayOfMonthsList.set(1, 28);
+				}
+			} else {
+				dayOfMonthsList.set(1, 29);
+			}
+		} else {
+			dayOfMonthsList.set(1, 28);
+		}
+		ArrayList<Date> listDate = new ArrayList<Date>();
+		ArrayList<Integer> listIncome = new ArrayList<Integer>();
+		ResultSet result = null;
+		Connector<VeXemPhim> connector = new Connector<VeXemPhim>();
+		try {
+			Connection connection = connector.connect();
+			Statement statement = connection.createStatement();
+			result = statement.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
+			while (result.next()) {
+				try {
+					listDate.add(new SimpleDateFormat("dd-MM-yyyy").parse(result.getString("NgayDat")));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				listIncome.add(result.getInt("Sum"));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		int count = 0;
+		for (int j = 0; j <= listDate.size() - 1; j++) {
+			if ((listDate.get(j).getMonth() == choosenMonth2 - 1)
+					&& (listDate.get(j).getYear() == choosenYear2 - 1900)) {
+				sum_series.getData().add(new XYChart.Data(listDate.get(j).getDate() + "", listIncome.get(j)));
+				count++;
+			}
+		}
+
+		for (int i = count; i <= dayOfMonthsList.get(choosenMonth2 - 1); i++) {
+			sum_series.getData().add(new XYChart.Data(i + "", 0));
+		}
+
+	}
+	private void setUpServiceChart(Series<String, Number> service_series, int choosenMonth2, int choosenYear2) {
 		// TODO Auto-generated method stub
 		// load from database
 		if (choosenYear2 % 4 == 0) {
@@ -294,10 +415,6 @@ public class StatisticController implements Initializable {
 				.collect(Collectors.toList());
 	}
 
-	private Date convertToDateViaSqlDate(LocalDate dateToConvert) {
-		return java.sql.Date.valueOf(dateToConvert);
-	}
-
 	void setUpMonthMenuFromYear(int year) {
 		monthsMenu.getItems().clear();
 		if (year == LocalDate.now().getYear()) {
@@ -313,21 +430,6 @@ public class StatisticController implements Initializable {
 				monthsMenu.getItems().add(new MenuItem(month));
 			}
 		}
-
-		if (year % 4 == 0) {
-			if (year % 100 == 0) {
-				if (year % 400 == 0) {
-					dayOfMonthsList.set(1, 29);
-				} else {
-					dayOfMonthsList.set(1, 28);
-				}
-			} else {
-				dayOfMonthsList.set(1, 29);
-			}
-		} else {
-			dayOfMonthsList.set(1, 28);
-		}
-
 	}
 
 }
