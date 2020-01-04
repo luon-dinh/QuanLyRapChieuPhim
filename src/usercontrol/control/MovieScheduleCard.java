@@ -2,6 +2,8 @@ package usercontrol.control;
 
 import java.io.IOException;
 
+import Connector.Connector;
+import Model.LichChieuPhim;
 import Model.Phim;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ public class MovieScheduleCard extends AnchorPane {
     @FXML public Text cost;
     @FXML public Text name;
     @FXML public Text numberSeats;
+    @FXML public Text room;
     @FXML public Label time;
     @FXML public ContextMenu contextMenu;
     
@@ -50,6 +53,28 @@ public class MovieScheduleCard extends AnchorPane {
 		else {
 			image.setImage(card.image.getImage());
 			name.setText(card.title.getText());
+			cost.setText(""+card.getGiaVe());
+			numberSeats.setText(""+card.getSoGhe());
+			time.setText(card.getGioBatDau()+"");
 		}
+	}
+	public MovieScheduleCard(LichChieuPhim lcp) {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/MovieScheduleCard.fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		image.setImage(new Connector().getimageByMaPhim(lcp.getMaPhim()));
+		name.setText(new Connector().getTenPhimByMaPhim(lcp.getMaPhim()));
+		room.setText(new Connector().getTenPhongByMaPhong(lcp.getMaPhongChieu()));
+		numberSeats.setText(lcp.getSoVeToiDa()+"");
+		cost.setText(lcp.getGiaVe()+"");
+		time.setText(lcp.getGioBatDau());
+		image.setOnContextMenuRequested(e -> {
+			contextMenu.show(this, e.getScreenX(), e.getScreenY());
+		});
 	}
 }

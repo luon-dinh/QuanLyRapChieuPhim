@@ -3,18 +3,28 @@ package usercontrol.control;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import Model.LichChieuPhim;
 import Model.Phim;
+import controller.ScheduleController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -28,6 +38,13 @@ import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
+
+import com.jfoenix.controls.JFXTimePicker;
+
+import Connector.Connector;
+import plugin.AlertBox;
 import plugin.ImagesControler;
 import plugin.MyWindows;
 import plugin.SceneController;
@@ -39,10 +56,21 @@ public class AddEditInfo {
 	private HashMap<String, TextField> map = new HashMap<>();
 	private HashMap<String, ComboBox> mapComboBox = new HashMap<>();
 	private HashMap<String, ImageView> mapImageView = new HashMap<>();
+	private HashMap<String, DatePicker> mapDatePicker = new HashMap<>();
+	private HashMap<String, com.jfoenix.controls.JFXTimePicker> mapTimePicker = new HashMap<>(); 
 	public ButtonType boxReturn = null;
 	private int sumSize=0;
-	public File f;
+	public File f;// dùng cho các thao tác sửa có hình ảnh
+	private boolean isShow=false;// dùng kiểm tra có đang show hay không
 	
+	public boolean isShow() {
+		return isShow;
+	}
+
+	public void setShow(boolean isShow) {
+		this.isShow = isShow;
+	}
+
 	public AddEditInfo(String title) {
 		BorderPane pane = new BorderPane();
 		pane.setPadding(new Insets(10, 10, 10, 10));
@@ -140,7 +168,9 @@ public class AddEditInfo {
 	}
 	
 	public void show() {
+		isShow=true;
 		stage.showAndWait();
+		isShow=false;
 	}
 	
 	
@@ -182,6 +212,76 @@ public class AddEditInfo {
 		mapComboBox.put(content, comboBox);
 	}
 	
+	public void AddDatePicker(String content) {
+		grid.add(new Label(content), 0, sumSize);
+		DatePicker datePicker=new DatePicker();
+		
+		 StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+	            DateTimeFormatter dateFormatter =
+	                      DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	            
+	            @Override
+	            public String toString(LocalDate date) {
+	                if (date != null) {
+	                    return dateFormatter.format(date);
+	                } else {
+	                    return "";
+	                }
+	            }
+	            @Override
+	            public LocalDate fromString(String string) {
+	                if (string != null && !string.isEmpty()) {
+	                    return LocalDate.parse(string, dateFormatter);
+	                } else {
+	                    return null;
+	                }
+	            }
+	        };   
+	        datePicker.setConverter(converter);
+	        datePicker.setPromptText("dd-MM-yyyy");
+		grid.add(datePicker, 1, sumSize);
+		sumSize++;
+		mapDatePicker.put(content, datePicker);
+	}
+	
+	public DatePicker getDatePicker(String content) {
+		return mapDatePicker.get(content);
+	}
+	
+	public void AddTimePicker(String content) {
+		grid.add(new Label(content), 0, sumSize);
+		com.jfoenix.controls.JFXTimePicker timePicker=new com.jfoenix.controls.JFXTimePicker();
+		timePicker.valueProperty().addListener(new ChangeListener<LocalTime>() {
+			@Override
+			public void changed(ObservableValue<? extends LocalTime> observable, LocalTime oldValue, LocalTime newValue) {
+				// TODO Auto-generated method stub
+				if(newValue==null||ScheduleController.date==null)
+					return;
+				ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
+				Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
+				dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM where NgayChieu='"+ScheduleController.date.toString()+"'"));
+				for(LichChieuPhim lc:dsLichChieu) {
+					try {
+						if(LocalTime.parse(lc.getGioBatDau()).plusMinutes(lc.getThoiLuong()).isAfter(newValue)){
+							AlertBox.show(AlertType.INFORMATION, "Trùng lịch chiếu");	
+							return;
+						}
+					}
+					catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			}
+		});
+		grid.add(timePicker, 1,sumSize);
+		mapTimePicker.put(content, timePicker);
+		sumSize++;
+	}
+	
+	public com.jfoenix.controls.JFXTimePicker getTimePicker(String content) {
+		return mapTimePicker.get(content);
+	}
+	
 	public ComboBox getComboBox(String contenKey) {
 		return mapComboBox.get(contenKey);
 	}
@@ -189,6 +289,24 @@ public class AddEditInfo {
 	public void Add(String content) {
 		grid.add(new Label(content), 0, sumSize);
 		TextField textField = new TextField();
+		textField.setPromptText(content);
+		grid.add(textField, 1,sumSize);
+		map.put(content, textField);
+		sumSize++;
+	}
+	
+	public void Add(String content,boolean b) {
+		grid.add(new Label(content), 0, sumSize);
+		TextField textField = new TextField();
+		textField.setPromptText(content);
+		if(b==true) {
+			textField.setOnKeyTyped(e -> {
+	            char input = e.getCharacter().charAt(0);
+	            if (Character.isDigit(input) != true) {
+	                e.consume();
+	            }
+	        });
+		}
 		grid.add(textField, 1,sumSize);
 		map.put(content, textField);
 		sumSize++;

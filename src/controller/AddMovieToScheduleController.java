@@ -1,28 +1,41 @@
 package controller;
 
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.LichChieuPhim;
+import Model.LoaiPhim;
 import Model.Phim;
+import Model.VeXemPhim;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
+import usercontrol.control.AddEditInfo;
 import usercontrol.control.AdvanceMenuFilterContent;
 import usercontrol.control.MovieCard;
 
@@ -30,44 +43,118 @@ public class AddMovieToScheduleController implements Initializable{
     @FXML private MenuButton advance;
     @FXML private FlowPane paneMovie;
     @FXML private ScrollPane root;
+    @FXML private TextField condition;
+    @FXML private Button btn_huy;
+//    @FXML private ComboBox<String> cb_phong;
+//    @FXML private DatePicker datePicker;
+    
     private ArrayList<Phim> dsPhim;
+    private ArrayList<LoaiPhim> dsLoaiPhim;
+    private static final String[] contents = { "Giá vé", "Số ghế", "Thời lượng (phút)"};
+    private AddEditInfo w2 = new AddEditInfo("Sửa lịch chiếu phim");
+    private String cond1="";
+    
+    
+	private void loadLoaiPhim() {
+		// TODO Auto-generated method stub
+		Connector<LoaiPhim> c=new Connector<LoaiPhim>();
+		dsLoaiPhim=new ArrayList<LoaiPhim>();
+		dsLoaiPhim.clear();
+		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
+	}
+
     
     @FXML void FindMovies(KeyEvent event) {
     	if (event.getCode() == KeyCode.ENTER)
     	{
-    		MovieCard card = new MovieCard();
-    		card.rattingBar.readOnly.set(true);
-    		card.cursorProperty().set(Cursor.HAND);
-    		card.setOnMouseClicked(e->{
-				if (e.getButton() == MouseButton.PRIMARY)
-				{
-					MyWindows.lastStage.setUserData(card);
-					MyWindows.lastStage.close();
-				}
-    		});
-    		paneMovie.getChildren().add(card);
+    		String cond=condition.getText();
+    		xuLiTimKiem(cond);
     	}
     }
 
-    private AdvanceMenuFilterContent menuContent = new AdvanceMenuFilterContent();
+    private void xuLiTimKiem(String cond) {
+		// TODO Auto-generated method stub
+    	cond=cond.toLowerCase();
+		// TODO Auto-generated method stub
+		ArrayList<Phim> ds=new ArrayList<Phim>();
+		for(LoaiPhim lp:dsLoaiPhim) {
+			String tenLoai=lp.getTenLoai();
+			if(menuContent.IsCheck("Thể loại",tenLoai )) {
+				cond1+=tenLoai;
+			}
+		}
+		cond=cond.toLowerCase();
+		for(Phim p:dsPhim) {
+			ArrayList<String> checkCond=Connector.getLoaiPhimByMaPhim(p.getMaPhim());
+			boolean contain=false;
+			if(cond1.equals("")) {
+				contain=true;
+			}
+			else {
+				for(String s:checkCond) {
+					if(cond1.contains(s)) {
+						contain=true;
+						break;
+					}
+				}
+			}
+			if(p.getTenPhim().toLowerCase().contains(cond)&&contain) {
+				ds.add(p);
+			}
+		}
+		initial(ds);
+	}
+
+	private AdvanceMenuFilterContent menuContent = new AdvanceMenuFilterContent();
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initial();
+		initial(null);
+		addEvents();
+		for(String content:contents) {
+			w2.Add(content, true);
+		}
+		//w2.AddDatePicker("Giờ bắt đầu");
+		w2.AddTimePicker("Giờ bắt đầu");
+		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(10));
 	}
 
-	private void initial() {
+	private void addEvents() {
+		// TODO Auto-generated method stub
+		btn_huy.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				Stage stage=(Stage)btn_huy.getScene().getWindow();
+				stage.close();
+				MyWindows.lastStage.setUserData(null);
+			}
+		});
+	}
+
+
+	private void initial(ArrayList<Phim> ds) {
+		loadLoaiPhim();
+		cond1="";
+		ArrayList<Phim> temp=new ArrayList<Phim>();
+		if(ds==null) {
+			dsPhim=new ArrayList<Phim>();
+			dsPhim.addAll(new Connector().selectPhim( "select * from PHIM"));
+			temp=dsPhim;
+		}
+		else {
+			temp=ds;
+		}
 		// TODO Auto-generated method stub
 		advance.getItems().add(new CustomMenuItem(menuContent, false));
 		paneMovie.getChildren().removeAll(paneMovie.getChildren());
-		dsPhim=new ArrayList<Phim>();
-		dsPhim.addAll(new Connector().selectPhim( "select * from PHIM"));
-		for(Phim p:dsPhim) {
+		for(Phim p:temp) {
 			MovieCard card=new MovieCard(p);
-			MenuItem edit = new MenuItem("Sửa");
-			edit.setOnAction(e->{
-				
-			});
+//			MenuItem edit = new MenuItem("Sửa");
+//			edit.setOnAction(e->{
+//				
+//			});
 			MenuItem delete = new MenuItem("Xóa");
 			delete.setOnAction(e -> {
 				Optional<ButtonType> result =AlertBox.show(AlertType.CONFIRMATION, "Xác nhận", "Bạn có thực sự muốn xóa bộ phim này?", MyButtonType.YesNo);
@@ -76,7 +163,7 @@ public class AddMovieToScheduleController implements Initializable{
 					paneMovie.getChildren().remove(card);
 				}
 			});
-			card.menu.getItems().add(edit);
+//			card.menu.getItems().add(edit);
 			card.menu.getItems().add(delete);
 			card.rattingBar.readOnly.set(true);
     		card.cursorProperty().set(Cursor.HAND);
@@ -84,17 +171,55 @@ public class AddMovieToScheduleController implements Initializable{
 				if (e.getButton() == MouseButton.PRIMARY)
 				{
 					MyWindows.lastStage.setUserData(card);
-					MyWindows.lastStage.close();
+					xuLiShowThongTinLichChieu(card);
 				}
     		});
 			paneMovie.getChildren().add(card);
 		}
-		
-		
-		menuContent.Add("Thể loại", "Hài hước");
-		menuContent.Add("Thể loại", "Hành động");
-		menuContent.Add("Năm", "2018");
+		for(LoaiPhim lp:dsLoaiPhim) {
+			menuContent.Add("Thể loại", lp.getTenLoai());
+		}
+	}
 
-		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(10));
+
+	private void xuLiShowThongTinLichChieu(MovieCard card) {
+		// TODO Auto-generated method stub
+		if(!w2.isShow()) {
+			w2.show();	
+		}
+		if(w2.boxReturn==ButtonType.OK) {
+			try {
+				int giaVe=Integer.parseInt(w2.Get("Giá vé").getText());
+				int soGhe=Integer.parseInt(w2.Get("Số ghế").getText());
+				int thoiLuong=Integer.parseInt(w2.Get("Thời lượng (phút)").getText());
+				LocalTime time=w2.getTimePicker("Giờ bắt đầu").getValue();
+				card.setGiaVe(giaVe);
+				card.setSoGhe(soGhe);
+				card.setThoiLuong(thoiLuong);
+				card.setGioBatDau(time);
+				MyWindows.lastStage.close();
+				//xử lí thêm lịch chiếu phim
+				xuLiThemLichChieuPhim(card);
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+				AlertBox.show(AlertType.ERROR, "Thông tin không đúng định dạng");
+			}
+		}
+	}
+
+
+	private void xuLiThemLichChieuPhim(MovieCard card) {
+		// TODO Auto-generated method stub
+		ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
+		Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
+		dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM"));
+		int index=0;
+		if(dsLichChieu.size()>0) {
+			String maLichChieu=dsLichChieu.get(dsLichChieu.size()-1).getMaLichChieu();
+			index=Integer.parseInt(maLichChieu.substring(2,maLichChieu.length()));
+		}
+		String maLichChieu="LC"+(index+1);
+		c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
 	}
 }

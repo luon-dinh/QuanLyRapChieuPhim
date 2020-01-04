@@ -196,6 +196,7 @@ public class MoviesController implements Initializable {
     }
 	
 	private void xuLiTimKiem(String cond) {
+		cond=cond.toLowerCase();
 		// TODO Auto-generated method stub
 		ArrayList<Phim> ds=new ArrayList<Phim>();
 		for(LoaiPhim lp:dsLoaiPhim) {
@@ -208,10 +209,15 @@ public class MoviesController implements Initializable {
 		for(Phim p:dsPhim) {
 			ArrayList<String> checkCond=Connector.getLoaiPhimByMaPhim(p.getMaPhim());
 			boolean contain=false;
-			for(String s:checkCond) {
-				if(cond1.contains(s)) {
-					contain=true;
-					break;
+			if(cond1.equals("")) {
+				contain=true;
+			}
+			else {
+				for(String s:checkCond) {
+					if(cond1.contains(s)) {
+						contain=true;
+						break;
+					}
 				}
 			}
 			if(p.getTenPhim().toLowerCase().contains(cond)&&contain) {

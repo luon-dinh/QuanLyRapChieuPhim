@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Blob;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,41 @@ public class MovieCard extends AnchorPane implements Initializable {
 	public RattingBar rattingBar = new RattingBar();
 	public ContextMenu menu = new ContextMenu();
 	public Phim phim=null;
+	
+	private int giaVe, soGhe, thoiLuong;
+	private  LocalTime gioBatDau;
+	
+	public int getGiaVe() {
+		return giaVe;
+	}
+
+	public void setGiaVe(int giaVe) {
+		this.giaVe = giaVe;
+	}
+
+	public int getSoGhe() {
+		return soGhe;
+	}
+
+	public void setSoGhe(int soGhe) {
+		this.soGhe = soGhe;
+	}
+
+	public int getThoiLuong() {
+		return thoiLuong;
+	}
+
+	public void setThoiLuong(int thoiLuong) {
+		this.thoiLuong = thoiLuong;
+	}
+
+	public LocalTime getGioBatDau() {
+		return gioBatDau;
+	}
+
+	public void setGioBatDau(LocalTime gioBatDau) {
+		this.gioBatDau = gioBatDau;
+	}
 
 	public MovieCard() {
 		super();
@@ -105,32 +141,35 @@ public class MovieCard extends AnchorPane implements Initializable {
 			ImageView imgv=rattingBar.bar[i];
 			int j=i;
 			imgv.setOnMouseClicked(e->{
-				float oldValue=rattingBar.ratting.get();
-				int newValue=j+1;
-				float rating=(float)oldValue;
 				Connector<KhachHang_Vote> c=new Connector<KhachHang_Vote>();
 				Connector<Phim>cp=new Connector<Phim>();
 				List<Phim> ps=cp.selectPhim("select * from PHIM where MaPhim='"+phim.getMaPhim()+"'");
 				ArrayList<KhachHang_Vote> kh_v=new ArrayList<KhachHang_Vote>();
 				kh_v.addAll(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'"));
+				float oldValue=kh_v.get(0).getVote();
+				int newValue=j+1;
+				float rating=0;
+				int numVote=0;
+				Phim currentPhim=ps.get(ps.size()-1);
+				rating=currentPhim.getRating();
 				if(kh_v.size()==0){
-					int numVote=ps.get(ps.size()-1).getNumberVote();
+					numVote=currentPhim.getNumberVote();
 					numVote++;
-					rating=(rating*(numVote-1)+(float)newValue)/numVote;
+					rating=(oldValue*numVote+newValue)/(numVote+1);
 					cp.update("update PHIM set Rating='"+rating+"', NumberVote='"+numVote+"' where MaPhim='"+phim.getMaPhim()+"'");
 					c.insert("insert into KHACHHANG_VOTE values('"+LoginController.taikhoan.getMaTaiKhoan()+"','"+phim.getMaPhim()+"','"+newValue+"')");
 					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
-					rattingBar.ratting.set(rating);
+					rattingBar.ratting.set(newValue);
 					rattingBar.vote.set(numVote);
 				}
 				else {
-					int numVote=ps.get(ps.size()-1).getNumberVote();
+					numVote=ps.get(ps.size()-1).getNumberVote();
 					int vote=kh_v.get(kh_v.size()-1).getVote();
-					rating=(rating*numVote+((float)newValue-vote))/numVote;
+					rating=(rating*numVote+(newValue-vote))/numVote;
 					cp.update("update PHIM set Rating='"+rating+"' where MaPhim='"+phim.getMaPhim()+"'");
 					c.update("update KHACHHANG_VOTE set Vote='"+newValue+"' where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'");
 					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
-					rattingBar.ratting.set(rating);
+					rattingBar.ratting.set(newValue);
 					rattingBar.vote.set(numVote);
 				}
 			});

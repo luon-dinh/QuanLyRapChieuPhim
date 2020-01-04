@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import plugin.MyWindows;
+import usercontrol.control.MovieScheduleCard;
 import usercontrol.control.SelectableButton;
 
 public class BookTicketController implements Initializable {
@@ -28,7 +29,10 @@ public class BookTicketController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		addEvents();
-		int chairs = (int) MyWindows.lastStage.getUserData();
+		MovieScheduleCard card = (MovieScheduleCard) MyWindows.lastStage.getUserData();
+		lb_tenphim.setText(card.name.getText());
+		lb_tenphong.setText(card.room.getText());
+		int chairs=Integer.parseInt(card.numberSeats.getText());
 		for (int i = 0; i < chairs; i++) {
 			int r = i / chairsPreRow;
 			int c = i % chairsPreRow;
@@ -36,10 +40,14 @@ public class BookTicketController implements Initializable {
 			button.textProperty().set("" + (char) (65 + r) + (c + 1));
 			pane.getChildren().add(button);
 			button.isSelected.addListener((observable, oldValue, newValue)->{
-				if (newValue)
+				if (newValue) {
 					counter.set(counter.get() + 1);
-				else
-					counter.set(counter.get() - 1);
+					lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
+				}
+				else {
+					counter.set(counter.get() - 1);	
+					lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
+				}
 			});
 		}
 		ticketCounter.textProperty().bind(counter.asString());

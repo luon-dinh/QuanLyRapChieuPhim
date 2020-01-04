@@ -17,28 +17,39 @@ public class LichChieuPhim {
 	@DBTable(columnName = "GioBatDau")
 	private String gioBatDau;
 	
+	@DBTable(columnName = "GiaVe")
+	private int giaVe;
+	
+	@DBTable(columnName = "ThoiLuong")
+	private int thoiLuong;
+	
+	@DBTable(columnName = "SoVeToiDa")
+	private int soVeToiDa;
+
 	public LichChieuPhim() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public LichChieuPhim(String maLichChieu, String maPhongChieu, String maPhim, String ngayChieu, String gioBatDau,
-			int thoiLuong, String soVeToiDa) {
+			int giaVe, int thoiLuong, int soVeToiDa) {
 		super();
 		this.maLichChieu = maLichChieu;
 		this.maPhongChieu = maPhongChieu;
 		this.maPhim = maPhim;
 		this.ngayChieu = ngayChieu;
 		this.gioBatDau = gioBatDau;
+		this.giaVe = giaVe;
 		this.thoiLuong = thoiLuong;
 		this.soVeToiDa = soVeToiDa;
 	}
 
-	@DBTable(columnName = "ThoiLuong")
-	private int thoiLuong;
-	
-	@DBTable(columnName = "SoVeToiDa")
-	private String soVeToiDa;
+	public int getGiaVe() {
+		return giaVe;
+	}
+
+	public void setGiaVe(int giaVe) {
+		this.giaVe = giaVe;
+	}
 
 	public String getMaLichChieu() {
 		return maLichChieu;
@@ -88,11 +99,11 @@ public class LichChieuPhim {
 		this.thoiLuong = thoiLuong;
 	}
 
-	public String getSoVeToiDa() {
+	public int getSoVeToiDa() {
 		return soVeToiDa;
 	}
 
-	public void setSoVeToiDa(String soVeToiDa) {
+	public void setSoVeToiDa(int soVeToiDa) {
 		this.soVeToiDa = soVeToiDa;
 	}
 	

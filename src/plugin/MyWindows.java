@@ -2,11 +2,13 @@ package plugin;
 
 import java.io.IOException;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MyWindows {
 	public static Stage lastStage = null;
@@ -25,6 +27,14 @@ public class MyWindows {
 		stage.initOwner(SceneController.GetInstance().getCurrentStage());
 		stage.getIcons().add(ImagesControler.getInstance().tryGetImage("ApplicationIcon"));
 		stage.setUserData(userData);
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				// TODO Auto-generated method stub
+				stage.setUserData(null);
+			}
+		});
 		holder = lastStage;
 		lastStage = stage;
 		

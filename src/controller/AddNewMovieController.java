@@ -49,28 +49,17 @@ import plugin.SceneController;
 import usercontrol.control.Chip;
 
 public class AddNewMovieController implements Initializable {
-	@FXML
-	private BorderPane addNewMovie_borderPane;
-	@FXML
-	private ImageView image;
-	@FXML
-	private TextField name;
-	@FXML
-	private TextField year;
-	@FXML
-	private FlowPane genre;
-	@FXML
-	private ComboBox<String> newGenre;
-	@FXML
-	private TextField director;
-	@FXML
-	private TextField during;
-	@FXML
-	private TextField nuocsanxuat;
-	@FXML
-	private TextArea summary;
-	@FXML
-	private Button btn_dongy, btn_huy;
+	@FXML private BorderPane addNewMovie_borderPane;
+	@FXML private ImageView image;
+	@FXML private TextField name;
+	@FXML private TextField year;
+	@FXML private FlowPane genre;
+	@FXML private ComboBox<String> newGenre;
+	@FXML private TextField director;
+	@FXML private TextField during;
+	@FXML private TextField nuocsanxuat;
+	@FXML private TextArea summary;
+	@FXML private Button btn_dongy, btn_huy;
 
 	ObservableList<String> list = FXCollections.observableArrayList();
 	ArrayList<LoaiPhim> dsLoaiPhim = new ArrayList<LoaiPhim>();

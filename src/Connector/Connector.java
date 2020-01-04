@@ -189,6 +189,26 @@ public class Connector<T> {
 		return dsPhim;
 	}
 	
+	public String getTenPhimByMaPhim(String maPhim) {
+		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
+		if(dsPhim.size()==0)
+			return null;
+		return dsPhim.get(0).getTenPhim();
+	}
+	public String getTenPhongByMaPhong(String maPhong) {
+		List<PhongChieuPhim> dsPhongChieuPhims=new Connector().select(PhongChieuPhim.class,"select * from PHONGCHIEUPHIM where MaPhong='"+maPhong+"'");
+		if(dsPhongChieuPhims.size()==0)
+			return null;
+		return dsPhongChieuPhims.get(0).getTenPhong();
+	}
+	
+	public Image getimageByMaPhim(String maPhim) {
+		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
+		if(dsPhim.size()==0)
+			return null;
+		return convertToBufferImage(dsPhim.get(0).getHinhAnh());
+	}
+	
 	// select dành cho các class có hình ảnh
 	public ArrayList<PhongChieuPhim> selectPhongChieuPhim(String query) {
 		Statement statement;

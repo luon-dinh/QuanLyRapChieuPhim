@@ -39,6 +39,73 @@
             <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <DatePicker fx:id="datePicker" showWeekNumbers="true" />
+                  <HBox fx:id="hbox" alignment="BOTTOM_LEFT" GridPane.columnIndex="1">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                        <Label fx:id="lb_ngay" text="11" underline="true">
+                           <font>
+                              <Font size="48.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lb_thang" text="Label">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lb_nam" text="Label">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                     <children>
+                        <Button fx:id="btn_them" mnemonicParsing="false" text="Thêm phim vào lịch này" />
+                        <ComboBox fx:id="cb_phong" promptText="Chọn phòng">
+                  </ComboBox>
+                           <!--   <MenuButton mnemonicParsing="false" text="Tên phòng">
+                          <items>
+                                  <MenuItem mnemonicParsing="false" text="Phòng 1" />
+                                    <MenuItem mnemonicParsing="false" text="Phòng 2" />
+                                    <MenuItem mnemonicParsing="false" text="Phòng 3" />
+                                </items>
+                              </MenuButton> -->
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </GridPane>
             <GridPane stylesheets="@../css/Font.css" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints minWidth="10.0" />
@@ -222,54 +289,6 @@
                   </Pane>
                </content>
             </ScrollPane>
-            <HBox fx:id="hbox" alignment="BOTTOM_LEFT">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <children>
-                  <Label fx:id="lb_ngay" text="11" underline="true">
-                     <font>
-                        <Font size="48.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lb_thang" text="Label">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets bottom="5.0" right="10.0" />
-                     </padding>
-                  </Label>
-                  <Label fx:id="lb_nam" text="Label">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="5.0" right="10.0" />
-                     </padding>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.halignment="RIGHT">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#AddScheduleCard" text="Thêm phim vào lịch này" />
-                  <ComboBox fx:id="cb_phong" promptText="Chọn phòng">
-                  </ComboBox>
-                     <!--   <MenuButton mnemonicParsing="false" text="Tên phòng">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Phòng 1" />
-                        <MenuItem mnemonicParsing="false" text="Phòng 2" />
-                        <MenuItem mnemonicParsing="false" text="Phòng 3" />
-                    </items>
-                  </MenuButton> -->
-               </children>
-            </HBox>
          </children>
       </GridPane>
    </children>
