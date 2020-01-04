@@ -50,7 +50,7 @@ public class ServiceController implements Initializable {
 	@FXML private FlowPane pane;
 	@FXML private ScrollPane scroll;
 	@FXML private MenuButton cartString;
-	@FXML private Button btn_timkiem, btn_refresh, btn_themsanpham;
+	@FXML private Button btn_timkiem, btn_refresh, btn_themsanpham, btn_thanhtoan;
 	
 	public static ArrayList<CartItem> cartItems=new ArrayList<CartItem>();
 	private ArrayList<SanPham> dsSanPham;
@@ -133,6 +133,15 @@ public class ServiceController implements Initializable {
 			}
 		});
 		
+		btn_thanhtoan.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				// xử lí đặt đồ ăn vặt
+			}
+		});
+		
 	}
 
 	private void initial(ArrayList<SanPham> sps) {
@@ -150,9 +159,6 @@ public class ServiceController implements Initializable {
 		for(SanPham sp:temp) {
 			addNewCard(sp);
 		}
-		
-		// load giá trị cho filter
-		//ArrayList<String> loaiSanPham=Loai.getLoaiSanPham();
 	}
 
 	@FXML

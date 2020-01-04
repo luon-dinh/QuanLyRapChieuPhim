@@ -148,16 +148,21 @@ public class MovieCard extends AnchorPane implements Initializable {
 				List<Phim> ps=cp.selectPhim("select * from PHIM where MaPhim='"+phim.getMaPhim()+"'");
 				ArrayList<KhachHang_Vote> kh_v=new ArrayList<KhachHang_Vote>();
 				kh_v.addAll(c.select(KhachHang_Vote.class, "select * from KHACHHANG_VOTE where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'"));
-				float oldValue=kh_v.get(0).getVote();
+				float oldValue=0;
+				if(kh_v.size()>0) {
+					oldValue=kh_v.get(0).getVote();
+				}
 				int newValue=j+1;
 				float rating=0;
 				int numVote=0;
-				Phim currentPhim=ps.get(ps.size()-1);
-				rating=currentPhim.getRating();
-				if(kh_v.size()==0){
+				if(ps.size()>0) {
+					Phim currentPhim=ps.get(ps.size()-1);
+					rating=currentPhim.getRating();
 					numVote=currentPhim.getNumberVote();
+				}
+				if(kh_v.size()==0){
 					numVote++;
-					rating=(oldValue*numVote+newValue)/(numVote+1);
+					rating=(oldValue*numVote+newValue)/(numVote);
 					cp.update("update PHIM set Rating='"+rating+"', NumberVote='"+numVote+"' where MaPhim='"+phim.getMaPhim()+"'");
 					c.insert("insert into KHACHHANG_VOTE values('"+LoginController.taikhoan.getMaTaiKhoan()+"','"+phim.getMaPhim()+"','"+newValue+"')");
 					rattingBar.info.set("(" + rating + " - " + numVote + " vote)");
@@ -165,7 +170,6 @@ public class MovieCard extends AnchorPane implements Initializable {
 					rattingBar.vote.set(numVote);
 				}
 				else {
-					numVote=ps.get(ps.size()-1).getNumberVote();
 					int vote=kh_v.get(kh_v.size()-1).getVote();
 					rating=(rating*numVote+(newValue-vote))/numVote;
 					cp.update("update PHIM set Rating='"+rating+"' where MaPhim='"+phim.getMaPhim()+"'");
