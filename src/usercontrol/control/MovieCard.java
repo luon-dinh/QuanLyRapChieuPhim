@@ -21,6 +21,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -116,6 +117,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 		Connector<Phim_LoaiPhim> c=new Connector<Phim_LoaiPhim>();
 		Image img=c.convertToBufferImage(p.getHinhAnh());
 		image.setImage(img);
+		//Connector.setImage(image, img);
 		Connector<LoaiPhim> cloai=new Connector<LoaiPhim>();
 		List<LoaiPhim> loais=cloai.select(LoaiPhim.class, "select * from LOAIPHIM where MaLoai in(select MaLoai from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"')");
 		for(LoaiPhim lp:loais) {

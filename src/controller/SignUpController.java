@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import Connector.Connector;
+import Model.KhachHang;
 import Model.TaiKhoan;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,14 +46,22 @@ public class SignUpController {
 				return;
 			}
 		}
+		List<KhachHang> dsKhachHang=new Connector().select(KhachHang.class, "select * from KHACHHANG");
+		int indexKH=0;
+		if(dsKhachHang.size()>0) {
+			String maKhachHang=dsKhachHang.get(dsKhachHang.size()-1).getMaKhachHang();
+			indexKH=Integer.parseInt(maKhachHang.substring(2, maKhachHang.length()));
+		}
 		int lenght=accounts.size();
 		int index=0;
 		if(lenght>0) {
 			index=Integer.parseInt(accounts.get(lenght-1).getMaTaiKhoan().substring(2, accounts.get(lenght-1).getMaTaiKhoan().length()));
 		}
-		String ID="ID"+(index+1);
-		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"',user,'"+d+"','Active','user')")>0)
+		String ID="TK"+(index+1);
+		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"','user','"+d+"','Active','user')")>0) {
 			SceneController.GetInstance().TryReplaceScene("Main");
+			new Connector<KhachHang>().insert("insert into KHACHHANG(MaKhachHang, MaTaiKhoan) values('"+"KH"+(indexKH+1)+"','"+ID+"')");
+		}
 	}
 
 	public void Login_click(ActionEvent actionEvent) {

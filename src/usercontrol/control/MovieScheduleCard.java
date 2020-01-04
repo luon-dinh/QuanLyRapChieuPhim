@@ -67,7 +67,8 @@ public class MovieScheduleCard extends AnchorPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		image.setImage(new Connector().getimageByMaPhim(lcp.getMaPhim()));
+		image.setImage( new Connector().getimageByMaPhim(lcp.getMaPhim()));
+		//Connector.setImage(image, new Connector().getimageByMaPhim(lcp.getMaPhim()));
 		name.setText(new Connector().getTenPhimByMaPhim(lcp.getMaPhim()));
 		room.setText(new Connector().getTenPhongByMaPhong(lcp.getMaPhongChieu()));
 		numberSeats.setText(lcp.getSoVeToiDa()+"");

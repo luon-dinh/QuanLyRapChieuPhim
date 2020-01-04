@@ -18,15 +18,15 @@
          <bottom>
             <AnchorPane stylesheets="@../css/button.css" BorderPane.alignment="CENTER">
                <children>
-                  <HBox AnchorPane.leftAnchor="0.0">
+                  <!-- <HBox AnchorPane.leftAnchor="0.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#AddAction" text="Thêm" />
+                        <Button mnemonicParsing="false" text="Thêm" />
                      </children>
-                  </HBox>
+                  </HBox> -->
                   <HBox spacing="10.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#EditAction" text="Sửa" />
-                        <Button mnemonicParsing="false" onAction="#DeleteAction" text="Xóa" />
+                        <Button fx:id="btn_refresh" mnemonicParsing="false" text="Refresh" />
+                        <Button fx:id="btn_xoa" mnemonicParsing="false" text="Xóa" />
                      </children>
                   </HBox>
                </children>
@@ -37,7 +37,7 @@
               <columns>
               <TableColumn fx:id="column_sothutu" prefWidth="28.0" text="STT" />
                   <TableColumn fx:id="column_makhachhang" prefWidth="152.0" text="Mã khách hàng" />
-                  <TableColumn fx:id="column_mataiKhoan" prefWidth="200.0" text="Mã tài khoản" />
+                  <!-- <TableColumn fx:id="column_mataiKhoan" prefWidth="200.0" text="Mã tài khoản" /> -->
                 <TableColumn fx:id="column_hoten" prefWidth="200.0" text="Họ tên" />
                 <TableColumn fx:id="column_email" prefWidth="200.0" text="Email" />
                   <TableColumn fx:id="column_sodienthoai" prefWidth="119.0" text="Số điện thoại" />

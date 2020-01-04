@@ -56,4 +56,8 @@ public class SellingCard extends BorderPane {
     public IntegerProperty costProperty() {
     	return cost;
     }
+    
+    public ImageView getimageView() {
+    	return image;
+    }
 }

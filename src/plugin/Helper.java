@@ -38,6 +38,9 @@ public final class Helper {
 		
 		HomeMenuInfo.put("Statistic","Thống kê");
 		HomeMenuDescription.put("Statistic","Thống kê doanh thu theo thời gian");
+		
+		HomeMenuInfo.put("Staff","Nhân viên");
+		HomeMenuDescription.put("Staff","Xem, quản lí danh sách nhân viên");
 	}
 	
 	public static HashMap<String, String> HomeMenuInfo = new HashMap<>();

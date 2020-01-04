@@ -2,7 +2,7 @@ package Model;
 
 public class NhanVien {
 
-	@DBTable(columnName = "MaNhaVien")
+	@DBTable(columnName = "MaNhanVien")
 	private String maNhanVien;
 	
 	@DBTable(columnName = "MaTaiKhoan")
@@ -18,14 +18,14 @@ public class NhanVien {
 	private String diaChi;
 	
 	@DBTable(columnName = "GioiTinh")
-	private String gioTinh;
+	private String gioiTinh;
 	
-	public String getGioTinh() {
-		return gioTinh;
+	public String getGioiTinh() {
+		return gioiTinh;
 	}
 
-	public void setGioTinh(String gioTinh) {
-		this.gioTinh = gioTinh;
+	public void setGioiTinh(String gioTinh) {
+		this.gioiTinh = gioTinh;
 	}
 
 	public String getMaNhanVien() {
@@ -45,7 +45,7 @@ public class NhanVien {
 		this.hoTen = hoTen;
 		this.ngaySinh = ngaySinh;
 		this.diaChi = diaChi;
-		this.gioTinh = gioTinh;
+		this.gioiTinh = gioTinh;
 		this.email = email;
 		this.soDienThoai = soDienThoai;
 		this.ngayVaoLam = ngayVaoLam;
