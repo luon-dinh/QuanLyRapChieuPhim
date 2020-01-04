@@ -3,23 +3,30 @@ package controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
 import Model.KhachHang;
+import Model.Phim;
 import Model.TaiKhoan;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import plugin.AlertBox;
 import plugin.AutoCompleteComboBoxListener;
 import plugin.MyWindows;
+import plugin.AlertBox.MyButtonType;
 import usercontrol.control.AddEditInfo;
 
 public class CustomerController implements Initializable {
@@ -31,28 +38,12 @@ public class CustomerController implements Initializable {
 	@FXML TableView<KhachHang> table_khachhang;
 	@FXML TableColumn<KhachHang, Integer> column_sothutu;
 	@FXML TableColumn<KhachHang, String> column_makhachhang;
-	@FXML TableColumn<KhachHang, String> column_mataiKhoan;
+	//@FXML TableColumn<KhachHang, String> column_mataiKhoan;
 	@FXML TableColumn<KhachHang, String> column_hoten;
 	@FXML TableColumn<KhachHang, String> column_email;
 	@FXML TableColumn<KhachHang, String> column_sodienthoai;
+	@FXML Button btn_xoa, btn_refresh;
 	
-    @FXML void AddAction(ActionEvent event) {
-    	add.show();
-    	if(add.boxReturn==ButtonType.CANCEL)
-    		return;
-    	if(add.boxReturn==ButtonType.OK) {
-    		String mataiKhoan=add.Get("Mã tài khoản").getText();
-    	}
-    }
-
-    @FXML void DeleteAction(ActionEvent event) {
-    	MyWindows w = new MyWindows("../view/Login.fxml");
-    	w.Show();
-    }
-
-    @FXML void EditAction(ActionEvent event) {
-    	edit.show();
-    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -61,14 +52,42 @@ public class CustomerController implements Initializable {
 		edit.AddComboBox("Mã tài khoản");
 		add.AddAll(tmp);
 		edit.AddAll(tmp);
+		addEvents();
 		initialize();
+	}
+
+	private void addEvents() {
+	// TODO Auto-generated method stub
+		btn_xoa.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				KhachHang kh=table_khachhang.getSelectionModel().getSelectedItem();
+				if(kh!=null) {
+					Optional<ButtonType> result =AlertBox.show(AlertType.CONFIRMATION, "Xác nhận", "Bạn có thực sự muốn xóa bộ phim này?", MyButtonType.YesNo);
+					if(result.get()==ButtonType.YES) {
+						table_khachhang.getItems().remove(kh);
+						new Connector().delete("delete from KHACHHANG where MaTaiKhoan='"+kh.getMaTaiKhoan()+"'");
+					}
+				}
+			}
+		});
+		
+		btn_refresh.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				loadTableKhachHang();
+			}
+		});
 	}
 
 	private void inItTableKhachHang() {
 		column_sothutu.setCellValueFactory(
 				column -> new ReadOnlyObjectWrapper<Integer>(table_khachhang.getItems().indexOf(column.getValue()) + 1));
 		column_makhachhang.setCellValueFactory(new PropertyValueFactory<>("MaKhachHang"));
-		column_mataiKhoan.setCellValueFactory(new PropertyValueFactory<>("MaTaiKhoan"));
+		//column_mataiKhoan.setCellValueFactory(new PropertyValueFactory<>("MaTaiKhoan"));
 		column_hoten.setCellValueFactory(new PropertyValueFactory<>("HoTen"));
 		column_email.setCellValueFactory(new PropertyValueFactory<>("Email"));
 		column_sodienthoai.setCellValueFactory(new PropertyValueFactory<>("SoDienThoai"));

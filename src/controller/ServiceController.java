@@ -192,6 +192,7 @@ public class ServiceController implements Initializable {
 			card.nameProperty().set(sp.getTenSanPham());
 			card.descriptionProperty().set(sp.getMoTa());
 			card.imageProperty().set(Connector.convertToBufferImage(sp.getHinhAnh()));
+			//Connector.setImage(card.getimageView(),Connector.convertToBufferImage(sp.getHinhAnh()));
 		}
 		else {
 			card.costProperty().set(10000);

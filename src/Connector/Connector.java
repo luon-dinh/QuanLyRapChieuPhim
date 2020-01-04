@@ -30,7 +30,9 @@ import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -320,17 +322,40 @@ public class Connector<T> {
 	}
 
 	public static Image convertToBufferImage(byte[] data) {
-		Image theImage = null;
+		Image img = null;
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			BufferedImage bImage2 = ImageIO.read(bis);
 //			ImageIO.write(bImage2, "jpg", new File("output.jpg") );
-			theImage = SwingFXUtils.toFXImage(bImage2, null);
+			img = SwingFXUtils.toFXImage(bImage2, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return theImage;
+//		
+		return img;
+	}
+	
+	public static void setImage(ImageView image, Image img) {
+		Rectangle2D croppedPortion;
+		if (img.getWidth() / 180.0 > img.getHeight() / 250.0) {
+
+			croppedPortion = new Rectangle2D(img.getWidth() / 2.0 - img.getHeight() / 250.0 * 90.0, 0,
+					img.getHeight()/250.0*180.0, img.getHeight());
+
+		} else {
+			croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 180.0 * 125.0,
+					img.getWidth(), img.getWidth() / 180.0*250.0);
+		}
+
+		// target width and height:
+		double scaledWidth = 180;
+		double scaledHeight = 250;
+		image.setImage(img);		
+		image.setViewport(croppedPortion);
+		image.setFitWidth(scaledWidth);
+		image.setFitHeight(scaledHeight);
+		image.setSmooth(false);
 	}
 
 }

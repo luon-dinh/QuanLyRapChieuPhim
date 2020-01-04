@@ -16,7 +16,7 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// warring
-		if (MainController.menu.length > 9)
+		if (MainController.menu.length > 10)
 			pane.addColumn(4, new Node[pane.getRowConstraints().size()]);
 
 		int r = pane.getRowConstraints().size();
