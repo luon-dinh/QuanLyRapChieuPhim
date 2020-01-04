@@ -213,7 +213,6 @@ public class AddMovieToScheduleController implements Initializable{
 		// TODO Auto-generated method stub
 		ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
 		Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
-		dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM"));
 		int index=0;
 		if(dsLichChieu.size()>0) {
 			String maLichChieu=dsLichChieu.get(dsLichChieu.size()-1).getMaLichChieu();
@@ -221,5 +220,6 @@ public class AddMovieToScheduleController implements Initializable{
 		}
 		String maLichChieu="LC"+(index+1);
 		c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
+		
 	}
 }

@@ -206,6 +206,8 @@ public class AddNewRoomController implements Initializable {
 				pst.setBytes(1, hinhAnh);
 				pst.execute();
 				c.connection.close();
+				xuLiThemGhe(maPhongChieuPhim, soGhe);
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				AlertBox.show(AlertType.ERROR, "Nhập sai");
@@ -215,5 +217,10 @@ public class AddNewRoomController implements Initializable {
 		} catch (Exception e) {
 			AlertBox.show(AlertType.ERROR, "Nhập sai");
 		}
+	}
+
+	private void xuLiThemGhe(String maPhongChieuPhim, int soGhe) {
+		// TODO Auto-generated method stub
+		
 	}
 }
