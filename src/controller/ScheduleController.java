@@ -58,6 +58,8 @@ public class ScheduleController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		datePicker.getEditor().setDisable(true);
+		
 		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter =
                       DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -82,6 +84,9 @@ public class ScheduleController implements Initializable {
         datePicker.setConverter(converter);
 		datePicker.setValue(LocalDate.now());
 		date=datePicker.getValue();
+		lb_ngay.setText(date.getDayOfMonth()+"");
+	    lb_thang.setText(date.getMonth()+"");
+	    lb_nam.setText(date.getYear()+"");
 		inItValue();//hàm để refresh toàn bộ data binding data khi data được cập nhật
 		addEvents();// khởi tạo sự kiện cho các control
 		timeLine.endXProperty().bind(Bindings.max(schedulePane.widthProperty(),MainController.mainPage.widthProperty().add(-105)));
