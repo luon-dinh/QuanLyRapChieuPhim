@@ -1,12 +1,15 @@
 package controller;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.CTHD;
+import Model.HoaDon;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.SanPham;
@@ -56,6 +59,7 @@ public class ServiceController implements Initializable {
 	private ArrayList<SanPham> dsSanPham;
 	private IntegerProperty number = new SimpleIntegerProperty(0);
 	private IntegerProperty cost = new SimpleIntegerProperty(0);
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
@@ -138,10 +142,34 @@ public class ServiceController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				// xử lí đặt đồ ăn vặt
+				xuLiMuaSanPham();
+				//xóa danh sách đã chọn, reset lại thông tin 
+				cart.getChildren().removeAll(cart.getChildren());
+				cartItems.clear();
+				number.set(0);
+				cost.set(0);
+				AlertBox.show(AlertType.INFORMATION, "Đặt thành công");
 			}
 		});
 		
+	}
+
+	protected void xuLiMuaSanPham() {
+		// TODO Auto-generated method stub
+		if(dsSanPham.size()==0)
+			return;
+		Connector<HoaDon> cHoaDon=new Connector<HoaDon>();
+		Connector<CTHD> cCTHD=new Connector<CTHD>();
+		List<HoaDon> dsHoaDon=cHoaDon.select(HoaDon.class, "select * from HOADON");
+		int index=0;
+		if(dsHoaDon.size()>0) {
+			index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
+		}
+		double tongTien=Double.parseDouble(SumCost.getText());
+		cHoaDon.insert("insert into HOADON values('"+index+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
+		for(CartItem ci:cartItems) {
+			cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+ci.NumberProperty().get()+"')");
+		}
 	}
 
 	private void initial(ArrayList<SanPham> sps) {
