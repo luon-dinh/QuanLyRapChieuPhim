@@ -29,6 +29,7 @@ import Model.LoaiPhim;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
+import Model.TaiKhoan;
 import Model.VeXemPhim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
@@ -91,8 +92,7 @@ public class Connector<T> {
 			connect();
 			statement = connection.createStatement();
 			result = statement.executeQuery(query);
-			while(result.next())
-			{
+			while (result.next()) {
 				list.add(result.getInt("TongTien"));
 			}
 			connection.close();
@@ -102,19 +102,18 @@ public class Connector<T> {
 		}
 		return list;
 	}
-	
+
 	public int update(String query, byte[] bytes) {
-		int result=0;
+		int result = 0;
 		try {
 			connect();
-			PreparedStatement pst=connection.prepareStatement(query);
+			PreparedStatement pst = connection.prepareStatement(query);
 			pst.setBytes(1, bytes);
-			result=pst.executeUpdate();
+			result = pst.executeUpdate();
 			connection.close();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace(); 
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -134,17 +133,15 @@ public class Connector<T> {
 		return result;
 	}
 
-	
-	public int insert(String query,byte[] bytes) {
-		int result=0;
+	public int insert(String query, byte[] bytes) {
+		int result = 0;
 		try {
 			connect();
-			PreparedStatement pst=connection.prepareStatement(query);
+			PreparedStatement pst = connection.prepareStatement(query);
 			pst.setBytes(1, bytes);
-			result=pst.executeUpdate();
+			result = pst.executeUpdate();
 			connection.close();
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -199,9 +196,10 @@ public class Connector<T> {
 				String daoDien = rs.getString("TenDaoDien");
 				String moTa = rs.getString("MoTa");
 				byte[] hinhAnh = rs.getBytes("HinhAnh");
-				float rating=rs.getFloat("Rating");
-				int numberVote=rs.getInt("NumberVote");
-				dsPhim.add(new Phim(maPhim,tenPhim,namSanXuat,thoiLuong,daoDien,nuocSanXuat,moTa,hinhAnh,rating, numberVote));
+				float rating = rs.getFloat("Rating");
+				int numberVote = rs.getInt("NumberVote");
+				dsPhim.add(new Phim(maPhim, tenPhim, namSanXuat, thoiLuong, daoDien, nuocSanXuat, moTa, hinhAnh, rating,
+						numberVote));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -210,27 +208,29 @@ public class Connector<T> {
 		}
 		return dsPhim;
 	}
-	
+
 	public String getTenPhimByMaPhim(String maPhim) {
-		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
-		if(dsPhim.size()==0)
+		List<Phim> dsPhim = selectPhim("select * from PHIM where MaPhim='" + maPhim + "'");
+		if (dsPhim.size() == 0)
 			return null;
 		return dsPhim.get(0).getTenPhim();
 	}
+
 	public String getTenPhongByMaPhong(String maPhong) {
-		List<PhongChieuPhim> dsPhongChieuPhims=new Connector().select(PhongChieuPhim.class,"select * from PHONGCHIEUPHIM where MaPhong='"+maPhong+"'");
-		if(dsPhongChieuPhims.size()==0)
+		List<PhongChieuPhim> dsPhongChieuPhims = new Connector().select(PhongChieuPhim.class,
+				"select * from PHONGCHIEUPHIM where MaPhong='" + maPhong + "'");
+		if (dsPhongChieuPhims.size() == 0)
 			return null;
 		return dsPhongChieuPhims.get(0).getTenPhong();
 	}
-	
+
 	public Image getimageByMaPhim(String maPhim) {
-		List<Phim> dsPhim=selectPhim("select * from PHIM where MaPhim='"+maPhim+"'");
-		if(dsPhim.size()==0)
+		List<Phim> dsPhim = selectPhim("select * from PHIM where MaPhim='" + maPhim + "'");
+		if (dsPhim.size() == 0)
 			return null;
 		return convertToBufferImage(dsPhim.get(0).getHinhAnh());
 	}
-	
+
 	// select dành cho các class có hình ảnh
 	public ArrayList<PhongChieuPhim> selectPhongChieuPhim(String query) {
 		Statement statement;
@@ -260,20 +260,52 @@ public class Connector<T> {
 	}
 
 	
-	public static ArrayList<String> getLoaiPhimByMaPhim(String maPhim){
-		ArrayList<LoaiPhim> dsLoaiPhim=new ArrayList<LoaiPhim>();
-		ArrayList<Phim_LoaiPhim> dsPhimLoaiPhim=new ArrayList<Phim_LoaiPhim>();
-		ArrayList<String> result=new ArrayList<String>();
-		dsPhimLoaiPhim.addAll(new Connector().select(Phim_LoaiPhim.class,"select * from PHIM_LOAIPHIM where MaPhim='"+maPhim+"'"));
-		for(Phim_LoaiPhim plp:dsPhimLoaiPhim) {
-			dsLoaiPhim.addAll(new Connector().select(LoaiPhim.class,"select * from LOAIPHIM where MaLoai='"+plp.getMaLoai()+"'"));
+	
+	//tai khoan
+	public ArrayList<TaiKhoan> selectTaiKhoan(String query) {
+		Statement statement;
+		ResultSet rs;
+		ArrayList<TaiKhoan> dsTaiKhoan = new ArrayList<TaiKhoan>();
+		try {
+			connect();
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
+			while (rs.next()) {
+				String maTaiKhoan = rs.getString("MaTaiKhoan");
+				String tenDangNhap = rs.getString("TenDangNhap");
+				String matKhau = rs.getString("MatKhau");
+				String loaiTaiKhoan =rs.getString("LoaiTaiKhoan");
+				String ngayTao = rs.getString("NgayTao");
+				String trangThai = rs.getString("TrangThai");
+				String tenHienThi = rs.getString("TenHienThi");
+				byte[] hinhAnh = rs.getBytes("HinhAnh");
+
+				dsTaiKhoan.add(new TaiKhoan(maTaiKhoan,tenDangNhap,matKhau,loaiTaiKhoan,ngayTao,trangThai,tenHienThi,hinhAnh));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		for(LoaiPhim lp:dsLoaiPhim) {
+		return dsTaiKhoan;
+	}
+
+	public static ArrayList<String> getLoaiPhimByMaPhim(String maPhim) {
+		ArrayList<LoaiPhim> dsLoaiPhim = new ArrayList<LoaiPhim>();
+		ArrayList<Phim_LoaiPhim> dsPhimLoaiPhim = new ArrayList<Phim_LoaiPhim>();
+		ArrayList<String> result = new ArrayList<String>();
+		dsPhimLoaiPhim.addAll(new Connector().select(Phim_LoaiPhim.class,
+				"select * from PHIM_LOAIPHIM where MaPhim='" + maPhim + "'"));
+		for (Phim_LoaiPhim plp : dsPhimLoaiPhim) {
+			dsLoaiPhim.addAll(new Connector().select(LoaiPhim.class,
+					"select * from LOAIPHIM where MaLoai='" + plp.getMaLoai() + "'"));
+		}
+		for (LoaiPhim lp : dsLoaiPhim) {
 			result.add(lp.getTenLoai());
 		}
 		return result;
 	}
-	
+
 	public static void loadResultSetIntoObject(ResultSet rst, Object object)
 			throws IllegalArgumentException, IllegalAccessException, SQLException {
 		Class<?> zclass = object.getClass();
@@ -355,23 +387,23 @@ public class Connector<T> {
 //		
 		return img;
 	}
-	
+
 	public static void setImage(ImageView image, Image img) {
 		Rectangle2D croppedPortion;
 		if (img.getWidth() / 180.0 > img.getHeight() / 250.0) {
 
 			croppedPortion = new Rectangle2D(img.getWidth() / 2.0 - img.getHeight() / 250.0 * 90.0, 0,
-					img.getHeight()/250.0*180.0, img.getHeight());
+					img.getHeight() / 250.0 * 180.0, img.getHeight());
 
 		} else {
-			croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 180.0 * 125.0,
-					img.getWidth(), img.getWidth() / 180.0*250.0);
+			croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 180.0 * 125.0, img.getWidth(),
+					img.getWidth() / 180.0 * 250.0);
 		}
 
 		// target width and height:
 		double scaledWidth = 180;
 		double scaledHeight = 250;
-		image.setImage(img);		
+		image.setImage(img);
 		image.setViewport(croppedPortion);
 		image.setFitWidth(scaledWidth);
 		image.setFitHeight(scaledHeight);

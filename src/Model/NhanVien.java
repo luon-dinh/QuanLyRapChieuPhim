@@ -20,6 +20,16 @@ public class NhanVien {
 	@DBTable(columnName = "GioiTinh")
 	private String gioiTinh;
 	
+	@DBTable(columnName = "Email")
+	private String email;
+	
+	@DBTable(columnName = "SoDienThoai")
+	private String soDienThoai;
+	
+	@DBTable(columnName = "NgayVaoLam")
+	private String ngayVaoLam;
+	
+	
 	public String getGioiTinh() {
 		return gioiTinh;
 	}
@@ -111,13 +121,4 @@ public class NhanVien {
 		this.ngayVaoLam = ngayVaoLam;
 	}
 
-	@DBTable(columnName = "Email")
-	private String email;
-	
-	@DBTable(columnName = "SoDienThoai")
-	private String soDienThoai;
-	
-	@DBTable(columnName = "NgayVaoLam")
-	private String ngayVaoLam;
-	
 }

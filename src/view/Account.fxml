@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -17,19 +25,91 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <children>
-      <BorderPane fx:id="pane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="pane" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <VBox alignment="TOP_RIGHT" BorderPane.alignment="CENTER">
+            <VBox id="leftParentVBox" prefHeight="513.0" prefWidth="462.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="TOP_LEFT">
                <children>
-                  <Label text="Thông tin cá nhân">
-                     <VBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Hyperlink onAction="#Logout" text="Đăng xuất" />
-                  <Hyperlink onAction="#ChangePass" text="Thay đổi mật khẩu" />
-                  <Hyperlink onAction="#ChangeNickname" text="Thay đổi tên hiển thị" />
-                  <Hyperlink onAction="#ChangeAvatar" text="Đổi avatar" />
+                  <HBox id="topLeftHBox" prefHeight="118.0" prefWidth="273.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <ImageView fx:id="avatar" fitHeight="130.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="140.0" prefWidth="326.0">
+                           <children>
+                              <Label fx:id="topName" prefHeight="27.0" prefWidth="319.0" text="Label" textFill="#2067c7">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font></Label>
+                              <Region prefHeight="17.0" prefWidth="285.0" />
+                              <Label fx:id="topEmail" prefHeight="19.0" prefWidth="324.0" text="Label" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font></Label>
+                              <Button fx:id="changeAvatar" mnemonicParsing="false" style="-fx-background-color: #03a9f4;" text="Thay avatar" textFill="WHITE">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="20.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                     <effect>
+                        <DropShadow color="#51313166" spread="0.1" />
+                     </effect>
+                  </HBox>
+                  <HBox prefHeight="15.0" prefWidth="462.0">
+                     <children>
+                        <Region prefHeight="12.0" prefWidth="301.0" />
+                        <Label text="Thông tin cá nhân" textAlignment="RIGHT">
+                           <font>
+                              <Font name="Candara Bold" size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region prefHeight="100.0" prefWidth="13.0" />
+                        <VBox prefHeight="100.0" prefWidth="469.0">
+                           <children>
+                              <Hyperlink onAction="#Logout" text="Đăng xuất">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Hyperlink>
+                              <Hyperlink onAction="#ChangePass" text="Thay đổi mật khẩu">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Hyperlink>
+                              <Hyperlink onAction="#ChangeNickname" text="Thay đổi tên hiển thị">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Hyperlink>
+                              <Hyperlink onAction="#ChangeAvatar" text="Đổi avatar">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Hyperlink>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
                <BorderPane.margin>
                   <Insets right="40.0" />
@@ -37,89 +117,185 @@
             </VBox>
          </left>
          <center>
-            <GridPane fx:id="gp" hgap="5.0" BorderPane.alignment="CENTER">
+            <GridPane fx:id="gp" hgap="5.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
                <children>
-                  <Hyperlink alignment="CENTER" onAction="#UpdateInfo" text="Cập nhật thông tin cá nhân" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
-                  <Label text="Tài khoản" GridPane.rowIndex="1" />
-                  <Label text="Mật khẩu" GridPane.rowIndex="2" />
-                  <Label text="Tên hiển thị" GridPane.rowIndex="3" />
-                  <Label text="Avatar" GridPane.rowIndex="4" />
-                  <Label text="Họ và tên" GridPane.rowIndex="5" />
-                  <Label text="Giới tính" GridPane.rowIndex="6" />
-                  <Label text="Ngày sinh" GridPane.rowIndex="7" />
-                  <Label text="Email" GridPane.rowIndex="8" />
-                  <Label text="Số điện thoại" GridPane.rowIndex="9" />
-                  <Label text="Địa chỉ" GridPane.rowIndex="10" />
-                  <Label text="Ngày vào làm" GridPane.rowIndex="11" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Hyperlink alignment="CENTER" onAction="#UpdateInfo" text="Cập nhật thông tin cá nhân" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+                     <GridPane.margin>
+                        <Insets bottom="20.0" top="30.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font name="Cambria Bold" size="18.0" />
+                     </font></Hyperlink>
+                  <Label text="Tài khoản:" textAlignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label text="Mật khẩu:" textAlignment="CENTER" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label text="Tên hiển thị:" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label text="Họ và tên:" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="lblGender" text="Giới tính:" GridPane.rowIndex="8">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="lblDoB" text="Ngày sinh:" GridPane.rowIndex="9">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label text="Email:" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label text="Số điện thoại:" GridPane.rowIndex="7">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="lblAdd" text="Địa chỉ:" GridPane.rowIndex="10">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="lblStart" text="Ngày vào làm:" GridPane.rowIndex="11">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin></Label>
+                  <Label fx:id="userName" prefHeight="20.0" prefWidth="155.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
                   </Label>
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label fx:id="passWord" prefHeight="20.0" prefWidth="152.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Label fx:id="nickName" prefHeight="20.0" prefWidth="162.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <ImageView fitHeight="200.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <Label fx:id="Name" prefHeight="20.0" prefWidth="157.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <Label fx:id="gender" prefHeight="20.0" prefWidth="179.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                  <Label fx:id="dob" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Hyperlink onAction="#CopyEmail" text="Hyperlink" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                  <Hyperlink fx:id="email" onAction="#CopyEmail" prefHeight="28.0" prefWidth="154.0" text="Hyperlink" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Hyperlink>
+                  <Label fx:id="phoneNumber" prefHeight="20.0" prefWidth="159.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                  <Label fx:id="address" prefHeight="20.0" prefWidth="157.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="10">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <Label layoutX="110.0" layoutY="475.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                  <Label fx:id="startDay" layoutX="110.0" layoutY="475.0" prefHeight="20.0" prefWidth="143.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="11">
                      <GridPane.margin>
                         <Insets left="4.0" />
                      </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                </children>
                <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints maxWidth="135.0" minWidth="90.0" prefWidth="125.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="104.0" prefWidth="114.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints />
                   <RowConstraints prefHeight="29.0" />
                   <RowConstraints prefHeight="29.0" />
                   <RowConstraints prefHeight="29.0" />
-                  <RowConstraints />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
-                  <RowConstraints prefHeight="29.0" />
+                  <RowConstraints maxHeight="192.0" minHeight="20.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="209.0" minHeight="27.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="203.0" minHeight="27.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="203.0" minHeight="26.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="206.0" minHeight="32.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="203.0" minHeight="31.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="201.0" minHeight="28.0" prefHeight="29.0" />
+                  <RowConstraints maxHeight="202.0" minHeight="33.0" prefHeight="29.0" />
                </rowConstraints>
+               <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" color="#4f303066" spread="0.1" />
+               </effect>
             </GridPane>
          </center>
       </BorderPane>
-      <Line fx:id="line" stroke="#dddddd" strokeWidth="4.0" />
    </children>
 </AnchorPane>
