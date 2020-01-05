@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
@@ -159,14 +160,18 @@ public class AccountController implements Initializable {
 		// TODO Auto-generated method stub
 
 		Connector<KhachHang> connector = new Connector<KhachHang>();
-		mKhachHang = connector.select(KhachHang.class,
-				"select * from KhachHang where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'").get(0);
+		List<KhachHang> ds=connector.select(KhachHang.class,
+				"select * from KhachHang where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'");
+		if(ds.size()==0) {
+			return;
+		}
+		mKhachHang = ds.get(0);
 		Name.setText(mKhachHang.getHoTen());
 //		gender.setText(mNhanVien.getGioiTinh());
 //		dob.setText(mNhanVien.getNgaySinh());
-		topEmail.setText(mNhanVien.getEmail());
-		email.setText(mNhanVien.getEmail());
-		phoneNumber.setText(mNhanVien.getSoDienThoai());
+		topEmail.setText(mKhachHang.getEmail());
+		email.setText(mKhachHang.getEmail());
+		phoneNumber.setText(mKhachHang.getSoDienThoai());
 //		address.setText(mNhanVien.getDiaChi());
 //		startDay.setText(mNhanVien.getNgayVaoLam());
 
@@ -200,16 +205,17 @@ public class AccountController implements Initializable {
 	private boolean checkNV(String maTaiKhoan) {
 		// TODO Auto-generated method stub
 		Connector<TaiKhoan> connector = new Connector<TaiKhoan>();
-		Connection connection = connector.connect();
-		Statement statement;
-		ResultSet result = null;
 		int count = 0;
 		try {
+			Connection connection = connector.connect();
+			Statement statement;
+			ResultSet result = null;
 			statement = connection.createStatement();
 			result = statement.executeQuery("SELECT MaTaiKhoan FROM NhanVien Where MaTaiKhoan = '" + maTaiKhoan + "'");
 			if (result.next()) {
 				count++;
 			}
+			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

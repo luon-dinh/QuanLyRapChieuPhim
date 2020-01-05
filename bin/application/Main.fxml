@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="MainPane" UserData="Phần mềm quản lý rạp chiếu phim" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1010.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <left>
-      <VBox fx:id="MainMenu" style="-fx-background-color: #BF2F22;" BorderPane.alignment="CENTER" />
+      <ScrollPane hbarPolicy="NEVER" stylesheets="@../css/Scrollpane.css" vbarPolicy="NEVER">
+         <content>
+            <VBox fx:id="MainMenu" style="-fx-background-color: #BF2F22;" BorderPane.alignment="CENTER" />
+         </content>
+      </ScrollPane>
    </left>
 </BorderPane>

@@ -58,7 +58,7 @@ public class SignUpController {
 			index=Integer.parseInt(accounts.get(lenght-1).getMaTaiKhoan().substring(2, accounts.get(lenght-1).getMaTaiKhoan().length()));
 		}
 		String ID="TK"+(index+1);
-		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"','user','"+d+"','Active','user')")>0) {
+		if(connector.insert("insert into TAIKHOAN values('"+ID+"','"+user+"','"+pass+"','user','"+d+"','Active','user','')")>0) {
 			SceneController.GetInstance().TryReplaceScene("Main");
 			new Connector<KhachHang>().insert("insert into KHACHHANG(MaKhachHang, MaTaiKhoan) values('"+"KH"+(indexKH+1)+"','"+ID+"')");
 		}
