@@ -161,6 +161,12 @@ public class AccountController implements Initializable {
 		Connector<KhachHang> connector = new Connector<KhachHang>();
 		mKhachHang = connector.select(KhachHang.class,
 				"select * from KhachHang where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'").get(0);
+		try {
+			connector.connect().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Name.setText(mKhachHang.getHoTen());
 //		gender.setText(mNhanVien.getGioiTinh());
 //		dob.setText(mNhanVien.getNgaySinh());
@@ -187,6 +193,12 @@ public class AccountController implements Initializable {
 		mNhanVien = connector
 				.select(NhanVien.class, "select * from NHANVIEN where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 				.get(0);
+		try {
+			connector.connect().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Name.setText(mNhanVien.getHoTen());
 		gender.setText(mNhanVien.getGioiTinh());
 		dob.setText(mNhanVien.getNgaySinh());
@@ -213,6 +225,13 @@ public class AccountController implements Initializable {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		try {
+			connector.connect().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 		System.out.println(count);
@@ -241,10 +260,16 @@ public class AccountController implements Initializable {
 		EditInfo.addImageView("Cập nhật avatar:", avatar.getImage());
 
 		Connector<NhanVien> connector = new Connector<NhanVien>();
+		
 		mNhanVien = connector
 				.select(NhanVien.class, "select * from NHANVIEN where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 				.get(0);
-
+		try {
+			connector.connect().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		EditInfo.Get("Họ và tên").setText(mNhanVien.getHoTen());
 		EditInfo.Get("Tên hiển thị").setText(mTaiKhoan.getTenHienThi());
 		EditInfo.Get("Ngày sinh").setText(mNhanVien.getNgaySinh());
@@ -263,11 +288,12 @@ public class AccountController implements Initializable {
 				String email = EditInfo.Get("Email").getText();
 				String phone = EditInfo.Get("Số điện thoại").getText();
 				String address = EditInfo.Get("Địa chỉ").getText();
+				String matk = mTaiKhoan.getMaTaiKhoan();
 				
 				if (EditInfo.f != null) {
 					new Connector<NhanVien>().update("update NHANVIEN set HoTen ='" + hoten + "', NgaySinh='" + dob
 							+ "',DiaChi='" + address + "', Email='" + email + "', SoDienThoai='" + phone
-							+ "' where mataikhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'");
+							+ "' where mataikhoan = '" +matk + "'");
 
 					new Connector<TaiKhoan>().update("update TAIKHOAN set TenHienThi ='" + nickname + "', "
 							+ "', HinhAnh=? where MaTaiKhoan='" + mTaiKhoan.getMaTaiKhoan() + "'",
@@ -275,7 +301,7 @@ public class AccountController implements Initializable {
 				} else {
 					new Connector<NhanVien>().update("update NHANVIEN set HoTen ='" + hoten + "', NgaySinh='" + dob
 							+ "',DiaChi='" + address + "', Email='" + email + "', SoDienThoai='" + phone
-							+ "' where mataikhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'");
+							+ "' where mataikhoan = '" + matk + "'");
 					new Connector<TaiKhoan>()
 							.update("update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan=' " + mTaiKhoan.getMaTaiKhoan()+"'");
 				}
