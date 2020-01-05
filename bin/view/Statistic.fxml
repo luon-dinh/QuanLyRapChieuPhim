@@ -9,31 +9,28 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="controller.StatisticController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatisticController">
 	<center>
 		<LineChart fx:id="lineChart1" BorderPane.alignment="CENTER">
 			<xAxis>
-				<CategoryAxis fx:id="xAxis1" side="BOTTOM" />
+				<CategoryAxis side="BOTTOM" fx:id="xAxis1" />
 			</xAxis>
 			<yAxis>
-				<NumberAxis side="LEFT" fx:id="yAxis1" />
+				<NumberAxis fx:id="yAxis1" side="LEFT" />
 			</yAxis>
 		</LineChart>
 	</center>
 	<top>
-		<HBox alignment="CENTER_LEFT" spacing="10.0"
-			BorderPane.alignment="CENTER">
+		<HBox alignment="CENTER_LEFT" spacing="10.0" BorderPane.alignment="CENTER">
 			<children>
-				<Label  text="Loại doanh thu" />
-				<MenuButton fx:id="revenueTypeMenu" mnemonicParsing="false" text="Tổng">
+				<Label text="Loại doanh thu" />
+				<MenuButton fx:id="revenueTypeMenu" mnemonicParsing="false" prefWidth="180.0" text="Tổng">
 					
 				</MenuButton>
 				<Region prefWidth="20.0" />
 				<Label text="Thời gian" />
-				<MenuButton fx:id = "monthsMenu" mnemonicParsing="false" text="Chọn tháng" />
-				<MenuButton fx:id = "yearsMenu" mnemonicParsing="false" text="Chọn năm" />
+				<MenuButton fx:id="monthsMenu" mnemonicParsing="false" prefWidth="100.0" text="Chọn tháng" />
+				<MenuButton fx:id="yearsMenu" mnemonicParsing="false" prefWidth="90.0" text="Chọn năm" />
 			</children>
 		</HBox>
 	</top>
@@ -41,4 +38,3 @@
 		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 	</padding>
 </BorderPane>
-

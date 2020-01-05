@@ -29,6 +29,7 @@ import Model.LoaiPhim;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
+import Model.VeXemPhim;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -82,6 +83,25 @@ public class Connector<T> {
 		return list;
 	}
 
+	public List<Integer> selectTicket(Class<T> type, String query) {
+		Statement statement;
+		ResultSet result = null;
+		List<Integer> list = new ArrayList<Integer>();
+		try {
+			connect();
+			statement = connection.createStatement();
+			result = statement.executeQuery(query);
+			while(result.next())
+			{
+				list.add(result.getInt("TongTien"));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	public int update(String query, byte[] bytes) {
 		int result=0;

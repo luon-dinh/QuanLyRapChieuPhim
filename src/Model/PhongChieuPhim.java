@@ -4,26 +4,25 @@ public class PhongChieuPhim {
 
 	@DBTable(columnName = "MaPhong")
 	private String maPhong;
-	
+
 	@DBTable(columnName = "TenPhong")
 	private String tenPhong;
-	
 
 	@DBTable(columnName = "TrangThai")
 	private String trangThai;
-	
+
 	@DBTable(columnName = "SoGhe")
 	private int soGhe;
-	
+
 	@DBTable(columnName = "SucChua")
 	private int sucChua;
-	
+
 	@DBTable(columnName = "MoTa")
 	private String moTa;
-	
+
 	@DBTable(columnName = "HinhAnh")
 	private byte[] hinhAnh;
-	
+
 	public String getTenPhong() {
 		return tenPhong;
 	}
@@ -32,11 +31,9 @@ public class PhongChieuPhim {
 		this.tenPhong = tenPhong;
 	}
 
-
 	public String getMaPhong() {
 		return maPhong;
 	}
-
 
 	public PhongChieuPhim(String maPhong, String tenPhong, String trangThai, int soGhe, int sucChua, String moTa,
 			byte[] hinhAnh) {
@@ -54,7 +51,6 @@ public class PhongChieuPhim {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 
 	public int getSoGhe() {
 		return soGhe;
@@ -99,5 +95,5 @@ public class PhongChieuPhim {
 	public void setTrangThai(String trangThai) {
 		this.trangThai = trangThai;
 	}
-	
+
 }
