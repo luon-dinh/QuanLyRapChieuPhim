@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import plugin.MyWindows;
 import usercontrol.control.MovieScheduleCard;
@@ -61,21 +62,21 @@ public class BookTicketController implements Initializable {
 						counter.set(counter.get() + 1);
 						lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
 						indexs.add(maGhe);
-						new Connector().update( "update Ghe_LichChieu set TrangThai='0' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 					}
 					else {
 						counter.set(counter.get() - 1);	
 						lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
 						indexs.remove(maGhe);
-						new Connector().update( "update Ghe_LichChieu set TrangThai='1' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 					}
 				});		
 			}
 			else {
+				button.setDisable(true);
 				button.isSelected.set(true);
-				button.isSelected.addListener((observable, oldValue, newValue)->{
-					button.isSelected.set(true);
-				});
+				button.setTextFill(Color.YELLOWGREEN);
+//				button.isSelected.addListener((observable, oldValue, newValue)->{
+//					button.isSelected.set(true);
+//				});
 			}
 		}
 		ticketCounter.textProperty().bind(counter.asString());
@@ -108,6 +109,7 @@ public class BookTicketController implements Initializable {
 	private void xuLiDatVe() {
 		// TODO Auto-generated method stub
 		List<VeXemPhim> dsVe=new ArrayList<VeXemPhim>();
+		Connector<Ghe_LichChieu> c=new Connector<Ghe_LichChieu>();
 		dsVe=new Connector().select(VeXemPhim.class, "select * from VEXEMPHIM");
 		int index=0;
 		if(dsVe.size()>0) {
@@ -118,6 +120,9 @@ public class BookTicketController implements Initializable {
 		String trangThai="Đã đặt";
 		if(indexs.size()>0) {
 			new Connector().insert("insert into VEXEMPHIM values('"+index+"','"+LoginController.taikhoan.getMaTaiKhoan()+"','"+card.getLichChieu().getMaLichChieu()+"','"+indexs.size()+"','"+tongTien+"','"+ngayDat+"','"+trangThai+"')");
+		}
+		for(Integer i:indexs) {
+			c.update( "update Ghe_LichChieu set TrangThai='0' where MaGhe='"+i+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 		}
 	}
 
