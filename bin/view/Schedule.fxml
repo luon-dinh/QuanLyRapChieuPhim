@@ -118,7 +118,7 @@
                <children>
                   <AnchorPane>
                      <children>
-                        <Button mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Button fx:id="btn_previous" mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -142,7 +142,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ hai" />
-                                    <Label fx:id="lb_thuhai" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thuhai" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -159,7 +159,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ ba" />
-                                    <Label fx:id="lb_thuba" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thuba" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -176,7 +176,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ tư" />
-                                    <Label fx:id="lb_thutu" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thutu" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -193,7 +193,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ năm" />
-                                    <Label fx:id="lb_thunam" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thunam" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -210,7 +210,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ sáu" />
-                                    <Label fx:id="lb_thusau" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thusau" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -227,7 +227,7 @@
                               <VBox alignment="CENTER">
                                  <children>
                                     <Label text="Thứ bảy" />
-                                    <Label fx:id="lb_thubay" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_thubay" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -248,7 +248,7 @@
                                           <Insets left="-10.0" right="-10.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <Label fx:id="lb_chunhat" styleClass="fontBigSize" text="Ngày" />
+                                    <Label fx:id="lb_chunhat" text="Ngày" />
                                  </children>
                               </VBox>
                            </graphic>
@@ -257,7 +257,7 @@
                   </AnchorPane>
                   <AnchorPane GridPane.columnIndex="8">
                      <children>
-                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Button fx:id="btn_next" alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="menuButton" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <font>
                               <Font size="18.0" />
                            </font>
