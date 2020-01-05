@@ -259,7 +259,7 @@ public class AddEditInfo {
 					return;
 				ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
 				Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
-				dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM where NgayChieu='"+ScheduleController.date.toString()+"'"));
+				dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM where NgayChieu='"+ScheduleController.date.toString()+"' and MaPhongChieu='"+ScheduleController.phong.getMaPhong()+"'"));
 				for(LichChieuPhim lc:dsLichChieu) {
 					try {
 						if(LocalTime.parse(lc.getGioBatDau()).plusMinutes(lc.getThoiLuong()).isAfter(newValue)){

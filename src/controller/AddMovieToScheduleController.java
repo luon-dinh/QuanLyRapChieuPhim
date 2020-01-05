@@ -12,6 +12,7 @@ import Model.Ghe;
 import Model.LichChieuPhim;
 import Model.LoaiPhim;
 import Model.Phim;
+import Model.PhongChieuPhim;
 import Model.VeXemPhim;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -52,7 +53,7 @@ public class AddMovieToScheduleController implements Initializable{
     
     private ArrayList<Phim> dsPhim;
     private ArrayList<LoaiPhim> dsLoaiPhim;
-    private static final String[] contents = { "Giá vé", "Số ghế", "Thời lượng (phút)"};
+    private static final String[] contents = { "Giá vé", "Số vé", "Thời lượng (phút)"};
     private AddEditInfo w2 = new AddEditInfo("Sửa lịch chiếu phim");
     private String cond1="";
     
@@ -192,9 +193,17 @@ public class AddMovieToScheduleController implements Initializable{
 		if(w2.boxReturn==ButtonType.OK) {
 			try {
 				int giaVe=Integer.parseInt(w2.Get("Giá vé").getText());
-				int soGhe=Integer.parseInt(w2.Get("Số ghế").getText());
+				int soGhe=Integer.parseInt(w2.Get("Số vé").getText());
 				int thoiLuong=Integer.parseInt(w2.Get("Thời lượng (phút)").getText());
 				LocalTime time=w2.getTimePicker("Giờ bắt đầu").getValue();
+				List<PhongChieuPhim> dsPhong=new Connector().select(PhongChieuPhim.class, "select * from PHONGCHIEUPHIM where MaPhong='"+ScheduleController.phong.getMaPhong()+"'");
+				if(dsPhong.size()>0) {
+					int maxSoGhe=dsPhong.get(dsPhong.size()-1).getSoGhe();
+					if(soGhe>maxSoGhe) {
+						AlertBox.show(AlertType.ERROR, "Số vé nhiều hơn số ghế hiện có của phòng!");
+						return;
+					}
+				}
 				card.setGiaVe(giaVe);
 				card.setSoGhe(soGhe);
 				card.setThoiLuong(thoiLuong);
@@ -217,6 +226,7 @@ public class AddMovieToScheduleController implements Initializable{
 		// TODO Auto-generated method stub
 		ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
 		Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
+		dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM"));
 		List<Ghe> dsGhe=new Connector().select(Ghe.class, "select * from Ghe where MaPhong='"+ScheduleController.phong.getMaPhong()+"'");
 		int index=0;
 		if(dsLichChieu.size()>0) {

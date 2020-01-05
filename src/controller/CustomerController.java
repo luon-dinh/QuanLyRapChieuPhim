@@ -21,8 +21,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import plugin.AlertBox;
 import plugin.AutoCompleteComboBoxListener;
 import plugin.MyWindows;
@@ -42,22 +45,49 @@ public class CustomerController implements Initializable {
 	@FXML TableColumn<KhachHang, String> column_hoten;
 	@FXML TableColumn<KhachHang, String> column_email;
 	@FXML TableColumn<KhachHang, String> column_sodienthoai;
-	@FXML Button btn_xoa, btn_refresh;
+	@FXML private Button btn_timkiem, btn_xoa, btn_refresh;
+	@FXML private TextField txt_timkiem;
 	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		initControls();
+		initialize();
+		addEvents();
+	}
+
+	private void initControls() {
+		// TODO Auto-generated method stub
 		String[] tmp = { "Họ tên", "Email", "Số điện thoại" };
 		add.AddComboBox("Mã tài khoản");
 		edit.AddComboBox("Mã tài khoản");
 		add.AddAll(tmp);
 		edit.AddAll(tmp);
-		addEvents();
-		initialize();
+		txt_timkiem.setPromptText("Nhập tên bạn muốn tìm");
 	}
 
 	private void addEvents() {
 	// TODO Auto-generated method stub
+		txt_timkiem.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getCode()==KeyCode.ENTER) {
+					xuLiTimKiemTheoTen();
+				}
+			}
+		});
+		
+		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				xuLiTimKiemTheoTen();
+			}
+		});
+		
 		btn_xoa.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -78,9 +108,25 @@ public class CustomerController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				loadTableKhachHang();
+				loadTableKhachHang(null);
 			}
 		});
+	}
+
+	protected void xuLiTimKiemTheoTen() {
+		// TODO Auto-generated method stub
+		List<KhachHang> temp=khs;
+		String cond=txt_timkiem.getText().toLowerCase();
+		if(cond.equals("")) {
+			loadTableKhachHang(null);	
+		}
+		for(KhachHang kh:temp) {
+			String hoTen=kh.getHoTen();
+			if(hoTen==null||(!hoTen.toLowerCase().contains(cond))) {
+				temp.remove(kh);
+			}
+		}
+		loadTableKhachHang(temp);
 	}
 
 	private void inItTableKhachHang() {
@@ -96,7 +142,7 @@ public class CustomerController implements Initializable {
 	
 	public void initialize() {
 		inItTableKhachHang();
-		loadTableKhachHang();
+		loadTableKhachHang(null);
 		loadDanhSachTaiKhoan();
 		inItComboBoxMaTaiKhoan();
 	}
@@ -119,11 +165,19 @@ public class CustomerController implements Initializable {
 		dsTaiKhoan.addAll(new Connector().select(TaiKhoan.class,"select * from TAIKHOAN"));
 	}
 
-	private void loadTableKhachHang() {
+	private void loadTableKhachHang(List<KhachHang> _khs) {
+		
 		Connector<KhachHang> connection=new Connector<KhachHang>();
 		khs=connection.select(KhachHang.class, "select * from KHACHHANG");
+		List<KhachHang> temp;
+		if(_khs==null) {
+			temp=khs;
+		}
+		else {
+			temp=_khs;
+		}
 		ObservableList<KhachHang> dsKhachHang=FXCollections.observableArrayList();
-		dsKhachHang.addAll(khs);
+		dsKhachHang.addAll(temp);
 		table_khachhang.setItems(dsKhachHang);
 	}
 	

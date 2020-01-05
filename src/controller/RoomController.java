@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
@@ -24,6 +25,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -45,6 +47,7 @@ public class RoomController implements Initializable {
 	private FlowPane paneRoom;
 	@FXML
 	private TextField searchTextField;
+	@FXML private Button btn_timkiem, btn_refresh;
 
 	private ArrayList<PhongChieuPhim> dsPhong = null;
 	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
@@ -57,12 +60,35 @@ public class RoomController implements Initializable {
 
 	private void addEvents() {
 		// TODO Auto-generated method stub
-		searchTextField.textProperty().addListener(new ChangeListener<String>() {
+		searchTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void handle(KeyEvent event) {
 				// TODO Auto-generated method stub
+				if(event.getCode()==KeyCode.ENTER) {
+					String newValue=searchTextField.getText();
+					xuLiTimKiem(newValue);
+				}
+			}
+		});
+		
+		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				String newValue=searchTextField.getText();
 				xuLiTimKiem(newValue);
+			}
+		});
+		
+		btn_refresh.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				initial(null);
+				searchTextField.setText("");
 			}
 		});
 	}
