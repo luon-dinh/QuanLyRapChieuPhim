@@ -277,10 +277,14 @@ public class AccountController implements Initializable {
 							+ "',DiaChi='" + address + "', Email='" + email + "', SoDienThoai='" + phone
 							+ "' where mataikhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'");
 					new Connector<TaiKhoan>()
-							.update("update TAIKHOAN set TenHienThi ='" + nickname + "', " + mTaiKhoan.getMaTaiKhoan());
+							.update("update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan=' " + mTaiKhoan.getMaTaiKhoan()+"'");
 				}
+				
+				mTaiKhoan = new Connector<TaiKhoan>()
+						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '"+mTaiKhoan.getMaTaiKhoan()+"'").get(0);
+				
 				refresh();
-//				initial(null);
+
 			} catch (Exception e) {
 				// TODO: handle exception
 				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
