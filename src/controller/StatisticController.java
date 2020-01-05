@@ -9,14 +9,16 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import Connector.Connector;
+import Model.HoaDon;
 import Model.PhongChieuPhim;
 import Model.TaiKhoanNganHang;
 import Model.VeXemPhim;
@@ -37,6 +39,7 @@ import javafx.scene.control.MenuItem;
 
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class StatisticController implements Initializable {
 	@FXML
@@ -140,9 +143,9 @@ public class StatisticController implements Initializable {
 		// menu
 		monthsMenu.getItems().clear();
 		setUpMonthMenuFromYear(CUR_YEAR);
-		
-		//chart
-		setUpSumChart(sum_series, choosenMonth, choosenYear);
+
+		// chart
+		setUpSumChart(choosenMonth, choosenYear);
 
 		// type
 		revenueTypeMenu.getItems().get(0).setOnAction(new EventHandler<ActionEvent>() {
@@ -152,7 +155,7 @@ public class StatisticController implements Initializable {
 				choosenType = 0;
 				Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
-				setUpSumChart(sum_series, choosenMonth, choosenYear);
+				setUpSumChart(choosenMonth, choosenYear);
 
 			}
 		});
@@ -164,7 +167,7 @@ public class StatisticController implements Initializable {
 				choosenType = 1;
 				Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
-				setUpSumChart(sum_series, choosenMonth, choosenYear);
+				setUpMovieChart(choosenMonth, choosenYear);
 			}
 		});
 
@@ -175,7 +178,7 @@ public class StatisticController implements Initializable {
 				choosenType = 2;
 				Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
 				lineChart1.setTitle(Title);
-				setUpSumChart(sum_series, choosenMonth, choosenYear);
+				setUpServiceChart(choosenMonth, choosenYear);
 			}
 		});
 
@@ -187,22 +190,22 @@ public class StatisticController implements Initializable {
 				if (choosenType == 0) {
 					Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpSumChart(choosenMonth, choosenYear);
 				}
 				if (choosenType == 1) {
 					Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpMovieChart(choosenMonth, choosenYear);
 				}
-				if (choosenType == 1) {
+				if (choosenType == 2) {
 					Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpServiceChart(choosenMonth, choosenYear);
 				}
 
 			}
 		};
-		
+
 		// year
 		EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
@@ -211,45 +214,41 @@ public class StatisticController implements Initializable {
 				if (choosenType == 0) {
 					Title = "Tổng doanh thu tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpSumChart(choosenMonth, choosenYear);
 				}
 				if (choosenType == 1) {
 					Title = "Doanh thu phim tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpMovieChart(choosenMonth, choosenYear);
 				}
-				if (choosenType == 1) {
+				if (choosenType == 2) {
 					Title = "Doanh thu dịch vụ tháng " + choosenMonth + "/" + choosenYear;
 					lineChart1.setTitle(Title);
-					setUpSumChart(sum_series, choosenMonth, choosenYear);
+					setUpServiceChart(choosenMonth, choosenYear);
 				}
 				setUpMonthMenuFromYear(choosenYear);
 				for (int i = 0; i <= 11; i++)
 					monthsMenu.getItems().get(i).setOnAction(event2);
 			}
 		};
-		
+
 		for (int i = 0; i < CUR_YEAR - START_YEAR + 1; i++)
 			yearsMenu.getItems().get(i).setOnAction(event1);
-
-	
-
-		
 
 		// Set up strings
 		xAxis1.setLabel("Tháng");
 		yAxis1.setLabel("Doanh thu");
 
-		sum_series.setName("Tổng doanh thu");
-
 	}
 
 	@SuppressWarnings("deprecation")
-	private void setUpSumChart(Series<String, Number> sum_series, int choosenMonth2, int choosenYear2) {
+	private void setUpSumChart(int choosenMonth2, int choosenYear2) {
 		// TODO Auto-generated method stub
 		// load from database
 		lineChart1.getData().clear();
 		sum_series = new Series<String, Number>();
+		sum_series.setName("Tổng doanh thu");
+
 		if (choosenYear2 % 4 == 0) {
 			if (choosenYear2 % 100 == 0) {
 				if (choosenYear2 % 400 == 0) {
@@ -263,22 +262,50 @@ public class StatisticController implements Initializable {
 		} else {
 			dayOfMonthsList.set(1, 28);
 		}
-		ArrayList<Date> listDate = new ArrayList<Date>();
-		ArrayList<Integer> listIncome = new ArrayList<Integer>();
-		ResultSet result = null;
-		Connector<VeXemPhim> connector = new Connector<VeXemPhim>();
+		Date startDate = null;
+		Date finishDate = null;
+
 		try {
-			Connection connection = connector.connect();
+			startDate = new SimpleDateFormat("yyyy-mm-dd").parse(choosenYear2 + "-" + choosenMonth2 + "-1");
+			finishDate = new SimpleDateFormat("yyyy-mm-dd")
+					.parse(choosenYear2 + "-" + (choosenMonth2) + "-" + dayOfMonthsList.get(choosenMonth2 - 1));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		ArrayList<Date> listDate_movie = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_movie = new ArrayList<Integer>();
+		ResultSet result_movie = null;
+		ArrayList<Date> listDate_service = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_service = new ArrayList<Integer>();
+		ResultSet result_service = null;
+		ArrayList<Date> listDate_sum = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_sum = new ArrayList<Integer>();
+		ResultSet result_sum = null;
+
+		listDate_sum.addAll(getDatesBetweenUsingJava7(startDate, finishDate));
+		for (int i = 0; i <= dayOfMonthsList.get(choosenMonth2 - 1) - 1; i++) {
+			listIncome_sum.add(i, 0);
+		}
+
+		Connector<VeXemPhim> connector_movie = new Connector<VeXemPhim>();
+		Connector<HoaDon> connector_service = new Connector<HoaDon>();
+
+		try {
+			Connection connection = connector_movie.connect();
 			Statement statement = connection.createStatement();
-			result = statement.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
-			while (result.next()) {
+			result_movie = statement
+					.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
+
+			while (result_movie.next()) {
 				try {
-					listDate.add(new SimpleDateFormat("dd-MM-yyyy").parse(result.getString("NgayDat")));
+					listDate_movie.add(new SimpleDateFormat("yyyy-mm-dd").parse(result_movie.getString("NgayDat")));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				listIncome.add(result.getInt("Sum"));
+				listIncome_movie.add(result_movie.getInt("Sum"));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -286,24 +313,56 @@ public class StatisticController implements Initializable {
 			e.printStackTrace();
 		}
 
-		int count = 0;
-		for (int j = 0; j <= listDate.size() - 1; j++) {
-			if ((listDate.get(j).getMonth() == choosenMonth2 - 1)
-					&& (listDate.get(j).getYear() == choosenYear2 - 1900)) {
-				sum_series.getData().add(new XYChart.Data(listDate.get(j).getDate() + "", listIncome.get(j)));
-				count++;
+		try {
+			Connection connection = connector_service.connect();
+			Statement statement = connection.createStatement();
+			result_service = statement
+					.executeQuery("select Sum(TongTien) as Sum, NgayDat from HoaDon group by NgayDat ");
+
+			while (result_service.next()) {
+				try {
+					listDate_service.add(new SimpleDateFormat("yyyy-mm-dd").parse(result_service.getString("NgayDat")));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				listIncome_service.add(result_service.getInt("Sum"));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < listDate_movie.size(); i++) {
+			for (int j = 0; j < listDate_sum.size(); j++)
+				if (listDate_movie.get(i).equals(listDate_sum.get(j)))
+					listIncome_sum.set(j, listIncome_sum.get(j) + listIncome_movie.get(i));
+		}
+
+		for (int i = 0; i < listDate_service.size(); i++) {
+			for (int j = 0; j < listDate_sum.size(); j++)
+				if (listDate_service.get(i).equals(listDate_sum.get(j)))
+					listIncome_sum.set(j, listIncome_sum.get(j) + listIncome_service.get(i));
+		}
+
+		for (int j = 0; j <= listDate_sum.size() - 1; j++) {
+			if ((listDate_sum.get(j).getMonth() == choosenMonth2 - 1)
+					&& (listDate_sum.get(j).getYear() == choosenYear2 - 1900)) {
+				sum_series.getData().add(new XYChart.Data(listDate_sum.get(j).getDate() + "", listIncome_sum.get(j)));
 			}
 		}
 
-		for (int i = count; i <= dayOfMonthsList.get(choosenMonth2 - 1); i++) {
-			sum_series.getData().add(new XYChart.Data(i + "", 0));
-		}
-		
 		lineChart1.getData().add((Series<String, Number>) sum_series);
 	}
-	private void setUpMovieChart(Series<String, Number> movie_series, int choosenMonth2, int choosenYear2) {
+
+	private void setUpMovieChart(int choosenMonth2, int choosenYear2) {
 		// TODO Auto-generated method stub
 		// load from database
+		lineChart1.getData().clear();
+		sum_series = new Series<String, Number>();
+		sum_series.setName("Doanh thu phim");
+
 		if (choosenYear2 % 4 == 0) {
 			if (choosenYear2 % 100 == 0) {
 				if (choosenYear2 % 400 == 0) {
@@ -317,22 +376,44 @@ public class StatisticController implements Initializable {
 		} else {
 			dayOfMonthsList.set(1, 28);
 		}
-		ArrayList<Date> listDate = new ArrayList<Date>();
-		ArrayList<Integer> listIncome = new ArrayList<Integer>();
-		ResultSet result = null;
-		Connector<VeXemPhim> connector = new Connector<VeXemPhim>();
+		Date startDate = null;
+		Date finishDate = null;
+
 		try {
-			Connection connection = connector.connect();
+			startDate = new SimpleDateFormat("yyyy-mm-dd").parse(choosenYear2 + "-" + choosenMonth2 + "-1");
+			finishDate = new SimpleDateFormat("yyyy-mm-dd")
+					.parse(choosenYear2 + "-" + (choosenMonth2) + "-" + dayOfMonthsList.get(choosenMonth2 - 1));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		ArrayList<Date> listDate_movie = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_movie = new ArrayList<Integer>();
+		ResultSet result_movie = null;
+		ArrayList<Date> listDate_sum = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_sum = new ArrayList<Integer>();
+
+		listDate_sum.addAll(getDatesBetweenUsingJava7(startDate, finishDate));
+		for (int i = 0; i <= dayOfMonthsList.get(choosenMonth2 - 1) - 1; i++) {
+			listIncome_sum.add(i, 0);
+		}
+
+		Connector<VeXemPhim> connector_movie = new Connector<VeXemPhim>();
+		try {
+			Connection connection = connector_movie.connect();
 			Statement statement = connection.createStatement();
-			result = statement.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
-			while (result.next()) {
+			result_movie = statement
+					.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
+
+			while (result_movie.next()) {
 				try {
-					listDate.add(new SimpleDateFormat("dd-MM-yyyy").parse(result.getString("NgayDat")));
+					listDate_movie.add(new SimpleDateFormat("yyyy-mm-dd").parse(result_movie.getString("NgayDat")));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				listIncome.add(result.getInt("Sum"));
+				listIncome_movie.add(result_movie.getInt("Sum"));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -340,23 +421,29 @@ public class StatisticController implements Initializable {
 			e.printStackTrace();
 		}
 
-		int count = 0;
-		for (int j = 0; j <= listDate.size() - 1; j++) {
-			if ((listDate.get(j).getMonth() == choosenMonth2 - 1)
-					&& (listDate.get(j).getYear() == choosenYear2 - 1900)) {
-				sum_series.getData().add(new XYChart.Data(listDate.get(j).getDate() + "", listIncome.get(j)));
-				count++;
+		for (int i = 0; i < listDate_movie.size(); i++) {
+			for (int j = 0; j < listDate_sum.size(); j++)
+				if (listDate_movie.get(i).equals(listDate_sum.get(j)))
+					listIncome_sum.set(j, listIncome_sum.get(j) + listIncome_movie.get(i));
+		}
+
+		for (int j = 0; j <= listDate_sum.size() - 1; j++) {
+			if ((listDate_sum.get(j).getMonth() == choosenMonth2 - 1)
+					&& (listDate_sum.get(j).getYear() == choosenYear2 - 1900)) {
+				sum_series.getData().add(new XYChart.Data(listDate_sum.get(j).getDate() + "", listIncome_sum.get(j)));
 			}
 		}
 
-		for (int i = count; i <= dayOfMonthsList.get(choosenMonth2 - 1); i++) {
-			sum_series.getData().add(new XYChart.Data(i + "", 0));
-		}
-
+		lineChart1.getData().add((Series<String, Number>) sum_series);
 	}
-	private void setUpServiceChart(Series<String, Number> service_series, int choosenMonth2, int choosenYear2) {
+
+	private void setUpServiceChart(int choosenMonth2, int choosenYear2) {
 		// TODO Auto-generated method stub
 		// load from database
+		lineChart1.getData().clear();
+		sum_series = new Series<String, Number>();
+		sum_series.setName("Doanh thu dịch vụ");
+
 		if (choosenYear2 % 4 == 0) {
 			if (choosenYear2 % 100 == 0) {
 				if (choosenYear2 % 400 == 0) {
@@ -370,22 +457,44 @@ public class StatisticController implements Initializable {
 		} else {
 			dayOfMonthsList.set(1, 28);
 		}
-		ArrayList<Date> listDate = new ArrayList<Date>();
-		ArrayList<Integer> listIncome = new ArrayList<Integer>();
-		ResultSet result = null;
-		Connector<VeXemPhim> connector = new Connector<VeXemPhim>();
+		Date startDate = null;
+		Date finishDate = null;
+
 		try {
-			Connection connection = connector.connect();
+			startDate = new SimpleDateFormat("yyyy-mm-dd").parse(choosenYear2 + "-" + choosenMonth2 + "-1");
+			finishDate = new SimpleDateFormat("yyyy-mm-dd")
+					.parse(choosenYear2 + "-" + (choosenMonth2) + "-" + dayOfMonthsList.get(choosenMonth2 - 1));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		ArrayList<Date> listDate_service = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_service = new ArrayList<Integer>();
+		ResultSet result_service = null;
+		ArrayList<Date> listDate_sum = new ArrayList<Date>();
+		ArrayList<Integer> listIncome_sum = new ArrayList<Integer>();
+
+		listDate_sum.addAll(getDatesBetweenUsingJava7(startDate, finishDate));
+		for (int i = 0; i <= dayOfMonthsList.get(choosenMonth2 - 1) - 1; i++) {
+			listIncome_sum.add(i, 0);
+		}
+
+		Connector<HoaDon> connector_service = new Connector<HoaDon>();
+
+		try {
+			Connection connection = connector_service.connect();
 			Statement statement = connection.createStatement();
-			result = statement.executeQuery("select Sum(TongTien) as Sum, NgayDat from VeXemPhim group by NgayDat ");
-			while (result.next()) {
+			result_service = statement
+					.executeQuery("select Sum(TongTien) as Sum, NgayDat from HoaDon group by NgayDat ");
+
+			while (result_service.next()) {
 				try {
-					listDate.add(new SimpleDateFormat("dd-MM-yyyy").parse(result.getString("NgayDat")));
+					listDate_service.add(new SimpleDateFormat("yyyy-mm-dd").parse(result_service.getString("NgayDat")));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				listIncome.add(result.getInt("Sum"));
+				listIncome_service.add(result_service.getInt("Sum"));
 			}
 			connection.close();
 		} catch (SQLException e) {
@@ -393,19 +502,20 @@ public class StatisticController implements Initializable {
 			e.printStackTrace();
 		}
 
-		int count = 0;
-		for (int j = 0; j <= listDate.size() - 1; j++) {
-			if ((listDate.get(j).getMonth() == choosenMonth2 - 1)
-					&& (listDate.get(j).getYear() == choosenYear2 - 1900)) {
-				sum_series.getData().add(new XYChart.Data(listDate.get(j).getDate() + "", listIncome.get(j)));
-				count++;
+		for (int i = 0; i < listDate_service.size(); i++) {
+			for (int j = 0; j < listDate_sum.size(); j++)
+				if (listDate_service.get(i).equals(listDate_sum.get(j)))
+					listIncome_sum.set(j, listIncome_sum.get(j) + listIncome_service.get(i));
+		}
+
+		for (int j = 0; j <= listDate_sum.size() - 1; j++) {
+			if ((listDate_sum.get(j).getMonth() == choosenMonth2 - 1)
+					&& (listDate_sum.get(j).getYear() == choosenYear2 - 1900)) {
+				sum_series.getData().add(new XYChart.Data(listDate_sum.get(j).getDate() + "", listIncome_sum.get(j)));
 			}
 		}
 
-		for (int i = count; i <= dayOfMonthsList.get(choosenMonth2 - 1); i++) {
-			sum_series.getData().add(new XYChart.Data(i + "", 0));
-		}
-
+		lineChart1.getData().add((Series<String, Number>) sum_series);
 	}
 
 	List<LocalDate> getDatesBetweenUsingJava8(LocalDate startDate, LocalDate endDate) {
@@ -413,6 +523,22 @@ public class StatisticController implements Initializable {
 		long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		return IntStream.iterate(0, i -> i + 1).limit(numOfDaysBetween).mapToObj(i -> startDate.plusDays(i))
 				.collect(Collectors.toList());
+	}
+
+	List<Date> getDatesBetweenUsingJava7(Date startDate, Date endDate) {
+		List<Date> datesInRange = new ArrayList<>();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(startDate);
+
+		Calendar endCalendar = new GregorianCalendar();
+		endCalendar.setTime(getNextDate(endDate));
+
+		while (calendar.before(endCalendar)) {
+			Date result = calendar.getTime();
+			datesInRange.add(result);
+			calendar.add(Calendar.DATE, 1);
+		}
+		return datesInRange;
 	}
 
 	void setUpMonthMenuFromYear(int year) {
@@ -432,4 +558,10 @@ public class StatisticController implements Initializable {
 		}
 	}
 
+	public Date getNextDate(Date curDate) {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(curDate);
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		return calendar.getTime();
+	}
 }
