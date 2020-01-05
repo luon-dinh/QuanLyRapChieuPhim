@@ -134,7 +134,7 @@ public class MoviesController implements Initializable {
 				if(result.get()==ButtonType.YES) {
 					new Connector<Phim>().delete("delete from PHIM where MaPhim='"+p.getMaPhim()+"'");
 					new Connector<Phim_LoaiPhim>().delete("delete from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"'");
-					new Connector().delete("delete from KHACHHANG_VOTE from MaPhim='"+p.getMaPhim()+"'");
+					new Connector().delete("delete from KHACHHANG_VOTE where MaPhim='"+p.getMaPhim()+"'");
 					paneMovie.getChildren().remove(card);
 				}
 			});

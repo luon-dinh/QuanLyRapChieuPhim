@@ -43,9 +43,9 @@ public class BookTicketController implements Initializable {
 		lb_tenphong.setText(card.room.getText());
 		List<Ghe_LichChieu> dsGhe_LichChieu=new Connector().select(Ghe_LichChieu.class, "select * from Ghe_LichChieu where MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 		int chairs=Integer.parseInt(card.numberSeats.getText());
-		if(chairs!=dsGhe_LichChieu.size()) {
-			return;
-		}
+//		if(chairs!=dsGhe_LichChieu.size()) {
+//			return;
+//		}
 		for (int i = 0; i < chairs; i++) {
 			int r = i / chairsPreRow;
 			int c = i % chairsPreRow;
@@ -53,19 +53,21 @@ public class BookTicketController implements Initializable {
 			SelectableButton button = new SelectableButton(maGhe);
 			button.textProperty().set("" + (char) (65 + r) + (c + 1));
 			pane.getChildren().add(button);
-			if(new Connector().select(Ghe_LichChieu.class, "select * from Ghe_LichChieu where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"' and TrangThai='1'").size()==0) {
+			if(new Connector().select(Ghe_LichChieu.class, "select * from Ghe_LichChieu where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"' and TrangThai='1'").size()>0) {
 				button.isSelected.addListener((observable, oldValue, newValue)->{
+					if(newValue==null||newValue==oldValue)
+						return;
 					if (newValue) {
 						counter.set(counter.get() + 1);
 						lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
 						indexs.add(maGhe);
-						new Connector().update( "update Ghe_LichChieu set TrangThai='1' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
+						new Connector().update( "update Ghe_LichChieu set TrangThai='0' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 					}
 					else {
 						counter.set(counter.get() - 1);	
 						lb_sotien.setText(counter.get()*Integer.parseInt(card.cost.getText())+"");
 						indexs.remove(maGhe);
-						new Connector().update( "update Ghe_LichChieu set TrangThai='0' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
+						new Connector().update( "update Ghe_LichChieu set TrangThai='1' where MaGhe='"+maGhe+"' and MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 					}
 				});		
 			}
