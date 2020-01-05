@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.image.BufferedImage;
+import java.beans.EventHandler;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +18,8 @@ import javax.imageio.ImageIO;
 import Connector.Connector;
 import Model.KhachHang;
 import Model.NhanVien;
-import Model.Phim;
-import Model.PhongChieuPhim;
 import Model.TaiKhoan;
+import javafx.beans.value.ChangeListener;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,14 +36,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import plugin.AlertBox;
-import plugin.MyWindows;
 import plugin.SceneController;
 import usercontrol.control.AddEditAccount;
 import usercontrol.control.AddEditInfo;
-import usercontrol.control.AddEditRoomInfo;
 
 public class AccountController implements Initializable {
 
@@ -98,7 +96,8 @@ public class AccountController implements Initializable {
 	TaiKhoan mTaiKhoan = null;
 
 	private AddEditAccount EditInfo;
-	private AddEditInfo EditNickname = new AddEditInfo("Thay đổi tên đăng nhập");
+	private AddEditInfo EditNickname = new AddEditInfo("Thay đổi Nickname");
+	private AddEditInfo EditPassword;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -161,9 +160,9 @@ public class AccountController implements Initializable {
 
 		Connector<KhachHang> connector = new Connector<KhachHang>();
 
-		List<KhachHang> ds=connector.select(KhachHang.class,
+		List<KhachHang> ds = connector.select(KhachHang.class,
 				"select * from KhachHang where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'");
-		if(ds.size()==0) {
+		if (ds.size() == 0) {
 			return;
 		}
 		mKhachHang = ds.get(0);
@@ -189,7 +188,7 @@ public class AccountController implements Initializable {
 
 	private void setUpNhanVien() {
 		// TODO Auto-generated method stub
-		
+
 		Connector<NhanVien> connector = new Connector<NhanVien>();
 		mNhanVien = connector
 				.select(NhanVien.class, "select * from NHANVIEN where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'")
@@ -228,7 +227,7 @@ public class AccountController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			connector.connect().close();
 		} catch (SQLException e1) {
@@ -245,7 +244,7 @@ public class AccountController implements Initializable {
 
 	@FXML
 	void UpdateInfo(ActionEvent event) {
-		//EditInfo = 
+		// EditInfo =
 		if (checkNV(mTaiKhoan.getMaTaiKhoan())) {
 			editNhanVien();
 		} else {
@@ -262,7 +261,7 @@ public class AccountController implements Initializable {
 		EditInfo.addImageView("Cập nhật avatar:", avatar.getImage());
 
 		Connector<NhanVien> connector = new Connector<NhanVien>();
-		
+
 		mNhanVien = connector
 				.select(NhanVien.class, "select * from NHANVIEN where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 				.get(0);
@@ -291,26 +290,28 @@ public class AccountController implements Initializable {
 				String phone = EditInfo.Get("Số điện thoại").getText();
 				String address = EditInfo.Get("Địa chỉ").getText();
 				String matk = mTaiKhoan.getMaTaiKhoan();
-				
+
 				if (EditInfo.f != null) {
 					new Connector<NhanVien>().update("update NHANVIEN set HoTen ='" + hoten + "', NgaySinh='" + dob
 							+ "',DiaChi='" + address + "', Email='" + email + "', SoDienThoai='" + phone
-							+ "' where mataikhoan = '" +matk + "'");
+							+ "' where mataikhoan = '" + matk + "'");
 
 					new Connector<TaiKhoan>().update("update TAIKHOAN set TenHienThi ='" + nickname + "', "
-							+ "', HinhAnh=? where MaTaiKhoan='" + mTaiKhoan.getMaTaiKhoan() + "'",
-							Connector.convertFileToByte(EditInfo.f));
+							+ "', HinhAnh=? where MaTaiKhoan='" + matk + "'", Connector.convertFileToByte(EditInfo.f));
 				} else {
 					new Connector<NhanVien>().update("update NHANVIEN set HoTen ='" + hoten + "', NgaySinh='" + dob
 							+ "',DiaChi='" + address + "', Email='" + email + "', SoDienThoai='" + phone
 							+ "' where mataikhoan = '" + matk + "'");
-					new Connector<TaiKhoan>()
-							.update("update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan=' " + mTaiKhoan.getMaTaiKhoan()+"'");
+					new Connector<TaiKhoan>().update(
+							"update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan= '" + matk + "'");
+					System.out.println(
+							"update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan= '" + matk + "'");
 				}
-				
+
 				mTaiKhoan = new Connector<TaiKhoan>()
-						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '"+mTaiKhoan.getMaTaiKhoan()+"'").get(0);
-				
+						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
+						.get(0);
+
 				refresh();
 
 			} catch (Exception e) {
@@ -318,12 +319,66 @@ public class AccountController implements Initializable {
 				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
 			}
 		}
-		
+
 	}
 
 	private void editCustomer() {
 		// TODO Auto-generated method stub
+		EditInfo = new AddEditAccount("Cập nhật thông tin tài khoản");
+		String[] tmp = { "Họ và tên", "Tên hiển thị", "Email", "Số điện thoại" };
+		EditInfo.AddAll(tmp);
+		EditInfo.addImageView("Cập nhật avatar:", avatar.getImage());
 
+		Connector<KhachHang> connector = new Connector<KhachHang>();
+
+		mKhachHang = connector.select(KhachHang.class,
+				"select * from KHACHHANG where MATAIKHOAN = '" + mTaiKhoan.getMaTaiKhoan() + "'").get(0);
+		try {
+			connector.connect().close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		EditInfo.Get("Họ và tên").setText(mKhachHang.getHoTen());
+		EditInfo.Get("Tên hiển thị").setText(mTaiKhoan.getTenHienThi());
+		EditInfo.Get("Email").setText(mKhachHang.getEmail());
+		EditInfo.Get("Số điện thoại").setText(mKhachHang.getSoDienThoai());
+		EditInfo.show();
+
+		if (EditInfo.boxReturn == ButtonType.CANCEL)
+			return;
+		if (EditInfo.boxReturn == ButtonType.OK) {
+			try {
+				String hoten = EditInfo.Get("Họ và tên").getText();
+				String nickname = EditInfo.Get("Tên hiển thị").getText();
+				String email = EditInfo.Get("Email").getText();
+				String phone = EditInfo.Get("Số điện thoại").getText();
+				String matk = mTaiKhoan.getMaTaiKhoan();
+
+				if (EditInfo.f != null) {
+					new Connector<KhachHang>().update("update KhachHang set HoTen ='" + hoten + "', Email='" + email
+							+ "', SoDienThoai='" + phone + "' where mataikhoan = '" + matk + "'");
+
+					new Connector<TaiKhoan>().update("update TAIKHOAN set TenHienThi ='" + nickname + "', "
+							+ "', HinhAnh=? where MaTaiKhoan='" + matk + "'", Connector.convertFileToByte(EditInfo.f));
+				} else {
+					new Connector<KhachHang>().update("update KhachHang set HoTen ='" + hoten + "', Email='" + email
+							+ "', SoDienThoai='" + phone + "' where mataikhoan = '" + matk + "'");
+					new Connector<TaiKhoan>().update(
+							"update TAIKHOAN set TenHienThi ='" + nickname + "' where MaTaiKhoan='" + matk + "'");
+				}
+
+				mTaiKhoan = new Connector<TaiKhoan>()
+						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
+						.get(0);
+
+				refresh();
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+			}
+		}
 	}
 
 	@FXML
@@ -334,8 +389,42 @@ public class AccountController implements Initializable {
 
 	@FXML
 	void ChangePass(ActionEvent event) {
-		MyWindows w = new MyWindows("../view/ChangePassword.fxml");
-		w.Show();
+
+		EditPassword = new AddEditInfo("Thay đổi mật khẩu");
+		EditPassword.AddPasswordField("Mật khẩu cũ:");
+		EditPassword.AddPasswordField("Mật khẩu mới:");
+		EditPassword.AddPasswordField("Xác nhận mật khẩu:");
+
+		EditPassword.show();
+
+		if (EditPassword.boxReturn == ButtonType.CANCEL)
+			return;
+		if (EditPassword.boxReturn == ButtonType.OK) {
+			try {
+				String _old = EditPassword.getPasswordField("Mật khẩu cũ:").getText();
+				String _new = EditPassword.getPasswordField("Mật khẩu mới:").getText();
+				String _confirm = EditPassword.getPasswordField("Xác nhận mật khẩu:").getText();
+				String _cur = mTaiKhoan.getMatKhau();
+
+				if (_new.equals(_confirm) && _old.equals(_cur)) {
+					new Connector<TaiKhoan>().update("update TAIKHOAN set MatKhau ='" + _new + "' where MaTaiKhoan= '"
+							+ mTaiKhoan.getMaTaiKhoan() + "'");
+					mTaiKhoan = new Connector<TaiKhoan>()
+							.selectTaiKhoan(
+									"Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
+							.get(0);
+				} else {
+					if (!_new.equals(_confirm))
+						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin");
+					else if (!_old.equals(_cur))
+						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin");
+				}
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+			}
+		}
 
 	}
 
@@ -348,7 +437,40 @@ public class AccountController implements Initializable {
 	@FXML
 	void ChangeAvatar(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+		FileChooser.ExtensionFilter filter = new ExtensionFilter("Image Files", "*.png", "*.jpg");
+		fileChooser.getExtensionFilters().add(filter);
+		File file = fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+		if (file != null) {
+			try {
+				BufferedImage bimg = ImageIO.read(file);
+				Image img = img = SwingFXUtils.toFXImage(bimg, null);
+				Rectangle2D croppedPortion;
+				if (img.getWidth() / 130 > img.getHeight() / 130) {
+
+					croppedPortion = new Rectangle2D(img.getWidth() / 2.0 - img.getHeight() / 130 * 65, 0,
+							img.getHeight() / 130 * 130, img.getHeight());
+
+				} else {
+					croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 130 * 65,
+							img.getWidth(), img.getWidth() / 65.0 * 65.0);
+				}
+
+				// target width and height:
+				double scaledWidth = 130;
+				double scaledHeight = 130;
+				avatar.setImage(img);
+				avatar.setViewport(croppedPortion);
+				avatar.setFitWidth(scaledWidth);
+				avatar.setFitHeight(scaledHeight);
+				avatar.setSmooth(false);
+				avatar.setImage(img);
+
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
 	}
 
 	@FXML
