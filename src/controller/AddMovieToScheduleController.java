@@ -3,10 +3,12 @@ package controller;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.Ghe;
 import Model.LichChieuPhim;
 import Model.LoaiPhim;
 import Model.Phim;
@@ -197,13 +199,15 @@ public class AddMovieToScheduleController implements Initializable{
 				card.setSoGhe(soGhe);
 				card.setThoiLuong(thoiLuong);
 				card.setGioBatDau(time);
-				MyWindows.lastStage.close();
 				//xử lí thêm lịch chiếu phim
 				xuLiThemLichChieuPhim(card);
 			}
 			catch (Exception e) {
 				// TODO: handle exception
 				AlertBox.show(AlertType.ERROR, "Thông tin không đúng định dạng");
+			}
+			finally {
+				MyWindows.lastStage.close();
 			}
 		}
 	}
@@ -213,6 +217,7 @@ public class AddMovieToScheduleController implements Initializable{
 		// TODO Auto-generated method stub
 		ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
 		Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
+		List<Ghe> dsGhe=new Connector().select(Ghe.class, "select * from Ghe where MaPhong='"+ScheduleController.phong.getMaPhong()+"'");
 		int index=0;
 		if(dsLichChieu.size()>0) {
 			String maLichChieu=dsLichChieu.get(dsLichChieu.size()-1).getMaLichChieu();
@@ -220,6 +225,8 @@ public class AddMovieToScheduleController implements Initializable{
 		}
 		String maLichChieu="LC"+(index+1);
 		c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
-		
+		for(Ghe ghe:dsGhe) {
+			new Connector().insert("insert into GHE_LICHCHIEU values('"+ghe.getMaGhe()+"','"+maLichChieu+"','"+1+"')");
+		}
 	}
 }

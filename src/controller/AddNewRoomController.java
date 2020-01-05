@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import Connector.Connector;
+import Model.Ghe;
 import Model.LoaiPhim;
 import Model.Phim;
 import Model.PhongChieuPhim;
@@ -221,6 +222,14 @@ public class AddNewRoomController implements Initializable {
 
 	private void xuLiThemGhe(String maPhongChieuPhim, int soGhe) {
 		// TODO Auto-generated method stub
-		
+		Connector<Ghe> c=new Connector<Ghe>();
+		List<Ghe> dsGhe=c.select(Ghe.class, "select * from GHE");
+		int index=0;
+		if(dsGhe.size()>0) {
+			index=dsGhe.size();
+		}
+		for(int i=0;i<soGhe;i++) {
+			c.insert("insert into GHE values('"+(index+i)+"', '"+maPhongChieuPhim+"')");
+		}
 	}
 }

@@ -4,7 +4,7 @@ public class VeXemPhim {
 
 	
 	@DBTable(columnName = "MaVe")
-	private String maVe;
+	private int maVe;
 	
 	@DBTable(columnName = "MaKhachHang")
 	private String maKhachHang;
@@ -29,7 +29,7 @@ public class VeXemPhim {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VeXemPhim(String maVe, String maKhachHang, String maLichChieu, int tongSoGhe, float tongTien, String ngayDat,
+	public VeXemPhim(int maVe, String maKhachHang, String maLichChieu, int tongSoGhe, float tongTien, String ngayDat,
 			String trangThai) {
 		super();
 		this.maVe = maVe;
@@ -41,11 +41,11 @@ public class VeXemPhim {
 		this.trangThai = trangThai;
 	}
 
-	public String getMaVe() {
+	public int getMaVe() {
 		return maVe;
 	}
 
-	public void setMaVe(String maVe) {
+	public void setMaVe(int maVe) {
 		this.maVe = maVe;
 	}
 

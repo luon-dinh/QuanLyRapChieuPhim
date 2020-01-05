@@ -2,10 +2,12 @@ package controller;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.Ghe;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.PhongChieuPhim;
@@ -146,6 +148,7 @@ public class RoomController implements Initializable {
 							+ trangThai + "', SucChua='" + sucChua + "',  SoGhe='" + soGhe + "', MoTa='" + moTa
 							+ "', MoTa='" + moTa + "' where MaPhong='" + p.getMaPhong() + "'");
 				}
+				xuLiCapNhatGhe(p.getMaPhong(), Integer.parseInt(soGhe));
 				initial(null);
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -172,4 +175,19 @@ public class RoomController implements Initializable {
 		}
 		initial(ds);
 	}
+	
+	private void xuLiCapNhatGhe(String maPhongChieuPhim, int soGhe) {
+		// TODO Auto-generated method stub
+		Connector<Ghe> c=new Connector<Ghe>();
+		c.delete("delete from GHE where MaPhong='"+maPhongChieuPhim+"'");
+		List<Ghe> dsGhe=c.select(Ghe.class, "select * from GHE");
+		int index=0;
+		if(dsGhe.size()>0) {
+			index=dsGhe.size();
+		}
+		for(int i=0;i<soGhe;i++) {
+			c.insert("insert into GHE values('"+(index+i)+"', '"+maPhongChieuPhim+"')");
+		}
+	}
+	
 }

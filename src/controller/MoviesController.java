@@ -54,9 +54,6 @@ public class MoviesController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initial(null);
-		//menuContent.getChildren().remove(menuContent.getChildren());
-		//menuContent.Add("Năm", "2018");
-		//menuContent.Add("Năm", "2018");
 		paneMovie.prefWidthProperty().bind(root.widthProperty().subtract(20));
 		addEvents();
 	}
@@ -137,6 +134,7 @@ public class MoviesController implements Initializable {
 				if(result.get()==ButtonType.YES) {
 					new Connector<Phim>().delete("delete from PHIM where MaPhim='"+p.getMaPhim()+"'");
 					new Connector<Phim_LoaiPhim>().delete("delete from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"'");
+					new Connector().delete("delete from KHACHHANG_VOTE from MaPhim='"+p.getMaPhim()+"'");
 					paneMovie.getChildren().remove(card);
 				}
 			});

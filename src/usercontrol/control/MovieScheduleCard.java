@@ -24,7 +24,9 @@ public class MovieScheduleCard extends AnchorPane {
     @FXML public Label time;
     @FXML public ContextMenu contextMenu;
     
-    public Phim phim=null;
+    private LichChieuPhim lichChieu;
+    
+	public Phim phim=null;
     public SimpleObjectProperty<MovieScheduleCard> deleteObject = new SimpleObjectProperty<>(null);
 	
 	public MovieScheduleCard() {
@@ -59,6 +61,7 @@ public class MovieScheduleCard extends AnchorPane {
 		}
 	}
 	public MovieScheduleCard(LichChieuPhim lcp) {
+		this.lichChieu=lcp;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/MovieScheduleCard.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -78,4 +81,12 @@ public class MovieScheduleCard extends AnchorPane {
 			contextMenu.show(this, e.getScreenX(), e.getScreenY());
 		});
 	}
+	
+	 public LichChieuPhim getLichChieu() {
+			return lichChieu;
+		}
+
+		public void setLichChieu(LichChieuPhim lichChieu) {
+			this.lichChieu = lichChieu;
+		}
 }

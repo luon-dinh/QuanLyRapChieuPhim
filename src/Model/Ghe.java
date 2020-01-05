@@ -2,19 +2,16 @@ package Model;
 
 public class Ghe {
 	@DBTable(columnName = "MaGhe")
-	private String maGhe;
+	private int maGhe;
 	
 	@DBTable(columnName = "MaPhong")
 	private String maPhong;
 	
-	@DBTable(columnName = "TrangThai")
-	private String trangThai;
-
-	public String getMaGhe() {
+	public int getMaGhe() {
 		return maGhe;
 	}
 
-	public void setMaGhe(String maGhe) {
+	public void setMaGhe(int maGhe) {
 		this.maGhe = maGhe;
 	}
 
@@ -26,19 +23,10 @@ public class Ghe {
 		this.maPhong = maPhong;
 	}
 
-	public String getTrangThai() {
-		return trangThai;
-	}
-
-	public void setTrangThai(String trangThai) {
-		this.trangThai = trangThai;
-	}
-
-	public Ghe(String maGhe, String maPhong, String trangThai) {
+	public Ghe(int maGhe, String maPhong) {
 		super();
 		this.maGhe = maGhe;
 		this.maPhong = maPhong;
-		this.trangThai = trangThai;
 	}
 
 	public Ghe() {
