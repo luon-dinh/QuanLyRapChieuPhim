@@ -113,11 +113,11 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font></Hyperlink>
-                              <Hyperlink onAction="#ChangeNickname" text="Thay đổi tên hiển thị">
+                              <Hyperlink onAction="#ChangeAvatar" text="Đổi avatar">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Hyperlink>
-                              <Hyperlink onAction="#ChangeAvatar" text="Đổi avatar">
+                              <Hyperlink fx:id = "gone" onAction="#ChangeNickname" text="Thay đổi tên hiển thị">
                                  <font>
                                     <Font size="14.0" />
                                  </font></Hyperlink>

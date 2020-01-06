@@ -92,7 +92,8 @@ public class AccountController implements Initializable {
 	private Label startDay;
 	@FXML
 	private ImageView avatar;
-
+	@FXML
+	private Hyperlink gone;
 	NhanVien mNhanVien = null;
 	KhachHang mKhachHang = null;
 	TaiKhoan mTaiKhoan = null;
@@ -116,8 +117,10 @@ public class AccountController implements Initializable {
 
 	private void refresh() {
 		// TODO Auto-generated method stub
+		// EditNickname
 		changeAvatar.setVisible(false);
 		changeAvatar1.setVisible(false);
+		gone.setVisible(false);
 		setUpTaiKhoan();
 
 		if (checkNV(mTaiKhoan.getMaTaiKhoan())) {
@@ -434,7 +437,7 @@ public class AccountController implements Initializable {
 
 	@FXML
 	void ChangeNickname(ActionEvent event) {
-		EditNickname.show();
+		// EditNickname.show();
 	}
 
 	@FXML
@@ -490,7 +493,7 @@ public class AccountController implements Initializable {
 					}
 				});
 				changeAvatar1.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
-					
+
 					@Override
 					public void handle(ActionEvent arg0) {
 						// TODO Auto-generated method stub
