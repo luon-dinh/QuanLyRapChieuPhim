@@ -6,8 +6,8 @@ public class VeXemPhim {
 	@DBTable(columnName = "MaVe")
 	private int maVe;
 	
-	@DBTable(columnName = "MaKhachHang")
-	private String maKhachHang;
+	@DBTable(columnName = "MaTaiKhoan")
+	private String maTaiKhoan;
 	
 	@DBTable(columnName = "MaLichChieu")
 	private String maLichChieu;
@@ -16,7 +16,7 @@ public class VeXemPhim {
 	private int tongSoGhe;
 	
 	@DBTable(columnName = "TongTien")
-	private  float tongTien;
+	private  double tongTien;
 	
 	@DBTable(columnName = "NgayDat")
 	private String ngayDat;
@@ -29,11 +29,11 @@ public class VeXemPhim {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VeXemPhim(int maVe, String maKhachHang, String maLichChieu, int tongSoGhe, float tongTien, String ngayDat,
+	public VeXemPhim(int maVe, String maTaiKhoan, String maLichChieu, int tongSoGhe, double tongTien, String ngayDat,
 			String trangThai) {
 		super();
 		this.maVe = maVe;
-		this.maKhachHang = maKhachHang;
+		this.maTaiKhoan = maTaiKhoan;
 		this.maLichChieu = maLichChieu;
 		this.tongSoGhe = tongSoGhe;
 		this.tongTien = tongTien;
@@ -49,12 +49,12 @@ public class VeXemPhim {
 		this.maVe = maVe;
 	}
 
-	public String getMaKhachHang() {
-		return maKhachHang;
+	public String getMaTaiKhoan() {
+		return maTaiKhoan;
 	}
 
-	public void setMaKhachHang(String maKhachHang) {
-		this.maKhachHang = maKhachHang;
+	public void setMaTaiKhoan(String maTaiKhoan) {
+		this.maTaiKhoan = maTaiKhoan;
 	}
 
 	public String getMaLichChieu() {
@@ -73,11 +73,11 @@ public class VeXemPhim {
 		this.tongSoGhe = tongSoGhe;
 	}
 
-	public float getTongTien() {
+	public double getTongTien() {
 		return tongTien;
 	}
 
-	public void setTongTien(float tongTien) {
+	public void setTongTien(double tongTien) {
 		this.tongTien = tongTien;
 	}
 
