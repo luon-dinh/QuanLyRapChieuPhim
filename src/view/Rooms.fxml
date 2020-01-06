@@ -41,4 +41,16 @@
          </content>
       </ScrollPane>
    </center>
+     <bottom>
+       <AnchorPane>
+          <children>
+             <HBox alignment="CENTER" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <children>
+                   <Label text="Số lượng phòng:" BorderPane.alignment="CENTER" />
+                   <Label fx:id="lb_soluongphong" text="Label" />
+                </children>
+             </HBox>
+          </children>
+       </AnchorPane>
+    </bottom>
 </BorderPane>

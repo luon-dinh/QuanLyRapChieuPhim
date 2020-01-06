@@ -16,6 +16,7 @@ public class MainController implements Initializable {
 	public static List<String> menu=new ArrayList<String>();// = { "Home", "Schedule", "Movies",  "Rooms", "Customer", "Service", "Account", "Statistic", "Staff" };
 	public static Pane mainPage;
 	private HashMap<String, ImageButton> buttons = new HashMap<>();	
+	private static boolean updatOneTime=true;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
@@ -31,19 +32,22 @@ public class MainController implements Initializable {
 				SelectedButton.set(test);
 			});
 		}
-		
-		SelectedButton.addListener((property, oldValue, newValue) -> {
-			if (oldValue.equals(newValue))
-				return;
-			ImageButton button = buttons.get(oldValue);
-			if (button != null)
-				button.isSelected.set(false);
-			button = buttons.get(newValue);
-			if (button != null)
-				button.isSelected.set(true);
-			TryLoadNode(newValue);
-		});
-		
+	
+//		if(updatOneTime) {
+			SelectedButton = new SimpleStringProperty("");
+			SelectedButton.addListener((property, oldValue, newValue) -> {
+//				if (oldValue.equals(newValue))
+//					return;
+				ImageButton button = buttons.get(oldValue);
+				if (button != null)
+					button.isSelected.set(false);
+				button = buttons.get(newValue);
+				if (button != null)
+					button.isSelected.set(true);
+				TryLoadNode(newValue);
+			});
+			updatOneTime=false;
+//		}
 		SelectedButton.set("Home");
 		mainPage = MainPane;
 	}
@@ -51,7 +55,7 @@ public class MainController implements Initializable {
 	@FXML private VBox MainMenu;
 	@FXML private BorderPane MainPane;
 
-	public static SimpleStringProperty SelectedButton = new SimpleStringProperty("");
+	public static SimpleStringProperty SelectedButton;
 
 	private HashMap<String, Node> map = new HashMap<>();
 	private void LoadNode(String name) throws NullNodeException {

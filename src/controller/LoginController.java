@@ -40,8 +40,10 @@ public class LoginController {
 			else{
 				if(taikhoan.getLoaiTaiKhoan().equals("user")) {
 					MainController.menu.clear();
+					MainController.menu.add("Home");
 					MainController.menu.add("Schedule");
 					MainController.menu.add("Service");
+					MainController.menu.add("Account");
 				}
 				else {
 					MainController.menu.clear();

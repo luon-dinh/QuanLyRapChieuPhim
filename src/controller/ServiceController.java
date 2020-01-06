@@ -54,6 +54,7 @@ public class ServiceController implements Initializable {
 	@FXML private ScrollPane scroll;
 	@FXML private MenuButton cartString;
 	@FXML private Button btn_timkiem, btn_refresh, btn_themsanpham, btn_thanhtoan;
+	@FXML private Label lb_soluongsanpham;
 	
 	public static ArrayList<CartItem> cartItems=new ArrayList<CartItem>();
 	private ArrayList<SanPham> dsSanPham;
@@ -187,6 +188,7 @@ public class ServiceController implements Initializable {
 		for(SanPham sp:temp) {
 			addNewCard(sp);
 		}
+		lb_soluongsanpham.setText(temp.size()+"");
 	}
 
 	@FXML
