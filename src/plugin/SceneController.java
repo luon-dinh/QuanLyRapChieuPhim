@@ -42,7 +42,8 @@ public final class SceneController {
 		try {
 			if (replaceScene == null) {
 				replaceScene = FXMLLoader.load(getClass().getResource(location));
-				screenMap.put(scene, replaceScene);
+				if (!scene.equals("Main"))
+					screenMap.put(scene, replaceScene);
 			}
 		} catch (Exception e) {
 			throw new NullSceneException("Không thể load scene " + scene + " tại " + location);

@@ -97,6 +97,10 @@ public class ScheduleController implements Initializable {
         };   
         datePicker.setConverter(converter);
 		initValues();
+		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+			btn_them.setVisible(false);
+			cb_phong.setVisible(false);
+		}
 		inItValue();//hàm để refresh toàn bộ data binding data khi data được cập nhật
 		addEvents();// khởi tạo sự kiện cho các control
 		timeLine.endXProperty().bind(Bindings.max(schedulePane.widthProperty(),MainController.mainPage.widthProperty().add(-105)));
@@ -271,27 +275,15 @@ public class ScheduleController implements Initializable {
 		}
 		cb_phong.setItems(dsPhong);
 		cb_phong.setEditable(true);
+		if(dsPhong.size()>0)
+			cb_phong.setValue(dsPhong.get(0));
 		new AutoCompleteComboBoxListener<String>(cb_phong);
 		
 		for(LichChieuPhim lcp:dsLichChieu) {
 			MovieScheduleCard card=new MovieScheduleCard(lcp);
 			schedulePane.getChildren().add(card);
-    		card.image.setOnMouseClicked(e->{
-				if (e.getButton() == MouseButton.PRIMARY) {
-					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", card);
-    				bookTicket.Show();
-    			}
-    		});
 //    		MenuItem edit = new MenuItem("Sửa");
     		MenuItem delete = new MenuItem("Xóa");
-//    		edit.setOnAction(new EventHandler<ActionEvent>() {
-//				@Override
-//				public void handle(ActionEvent event) {
-//					MyWindows w = new MyWindows("../view/AddMovieToSchedule.fxml");
-//			    	w.Resize(940, 600);
-//			    	w.Show();
-//				}
-//			});
     		delete.setOnAction(E->{
     			Optional<ButtonType> result =AlertBox.show(AlertType.CONFIRMATION, "Xác nhận", "Bạn có thực sự muốn xóa lịch chiếu phim này?", MyButtonType.YesNo);
 				if(result.get()==ButtonType.YES) {
@@ -301,7 +293,15 @@ public class ScheduleController implements Initializable {
 				}
     		});
 //    		card.contextMenu.getItems().add(edit);
-    		card.contextMenu.getItems().add(delete);
+    		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+    			card.contextMenu.getItems().add(delete);
+    			card.image.setOnMouseClicked(e->{
+    				if (e.getButton() == MouseButton.PRIMARY) {
+    					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", card);
+        				bookTicket.Show();
+        			}
+        		});
+    		}
 		}
 	}
 
