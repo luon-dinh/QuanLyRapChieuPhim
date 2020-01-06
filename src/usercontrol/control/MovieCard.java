@@ -116,8 +116,8 @@ public class MovieCard extends AnchorPane implements Initializable {
 		title.setText(" "+p.getTenPhim());
 		Connector<Phim_LoaiPhim> c=new Connector<Phim_LoaiPhim>();
 		Image img=c.convertToBufferImage(p.getHinhAnh());
-		image.setImage(img);
-		//Connector.setImage(image, img);
+		//image.setImage(img);
+		Connector.setImage(image, img);
 		Connector<LoaiPhim> cloai=new Connector<LoaiPhim>();
 		List<LoaiPhim> loais=cloai.select(LoaiPhim.class, "select * from LOAIPHIM where MaLoai in(select MaLoai from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"')");
 		for(LoaiPhim lp:loais) {

@@ -147,7 +147,7 @@ public class RoomController implements Initializable {
 		sua.AddAll(info_2);
 		sua.addImageView("Ảnh phim", card.image.getImage());
 		sua.Get("Tên phòng").setText(p.getTenPhong());
-		sua.getComboBox(status).setPromptText(p.getTrangThai());
+		sua.getComboBox(status).setValue(p.getTrangThai());
 		sua.getComboBox(status).setItems(list);
 		sua.Get("Sức chứa").setText(p.getSucChua() + "");
 		sua.Get("Số ghế").setText(p.getSoGhe() + "");
