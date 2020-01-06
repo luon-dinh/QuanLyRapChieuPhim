@@ -97,6 +97,13 @@ public class ScheduleController implements Initializable {
         };   
         datePicker.setConverter(converter);
 		initValues();
+		for(int i=0;i<7;i++) {
+			if(labels.get(i).getText().equals(date.toString())) {
+				btns.get(i).styleProperty().set("-fx-background-color: lightgray");
+				break;
+			}
+		}
+		
 		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
 			btn_them.setVisible(false);
 			cb_phong.setVisible(false);
@@ -173,13 +180,23 @@ public class ScheduleController implements Initializable {
 		
 		for(int i=0;i<7;i++) {
 			final int j=i;
-			btns.get(i).setOnAction(new EventHandler<ActionEvent>() {
-				
+			Button btn=btns.get(i);
+			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 					// TODO Auto-generated method stub
 					try{
 						datePicker.setValue(LocalDate.parse(labels.get(j).getText()));
+//						labels.get(j).setTextFill(Color.ORANGERED);
+//						for(int i=0;i<7;i++) {
+//							if(i==j)
+//								continue;
+//							labels.get(i).setTextFill(Color.BLACK);
+//						}
+						for(int i=0;i<7;i++) {
+							btns.get(i).styleProperty().set("");
+						}
+						btn.styleProperty().set("-fx-background-color: lightgray");
 					}
 					catch (Exception e) {
 						// TODO: handle exception
