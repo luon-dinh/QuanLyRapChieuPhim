@@ -57,6 +57,8 @@ public class AccountController implements Initializable {
 	@FXML
 	private Button changeAvatar;
 	@FXML
+	private Button changeAvatar1;
+	@FXML
 	private BorderPane pane;
 	@FXML
 	private GridPane gp;
@@ -114,6 +116,8 @@ public class AccountController implements Initializable {
 
 	private void refresh() {
 		// TODO Auto-generated method stub
+		changeAvatar.setVisible(false);
+		changeAvatar1.setVisible(false);
 		setUpTaiKhoan();
 
 		if (checkNV(mTaiKhoan.getMaTaiKhoan())) {
@@ -430,12 +434,17 @@ public class AccountController implements Initializable {
 
 	@FXML
 	void ChangeNickname(ActionEvent event) {
-
 		EditNickname.show();
 	}
 
 	@FXML
 	void ChangeAvatar(ActionEvent event) {
+		if (!changeAvatar.isVisible()) {
+			changeAvatar.setVisible(false);
+		}
+		if (!changeAvatar1.isVisible()) {
+			changeAvatar1.setVisible(false);
+		}
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter filter = new ExtensionFilter("Image Files", "*.png", "*.jpg");
 		fileChooser.getExtensionFilters().add(filter);
@@ -464,7 +473,30 @@ public class AccountController implements Initializable {
 				avatar.setFitHeight(scaledHeight);
 				avatar.setSmooth(false);
 				avatar.setImage(img);
+				changeAvatar.setVisible(true);
+				changeAvatar1.setVisible(true);
+				changeAvatar.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
 
+					@Override
+					public void handle(ActionEvent event) {
+						new Connector<TaiKhoan>().update(
+								"update TAIKHOAN set HinhAnh=? where MaTaiKhoan='" + mTaiKhoan.getMaTaiKhoan() + "'",
+								Connector.convertFileToByte(file));
+						mTaiKhoan = new Connector<TaiKhoan>()
+								.selectTaiKhoan(
+										"Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
+								.get(0);
+						refresh();
+					}
+				});
+				changeAvatar1.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+					
+					@Override
+					public void handle(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						refresh();
+					}
+				});
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

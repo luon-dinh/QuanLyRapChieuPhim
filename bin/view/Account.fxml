@@ -57,14 +57,29 @@
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font></Label>
-                              <Button fx:id="changeAvatar" mnemonicParsing="false" style="-fx-background-color: #03a9f4;" text="Thay avatar" textFill="WHITE">
+                              <HBox prefHeight="34.0" prefWidth="321.0">
+                                 <children>
+                                    <Button fx:id="changeAvatar" mnemonicParsing="false" style="-fx-background-color: #03a9f4;" text="Thay avatar" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="changeAvatar1" mnemonicParsing="false" prefHeight="30.0" prefWidth="106.0" style="-fx-background-color: #dd3300;" text="Huỷ" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
                                  <VBox.margin>
-                                    <Insets bottom="10.0" left="20.0" />
+                                    <Insets left="5.0" />
                                  </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Button>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
