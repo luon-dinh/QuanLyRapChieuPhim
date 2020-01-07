@@ -2,10 +2,12 @@ package controller;
 
 import plugin.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Connector.Connector;
 import Model.TaiKhoan;
+import application.MainController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -33,6 +35,29 @@ public class LoginController {
 		
 		// check password
 		if(checkAccount(user,pass)) {
+			if(MainController.menu==null)
+				MainController.menu=new ArrayList<String>();
+			else{
+				if(taikhoan.getLoaiTaiKhoan().equals("user")) {
+					MainController.menu.clear();
+					MainController.menu.add("Home");
+					MainController.menu.add("Schedule");
+					MainController.menu.add("Service");
+					MainController.menu.add("Account");
+				}
+				else {
+					MainController.menu.clear();
+					MainController.menu.add("Home");
+					MainController.menu.add("Schedule");
+					MainController.menu.add("Movies");
+					MainController.menu.add("Rooms");
+					MainController.menu.add("Customer");
+					MainController.menu.add("Service");
+					MainController.menu.add("Account");
+					MainController.menu.add("Statistic");
+					MainController.menu.add("Staff");
+				}
+			}
 			SceneController.GetInstance().TryReplaceScene("Main");
 		}
 		else {

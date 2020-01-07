@@ -57,6 +57,7 @@ public class RoomController implements Initializable {
 	@FXML
 	private Label lb_soluongphong;
 
+
 	private ArrayList<PhongChieuPhim> dsPhong = null;
 	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
 
@@ -139,7 +140,6 @@ public class RoomController implements Initializable {
 		}
 
 		lb_soluongphong.setText(temp.size() + "");
-
 		paneRoom.prefWidthProperty().bind(root.widthProperty().subtract(20));
 	}
 
@@ -157,7 +157,7 @@ public class RoomController implements Initializable {
 		sua.AddAll(info_2);
 		sua.addImageView("Ảnh phim", card.image.getImage());
 		sua.Get("Tên phòng").setText(p.getTenPhong());
-		sua.getComboBox(status).setPromptText(p.getTrangThai());
+		sua.getComboBox(status).setValue(p.getTrangThai());
 		sua.getComboBox(status).setItems(list);
 		sua.Get("Sức chứa").setText(p.getSucChua() + "");
 		sua.Get("Số ghế").setText(p.getSoGhe() + "");
@@ -199,6 +199,7 @@ public class RoomController implements Initializable {
 
 			} catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
 			}
 		}

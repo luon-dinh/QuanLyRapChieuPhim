@@ -54,6 +54,7 @@ public class ServiceController implements Initializable {
 	@FXML private ScrollPane scroll;
 	@FXML private MenuButton cartString;
 	@FXML private Button btn_timkiem, btn_refresh, btn_themsanpham, btn_thanhtoan;
+	@FXML private Label lb_soluongsanpham;
 	
 	public static ArrayList<CartItem> cartItems=new ArrayList<CartItem>();
 	private ArrayList<SanPham> dsSanPham;
@@ -187,6 +188,7 @@ public class ServiceController implements Initializable {
 		for(SanPham sp:temp) {
 			addNewCard(sp);
 		}
+		lb_soluongsanpham.setText(temp.size()+"");
 	}
 
 	@FXML
@@ -225,8 +227,8 @@ public class ServiceController implements Initializable {
 			card.costProperty().set(sp.getGiaSanPham());
 			card.nameProperty().set(sp.getTenSanPham());
 			card.descriptionProperty().set(sp.getMoTa());
-			card.imageProperty().set(Connector.convertToBufferImage(sp.getHinhAnh()));
-			//Connector.setImage(card.getimageView(),Connector.convertToBufferImage(sp.getHinhAnh()));
+			//card.imageProperty().set(Connector.convertToBufferImage(sp.getHinhAnh()));
+			Connector.setImage(card.getimageView(),Connector.convertToBufferImage(sp.getHinhAnh()));
 		}
 		else {
 			card.costProperty().set(10000);
@@ -262,8 +264,10 @@ public class ServiceController implements Initializable {
 				pane.getChildren().remove(card);
 			}
 		});
-		card.menu.getItems().add(edit);
-		card.menu.getItems().add(delete);
+		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+			card.menu.getItems().add(edit);
+			card.menu.getItems().add(delete);
+		}
 	}
 
 	private void editSanPham(SellingCard card) {

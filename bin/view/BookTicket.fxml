@@ -61,7 +61,7 @@
             </VBox>
             <HBox spacing="10.0" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button fx:id="btn_dongy" mnemonicParsing="false" text="Đồng ý" />
+                  <Button fx:id="btn_dongy" mnemonicParsing="false" text="Thanh toán" />
                   <Button fx:id="btn_huy" mnemonicParsing="false" text="Hủy" />
                </children>
             </HBox>
