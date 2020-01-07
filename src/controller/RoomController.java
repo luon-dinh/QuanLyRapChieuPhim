@@ -180,6 +180,7 @@ public class RoomController implements Initializable {
 				initial(null);
 			} catch (Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
 			}
 		}
