@@ -307,6 +307,7 @@ public class ScheduleController implements Initializable {
 					//xử lí xóa
 					xuLiXoa(lcp);
 					schedulePane.getChildren().remove(card);
+					AlertBox.show(AlertType.INFORMATION, "Thành công","", "Xoá lịch chiếu thành công!");
 				}
     		});
 //    		card.contextMenu.getItems().add(edit);

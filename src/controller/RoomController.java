@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -56,7 +57,6 @@ public class RoomController implements Initializable {
 	private Button btn_timkiem, btn_refresh;
 	@FXML
 	private Label lb_soluongphong;
-
 
 	private ArrayList<PhongChieuPhim> dsPhong = null;
 	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
@@ -162,24 +162,32 @@ public class RoomController implements Initializable {
 		sua.Get("Sức chứa").setText(p.getSucChua() + "");
 		sua.Get("Số ghế").setText(p.getSoGhe() + "");
 		sua.Get("Mô tả").setText(p.getMoTa());
+
+		sua.cur_SucChua = Integer.parseInt(sua.Get("Sức chứa").getText());
+		sua.cur_SoGhe = Integer.parseInt(sua.Get("Số ghế").getText());
+		sua.Get("Sức chứa").textProperty().addListener((observable, oldValue, newValue) -> {
+			sua.cur_SucChua = Integer.parseInt(newValue);
+		});
+
+		sua.Get("Số ghế").textProperty().addListener((observable, oldValue, newValue) -> {
+			sua.cur_SoGhe = Integer.parseInt(newValue);
+		});
 		sua.show();
+
 		if (sua.boxReturn == ButtonType.CANCEL)
 			return;
 		if (sua.boxReturn == ButtonType.OK) {
+
+			if (sua.cur_SoGhe > sua.cur_SucChua) {
+				return;
+			}
+
 			try {
 				String tenPhong = sua.Get("Tên phòng").getText();
 				String trangThai = sua.getComboBox("Trạng thái").getValue().toString();
 				String sucChua = sua.Get("Sức chứa").getText();
 				String soGhe = sua.Get("Số ghế").getText();
 				String moTa = sua.Get("Mô tả").getText();
-
-				int tmpSucChua = Integer.parseInt(sucChua);
-				int tmpSoGhe = Integer.parseInt(soGhe);
-
-				if (tmpSoGhe > tmpSucChua) {
-					AlertBox.show(AlertType.ERROR, "Nhập sai", "Số ghế cần nhỏ hơn hoặc bằng sức chứa!");
-					return;
-				}
 
 				if (sua.f != null) {
 					new Connector<Phim>().update(
@@ -193,8 +201,10 @@ public class RoomController implements Initializable {
 							+ "', MoTa='" + moTa + "' where MaPhong='" + p.getMaPhong() + "'");
 				}
 				xuLiCapNhatGhe(p.getMaPhong(), Integer.parseInt(soGhe));
-				Stage stage = (Stage) sua.getComboBox(trangThai).getScene().getWindow();
+				
+				Stage stage = (Stage) sua.getComboBox("Trạng thái").getScene().getWindow();
 				stage.close();
+				AlertBox.show(AlertType.INFORMATION, "Thành công", "", "Cập nhật thông tin thành công!");
 				initial(null);
 
 			} catch (Exception e) {

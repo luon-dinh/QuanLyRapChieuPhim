@@ -138,6 +138,7 @@ public class MoviesController implements Initializable {
 					new Connector<Phim_LoaiPhim>().delete("delete from PHIM_LOAIPHIM where MaPhim='"+p.getMaPhim()+"'");
 					new Connector().delete("delete from KHACHHANG_VOTE where MaPhim='"+p.getMaPhim()+"'");
 					paneMovie.getChildren().remove(card);
+					AlertBox.show(AlertType.INFORMATION, "Thành công", "", "Xoá phim thành công!");
 				}
 			});
 			card.menu.getItems().add(edit);
@@ -181,10 +182,11 @@ public class MoviesController implements Initializable {
 					new Connector<Phim>().update("update PHIM set TenPhim='"+tenPhim+"', TenNuocSanXuat='"+nuocSanXuat+"', NamSanXuat='"+namSanXuat+"', TenDaoDien='"+daoDien+"', ThoiLuong='"+thoiLuong+"', MoTa='"+moTa+"' where MaPhim='"+p.getMaPhim()+"'");
 				}
 				initial(null);
+				AlertBox.show(AlertType.INFORMATION, "Thành công", "", "Cập nhật thông tin thành công!");
 			}
 			catch (Exception e) {
 				// TODO: handle exception
-				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+				AlertBox.show(AlertType.ERROR, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin!");
 			}
 		}
 	}

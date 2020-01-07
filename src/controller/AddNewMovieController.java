@@ -145,8 +145,7 @@ public class AddNewMovieController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				xuLiThemPhim();
-				Stage stage = (Stage) btn_dongy.getScene().getWindow();
-				stage.close();
+			
 			}
 		});
 
@@ -207,12 +206,16 @@ public class AddNewMovieController implements Initializable {
 					new Connector<LoaiPhim>().insert("insert into LOAIPHIM values('"+mlp+"', '"+tl+"','Mô tả')");
 					maLoais.add(mlp);
 				}
+				
 			}
 			for (String ma : maLoais) {
 				c.insert("insert into PHIM_LOAIPHIM values('" + maPhim + "','" + ma + "')");
 			}
+			Stage stage = (Stage) btn_dongy.getScene().getWindow();
+			stage.close();
+			AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm phim thành công!");
 		} catch (Exception e) {
-			AlertBox.show(AlertType.ERROR, "Nhập sai");
+			AlertBox.show(AlertType.ERROR, "Nhập sai","","Vui lòng kiểm tra và nhập lại!");
 		}
 	}
 

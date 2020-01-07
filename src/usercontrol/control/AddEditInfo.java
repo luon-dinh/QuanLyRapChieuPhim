@@ -277,7 +277,7 @@ public class AddEditInfo {
 				for (LichChieuPhim lc : dsLichChieu) {
 					try {
 						if (LocalTime.parse(lc.getGioBatDau()).plusMinutes(lc.getThoiLuong()).isAfter(newValue)) {
-							AlertBox.show(AlertType.INFORMATION, "Trùng lịch chiếu");
+							AlertBox.show(AlertType.INFORMATION,"Nhập sai","", "Trùng lịch chiếu");
 							return;
 						}
 					} catch (Exception e) {

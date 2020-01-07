@@ -213,7 +213,7 @@ public class AddMovieToScheduleController implements Initializable{
 			}
 			catch (Exception e) {
 				// TODO: handle exception
-				AlertBox.show(AlertType.ERROR, "Thông tin không đúng định dạng");
+				AlertBox.show(AlertType.ERROR,"Nhập sai","", "Vui lòng kiểm tra lại thông tin!");
 			}
 			finally {
 				MyWindows.lastStage.close();
@@ -238,5 +238,6 @@ public class AddMovieToScheduleController implements Initializable{
 		for(Ghe ghe:dsGhe) {
 			new Connector().insert("insert into GHE_LICHCHIEU values('"+ghe.getMaGhe()+"','"+maLichChieu+"','"+1+"')");
 		}
+		AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm lịch chiếu phim thành công!");
 	}
 }

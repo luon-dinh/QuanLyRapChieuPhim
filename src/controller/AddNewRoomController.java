@@ -208,14 +208,15 @@ public class AddNewRoomController implements Initializable {
 				xuLiThemGhe(maPhongChieuPhim, soGhe);
 				Stage stage = (Stage) btn_dongy.getScene().getWindow();
 				stage.close();
+				AlertBox.show(AlertType.INFORMATION, "Thành công","", "Thêm phòng chiếu phim thành công!");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				AlertBox.show(AlertType.ERROR, "Nhập sai", "Vui lòng kiểm tra lại thông tin!");
+				AlertBox.show(AlertType.ERROR, "Nhập sai","", "Vui lòng kiểm tra lại thông tin!");
 				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
-			AlertBox.show(AlertType.ERROR, "Nhập sai!", "Vui lòng kiểm tra lại thông tin!");
+			AlertBox.show(AlertType.ERROR, "Nhập sai","", "Vui lòng kiểm tra lại thông tin!");
 		}
 	}
 

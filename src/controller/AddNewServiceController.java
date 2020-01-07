@@ -24,11 +24,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import plugin.AlertBox;
 import plugin.MyWindows;
+import plugin.AlertBox.MyButtonType;
 
 public class AddNewServiceController implements Initializable{
 
@@ -132,6 +135,7 @@ public class AddNewServiceController implements Initializable{
 			byte[] hinhAnh=null;
 			if(f!=null) {
 				hinhAnh=Connector.convertFileToByte(f);
+				
 			}
 			String loai="";
 			if(chk_thucan.isSelected()) {
@@ -143,16 +147,17 @@ public class AddNewServiceController implements Initializable{
 			//xử lí lây hình ảnh và thêm vào csdl
 			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?,'"+loai+"')",hinhAnh);
 		
-		
-		
+			Stage stage=(Stage)btn_dongy.getScene().getWindow();
+			stage.close();
+			AlertBox.show(AlertType.INFORMATION, "Thành công","", "Thêm sản phẩm thành công!");
 		
 		}
 		catch(Exception e) {
+			AlertBox.show(AlertType.ERROR, "Nhập sai","", "Vui lòng kiểm tra lại thông tin!");
 			e.printStackTrace();
 		}
 		finally {
-			Stage stage=(Stage)btn_dongy.getScene().getWindow();
-			stage.close();
+			
 		}
 	}
 

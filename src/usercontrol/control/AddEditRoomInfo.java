@@ -58,10 +58,12 @@ public class AddEditRoomInfo {
 	private HashMap<String, ComboBox> mapComboBox = new HashMap<>();
 	private HashMap<String, ImageView> mapImageView = new HashMap<>();
 	public ButtonType boxReturn = null;
-	private int sumSize=0;
+	private int sumSize = 0;
 	public File f;
-	private boolean isShow=false;
-	
+	public int cur_SucChua;
+	public int cur_SoGhe;
+	private boolean isShow = false;
+
 	public boolean isShow() {
 		return isShow;
 	}
@@ -83,14 +85,13 @@ public class AddEditRoomInfo {
 		grid.getColumnConstraints().add(c1);
 		grid.getColumnConstraints().add(c2);
 		pane.centerProperty().set(grid);
-		
-		
+
 		scene = new Scene(pane);
 		stage = new Stage();
 		stage.setTitle(title);
 		stage.setScene(scene);
 		stage.getIcons().add(ImagesControler.getInstance().tryGetImage("ApplicationIcon"));
-		
+
 		AnchorPane anchor = new AnchorPane();
 		pane.bottomProperty().set(anchor);
 		HBox box = new HBox(10f);
@@ -103,21 +104,26 @@ public class AddEditRoomInfo {
 		cancel.setStyle("-fx-pref-width: 80.0;");
 		box.getChildren().add(ok);
 		box.getChildren().add(cancel);
-		
-		ok.setOnAction(e->{
+
+		ok.setOnAction(e -> {
 			boxReturn = ButtonType.OK;
-			//stage.close();
+			if (cur_SoGhe > cur_SucChua) {
+				AlertBox.show(AlertType.INFORMATION, "Nhập sai", "Số ghế cần nhỏ hơn hoặc bằng sức chứa!");
+			} else
+			{
+				stage.close();
+			}
 		});
-		cancel.setOnAction(e->{
+		cancel.setOnAction(e -> {
 			boxReturn = ButtonType.CANCEL;
 			stage.close();
 		});
-		
+
 		stage.initOwner(SceneController.GetInstance().getCurrentStage());
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.setResizable(false);
 	}
-	
+
 //	public AddEditRoomInfo(PhongChieuPhim phong) {
 //		BorderPane pane = new BorderPane();
 //		pane.setPadding(new Insets(10, 10, 10, 10));
@@ -165,27 +171,26 @@ public class AddEditRoomInfo {
 //		stage.initModality(Modality.WINDOW_MODAL);
 //		stage.setResizable(false);
 //	}
-	
+
 	public void show() {
-		isShow=true;
+		isShow = true;
 		stage.showAndWait();
-		isShow=false;
+		isShow = false;
 	}
-	
-	
+
 	public void addImageView(String content, Image image) {
 		grid.add(new Label(content), 0, sumSize);
-		ImageView imgv=new ImageView(image);
+		ImageView imgv = new ImageView(image);
 		imgv.setFitWidth(80);
 		imgv.setFitHeight(80);
-		imgv.setOnMouseClicked(e->{
+		imgv.setOnMouseClicked(e -> {
 			FileChooser fileChooser = new FileChooser();
-			//f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
-			f=fileChooser.showOpenDialog(MyWindows.lastStage);
-			if(f!=null) {
+			// f=fileChooser.showOpenDialog(SceneController.GetInstance().getCurrentStage());
+			f = fileChooser.showOpenDialog(MyWindows.lastStage);
+			if (f != null) {
 				try {
-					BufferedImage bimg=ImageIO.read(f);
-					Image img=SwingFXUtils.toFXImage(bimg, null);
+					BufferedImage bimg = ImageIO.read(f);
+					Image img = SwingFXUtils.toFXImage(bimg, null);
 					imgv.setImage(img);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -198,11 +203,11 @@ public class AddEditRoomInfo {
 		sumSize++;
 		mapImageView.put(content, imgv);
 	}
-	
+
 	public ImageView getImageView(String contentKey) {
 		return mapImageView.get(contentKey);
 	}
-	
+
 	public void AddComboBox(String content) {
 		grid.add(new Label(content), 0, sumSize);
 		ComboBox<String> comboBox = new ComboBox<String>();
@@ -210,48 +215,49 @@ public class AddEditRoomInfo {
 		sumSize++;
 		mapComboBox.put(content, comboBox);
 	}
-	
+
 	public ComboBox getComboBox(String contenKey) {
 		return mapComboBox.get(contenKey);
 	}
-	
+
 	public void Add(String content) {
 		grid.add(new Label(content), 0, sumSize);
 		TextField textField = new TextField();
 		textField.setPromptText(content);
-		grid.add(textField, 1,sumSize);
+		grid.add(textField, 1, sumSize);
 		map.put(content, textField);
 		sumSize++;
 	}
-	
-	public void Add(String content,boolean b) {
+
+	public void Add(String content, boolean b) {
 		grid.add(new Label(content), 0, sumSize);
 		TextField textField = new TextField();
 		textField.setPromptText(content);
-		if(b==true) {
+		if (b == true) {
 			textField.setOnKeyTyped(e -> {
-	            char input = e.getCharacter().charAt(0);
-	            if (Character.isDigit(input) != true) {
-	                e.consume();
-	            }
-	        });
+				char input = e.getCharacter().charAt(0);
+				if (Character.isDigit(input) != true) {
+					e.consume();
+				}
+			});
 		}
-		grid.add(textField, 1,sumSize);
+		grid.add(textField, 1, sumSize);
 		map.put(content, textField);
 		sumSize++;
 	}
-	
+
 	public void AddAll(String[] contents) {
 		for (String item : contents)
 			Add(item);
 	}
-	
+
 	public void AddAll(Collection<String> contents) {
 		for (String item : contents)
 			Add(item);
 	}
-	
+
 	public TextField Get(String contentKey) {
 		return map.get(contentKey);
 	}
+
 }

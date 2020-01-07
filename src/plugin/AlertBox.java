@@ -48,4 +48,9 @@ public class AlertBox {
 		}
 		return alert.showAndWait();
 	}
+	
+	public static void setOnTop(boolean isOnTop)
+	{
+		
+	}
 }

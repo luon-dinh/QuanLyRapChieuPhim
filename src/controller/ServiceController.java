@@ -149,7 +149,7 @@ public class ServiceController implements Initializable {
 				cartItems.clear();
 				number.set(0);
 				cost.set(0);
-				AlertBox.show(AlertType.INFORMATION, "Đặt thành công");
+				AlertBox.show(AlertType.INFORMATION, "Thành công","","Đặt thành công!");
 			}
 		});
 		
@@ -291,9 +291,10 @@ public class ServiceController implements Initializable {
 				byte[] hinhAnh=Connector.convertFileToByte(sua.f);
 				new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', Gia='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
 				initial(null);
+				AlertBox.show(AlertType.INFORMATION,"Thành công","","Thêm sản phẩm thành công!");
 			}
 			catch (Exception e){
-				AlertBox.show(AlertType.ERROR,"Dữ liệu chưa đúng");
+				AlertBox.show(AlertType.ERROR,"Nhập sai","","Vui lòng kiểm tra lại thông tin!");
 			}
 		}
 	}
