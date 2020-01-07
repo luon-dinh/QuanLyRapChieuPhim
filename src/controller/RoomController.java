@@ -1,6 +1,8 @@
 package controller;
 
 import java.net.URL;
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -30,6 +33,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
@@ -47,7 +51,11 @@ public class RoomController implements Initializable {
 	private FlowPane paneRoom;
 	@FXML
 	private TextField searchTextField;
-	@FXML private Button btn_timkiem, btn_refresh;
+
+	@FXML
+	private Button btn_timkiem, btn_refresh;
+	@FXML
+	private Label lb_soluongphong;
 
 	private ArrayList<PhongChieuPhim> dsPhong = null;
 	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
@@ -65,25 +73,25 @@ public class RoomController implements Initializable {
 			@Override
 			public void handle(KeyEvent event) {
 				// TODO Auto-generated method stub
-				if(event.getCode()==KeyCode.ENTER) {
-					String newValue=searchTextField.getText();
+				if (event.getCode() == KeyCode.ENTER) {
+					String newValue = searchTextField.getText();
 					xuLiTimKiem(newValue);
 				}
 			}
 		});
-		
+
 		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				String newValue=searchTextField.getText();
+				String newValue = searchTextField.getText();
 				xuLiTimKiem(newValue);
 			}
 		});
-		
+
 		btn_refresh.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
@@ -130,6 +138,8 @@ public class RoomController implements Initializable {
 			paneRoom.getChildren().add(card);
 		}
 
+		lb_soluongphong.setText(temp.size() + "");
+
 		paneRoom.prefWidthProperty().bind(root.widthProperty().subtract(20));
 	}
 
@@ -163,6 +173,14 @@ public class RoomController implements Initializable {
 				String soGhe = sua.Get("Số ghế").getText();
 				String moTa = sua.Get("Mô tả").getText();
 
+				int tmpSucChua = Integer.parseInt(sucChua);
+				int tmpSoGhe = Integer.parseInt(soGhe);
+
+				if (tmpSoGhe > tmpSucChua) {
+					AlertBox.show(AlertType.ERROR, "Nhập sai", "Số ghế cần nhỏ hơn hoặc bằng sức chứa!");
+					return;
+				}
+
 				if (sua.f != null) {
 					new Connector<Phim>().update(
 							"update PHONGCHIEUPHIM set TenPhong='" + tenPhong + "', TrangThai='" + trangThai
@@ -175,7 +193,10 @@ public class RoomController implements Initializable {
 							+ "', MoTa='" + moTa + "' where MaPhong='" + p.getMaPhong() + "'");
 				}
 				xuLiCapNhatGhe(p.getMaPhong(), Integer.parseInt(soGhe));
+				Stage stage = (Stage) sua.getComboBox(trangThai).getScene().getWindow();
+				stage.close();
 				initial(null);
+
 			} catch (Exception e) {
 				// TODO: handle exception
 				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
@@ -201,19 +222,19 @@ public class RoomController implements Initializable {
 		}
 		initial(ds);
 	}
-	
+
 	private void xuLiCapNhatGhe(String maPhongChieuPhim, int soGhe) {
 		// TODO Auto-generated method stub
-		Connector<Ghe> c=new Connector<Ghe>();
-		c.delete("delete from GHE where MaPhong='"+maPhongChieuPhim+"'");
-		List<Ghe> dsGhe=c.select(Ghe.class, "select * from GHE");
-		int index=0;
-		if(dsGhe.size()>0) {
-			index=dsGhe.size();
+		Connector<Ghe> c = new Connector<Ghe>();
+		c.delete("delete from GHE where MaPhong='" + maPhongChieuPhim + "'");
+		List<Ghe> dsGhe = c.select(Ghe.class, "select * from GHE");
+		int index = 0;
+		if (dsGhe.size() > 0) {
+			index = dsGhe.size();
 		}
-		for(int i=0;i<soGhe;i++) {
-			c.insert("insert into GHE values('"+(index+i)+"', '"+maPhongChieuPhim+"')");
+		for (int i = 0; i < soGhe; i++) {
+			c.insert("insert into GHE values('" + (index + i) + "', '" + maPhongChieuPhim + "')");
 		}
 	}
-	
+
 }

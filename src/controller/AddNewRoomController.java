@@ -115,22 +115,16 @@ public class AddNewRoomController implements Initializable {
 				if (file != null) {
 					try {
 						BufferedImage bimg = ImageIO.read(file);
-
 						img = SwingFXUtils.toFXImage(bimg, null);
-//						PixelReader reader =img.getPixelReader();
-//						if()
-//						WritableImage newImage = new WritableImage(reader, img., y, width, height);
-//						int height = 250;
-//						int width = 180;
 						Rectangle2D croppedPortion;
 						if (img.getWidth() / 180.0 > img.getHeight() / 250.0) {
 
 							croppedPortion = new Rectangle2D(img.getWidth() / 2.0 - img.getHeight() / 250.0 * 90.0, 0,
-									img.getHeight()/250.0*180.0, img.getHeight());
+									img.getHeight() / 250.0 * 180.0, img.getHeight());
 
 						} else {
 							croppedPortion = new Rectangle2D(0, img.getHeight() / 2.0 - img.getWidth() / 180.0 * 125.0,
-									img.getWidth(), img.getWidth() / 180.0*250.0);
+									img.getWidth(), img.getWidth() / 180.0 * 250.0);
 						}
 
 						// target width and height:
@@ -155,8 +149,6 @@ public class AddNewRoomController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				XuLyThemPhongChieu();
-				Stage stage = (Stage) btn_dongy.getScene().getWindow();
-				stage.close();
 			}
 		});
 
@@ -199,6 +191,12 @@ public class AddNewRoomController implements Initializable {
 			if (file != null) {
 				hinhAnh = Connector.convertFileToByte(file);
 			}
+
+			if (soGhe > sucChua) {
+				AlertBox.show(AlertType.INFORMATION, "Nhập sai", "Số ghế cần nhỏ hơn hoặc bằng sức chứa!");
+				return;
+			}
+
 			try {
 				c.connect();
 				PreparedStatement pst = c.connection.prepareStatement(
@@ -208,28 +206,29 @@ public class AddNewRoomController implements Initializable {
 				pst.execute();
 				c.connection.close();
 				xuLiThemGhe(maPhongChieuPhim, soGhe);
-				
+				Stage stage = (Stage) btn_dongy.getScene().getWindow();
+				stage.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				AlertBox.show(AlertType.ERROR, "Nhập sai");
+				AlertBox.show(AlertType.ERROR, "Nhập sai", "Vui lòng kiểm tra lại thông tin!");
 				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
-			AlertBox.show(AlertType.ERROR, "Nhập sai");
+			AlertBox.show(AlertType.ERROR, "Nhập sai!", "Vui lòng kiểm tra lại thông tin!");
 		}
 	}
 
 	private void xuLiThemGhe(String maPhongChieuPhim, int soGhe) {
 		// TODO Auto-generated method stub
-		Connector<Ghe> c=new Connector<Ghe>();
-		List<Ghe> dsGhe=c.select(Ghe.class, "select * from GHE");
-		int index=0;
-		if(dsGhe.size()>0) {
-			index=dsGhe.size();
+		Connector<Ghe> c = new Connector<Ghe>();
+		List<Ghe> dsGhe = c.select(Ghe.class, "select * from GHE");
+		int index = 0;
+		if (dsGhe.size() > 0) {
+			index = dsGhe.size();
 		}
-		for(int i=0;i<soGhe;i++) {
-			c.insert("insert into GHE values('"+(index+i)+"', '"+maPhongChieuPhim+"')");
+		for (int i = 0; i < soGhe; i++) {
+			c.insert("insert into GHE values('" + (index + i) + "', '" + maPhongChieuPhim + "')");
 		}
 	}
 }

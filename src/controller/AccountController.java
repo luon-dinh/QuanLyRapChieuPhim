@@ -318,6 +318,7 @@ public class AccountController implements Initializable {
 				mTaiKhoan = new Connector<TaiKhoan>()
 						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 						.get(0);
+				AlertBox.show(AlertType.WARNING, "Thành công", "", "Thay đổi thông tin tài khoản thành công!");
 
 				refresh();
 
@@ -378,7 +379,7 @@ public class AccountController implements Initializable {
 				mTaiKhoan = new Connector<TaiKhoan>()
 						.selectTaiKhoan("Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 						.get(0);
-
+				AlertBox.show(AlertType.WARNING, "Thành công", "", "Thay đổi thông tin tài khoản thành công!");
 				refresh();
 
 			} catch (Exception e) {
@@ -420,16 +421,18 @@ public class AccountController implements Initializable {
 							.selectTaiKhoan(
 									"Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 							.get(0);
+					AlertBox.show(AlertType.INFORMATION, "Thành công","Bạn đã thay đổi mật khẩu thành công!");
+					return;
 				} else {
 					if (!_new.equals(_confirm))
-						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin");
+						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin!");
 					else if (!_old.equals(_cur))
-						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin");
+						AlertBox.show(AlertType.WARNING, "Mật khấu không khớp", "", "Vui lòng kiểm tra lại thông tin!");
 				}
 
 			} catch (Exception e) {
 				// TODO: handle exception
-				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin!");
 			}
 		}
 
@@ -489,6 +492,7 @@ public class AccountController implements Initializable {
 								.selectTaiKhoan(
 										"Select * from TaiKhoan where MaTaiKhoan = '" + mTaiKhoan.getMaTaiKhoan() + "'")
 								.get(0);
+						AlertBox.show(AlertType.INFORMATION, "Thành công","Bạn đã thay đổi ảnh đại diện thành công!");
 						refresh();
 					}
 				});

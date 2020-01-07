@@ -142,6 +142,10 @@ public class AddNewServiceController implements Initializable{
 			}
 			//xử lí lây hình ảnh và thêm vào csdl
 			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?,'"+loai+"')",hinhAnh);
+		
+		
+		
+		
 		}
 		catch(Exception e) {
 			e.printStackTrace();
