@@ -1,6 +1,8 @@
 package usercontrol.control;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import Connector.Connector;
@@ -13,6 +15,7 @@ import Model.VeXemPhim;
 import controller.LoginController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -27,8 +30,18 @@ public class HistoryCard extends AnchorPane {
 	private List<Phim> dsPhim; 
 	private List<LichChieuPhim> dsLichChieu;
 	private List<HoaDon> dsHoaDon;
-	private List<CTHD> dsCTHD;
+	private ArrayList<CTHD> dsCTHD;
 	private List<SanPham> dsSanPham;
+	private VeXemPhim veXemPhim;
+	public VeXemPhim getVeXemPhim() {
+		return veXemPhim;
+	}
+
+	public void setVeXemPhim(VeXemPhim veXemPhim) {
+		this.veXemPhim = veXemPhim;
+	}
+
+	@FXML public ContextMenu contextMenu;
 	
 	public HistoryCard()
 	{
@@ -52,6 +65,7 @@ public class HistoryCard extends AnchorPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.veXemPhim=veXemPhim;
 		dsLichChieu=new Connector<LichChieuPhim>().select(LichChieuPhim.class, "select * from LICHCHIEUPHIM where MaLichChieu='"+veXemPhim.getMaLichChieu()+"'");
 		if(dsLichChieu.size()==0)
 			return;
@@ -64,10 +78,13 @@ public class HistoryCard extends AnchorPane {
 		lb_sovedadat.setText(veXemPhim.getTongSoGhe()+"");
 		lb_ngay.setText(lcp.getNgayChieu());
 		lb_gio.setText(lcp.getGioBatDau());
-		dsHoaDon=new Connector<HoaDon>().select(HoaDon.class, "select * from HOADON where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaLichChieu='"+lcp.getMaLichChieu()+"'");
+		dsHoaDon=new Connector<HoaDon>().select(HoaDon.class, "select * from HOADON where MaHoaDon='"+veXemPhim.getMaVe()+"' and MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaLichChieu='"+lcp.getMaLichChieu()+"'");
 		if(dsHoaDon.size()==0)
 			return;
-		dsCTHD=new Connector<CTHD>().select(CTHD.class, "select * from CTHD where MaHoaDon='"+dsHoaDon.get(0).getMaHoaDon()+"'");
+		dsCTHD=new ArrayList<CTHD>();
+		for(HoaDon hd:dsHoaDon) {
+			dsCTHD.addAll(new Connector<CTHD>().select(CTHD.class, "select * from CTHD where MaHoaDon='"+hd.getMaHoaDon()+"'"));	
+		}
 		for(CTHD cthd:dsCTHD) {
 			dsSanPham=new Connector<SanPham>().select(SanPham.class, "select * from SANPHAM where MaSanPham='"+cthd.getMaSanPham()+"'");
 			if(dsSanPham.size()>0) {
@@ -75,5 +92,49 @@ public class HistoryCard extends AnchorPane {
 				vb_soluong.getChildren().add(new Label(cthd.getSoLuong()+""));
 			}
 		}
+		image.setOnContextMenuRequested(e -> {
+			if(LocalDate.parse(lcp.getNgayChieu()).compareTo(LocalDate.now())>0)
+				contextMenu.show(this, e.getScreenX(), e.getScreenY());
+		});
+	}
+
+	public List<Phim> getDsPhim() {
+		return dsPhim;
+	}
+
+	public void setDsPhim(List<Phim> dsPhim) {
+		this.dsPhim = dsPhim;
+	}
+
+	public List<LichChieuPhim> getDsLichChieu() {
+		return dsLichChieu;
+	}
+
+	public void setDsLichChieu(List<LichChieuPhim> dsLichChieu) {
+		this.dsLichChieu = dsLichChieu;
+	}
+
+	public List<HoaDon> getDsHoaDon() {
+		return dsHoaDon;
+	}
+
+	public void setDsHoaDon(List<HoaDon> dsHoaDon) {
+		this.dsHoaDon = dsHoaDon;
+	}
+
+	public ArrayList<CTHD> getDsCTHD() {
+		return dsCTHD;
+	}
+
+	public void setDsCTHD(ArrayList<CTHD> dsCTHD) {
+		this.dsCTHD = dsCTHD;
+	}
+
+	public List<SanPham> getDsSanPham() {
+		return dsSanPham;
+	}
+
+	public void setDsSanPham(List<SanPham> dsSanPham) {
+		this.dsSanPham = dsSanPham;
 	}
 }

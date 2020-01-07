@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -28,6 +29,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import plugin.AlertBox;
 import plugin.MyWindows;
 
 public class AddNewServiceController implements Initializable{
@@ -73,14 +75,21 @@ public class AddNewServiceController implements Initializable{
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				addService();
+				boolean result=addService();
+				if(result) {
+					AlertBox.show(AlertType.INFORMATION, "Thông báo", "Thêm thành công!");
+					Stage stage=(Stage)btn_dongy.getScene().getWindow();
+					stage.close();
+				}
+				else {
+					AlertBox.show(AlertType.ERROR, "Lỗi","Thông tin nhập không đúng định dạng, vui lòng nhập lại!");
+				}
 			}
 		});
 		btn_huy.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
 				Stage stage=(Stage)btn_huy.getScene().getWindow();
 				stage.close();
 			}
@@ -108,7 +117,7 @@ public class AddNewServiceController implements Initializable{
 		}
 	}
 
-	protected void addService() {
+	protected boolean addService() {
 		// TODO Auto-generated method stub
 		try {
 			Connector<SanPham> c=new Connector<SanPham>();
@@ -142,13 +151,11 @@ public class AddNewServiceController implements Initializable{
 			}
 			//xử lí lây hình ảnh và thêm vào csdl
 			c.insert("insert into SANPHAM values('"+maSanPham+"', '"+maNhaCungCap+"','"+tenSanPhan+"','"+gia+"','"+moTa+"',?,'"+loai+"')",hinhAnh);
+			return true;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			Stage stage=(Stage)btn_dongy.getScene().getWindow();
-			stage.close();
+			return false;
 		}
 	}
 

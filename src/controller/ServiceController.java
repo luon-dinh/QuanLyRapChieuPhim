@@ -149,39 +149,50 @@ public class ServiceController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				xuLiMuaSanPham();
+				boolean result=xuLiMuaSanPham();
 				//xóa danh sách đã chọn, reset lại thông tin 
-				cart.getChildren().removeAll(cart.getChildren());
-				cartItems.clear();
-				number.set(0);
-				cost.set(0);
-				AlertBox.show(AlertType.INFORMATION, "Đặt thành công");
-				Stage stage=(Stage)btn_timkiem.getScene().getWindow();
-				stage.close();
+				if(result) {
+					cart.getChildren().removeAll(cart.getChildren());
+					cartItems.clear();
+					number.set(0);
+					cost.set(0);
+					AlertBox.show(AlertType.INFORMATION, "Đặt thành công");
+					Stage stage=(Stage)btn_timkiem.getScene().getWindow();
+					stage.close();
+				}
+				else {
+					AlertBox.show(AlertType.ERROR, "Lỗi","Đặt thất bại");
+				}
 			}
 		});
 		
 	}
 
-	protected void xuLiMuaSanPham() {
+	protected boolean xuLiMuaSanPham() {
 		// TODO Auto-generated method stub
-		if(dsSanPham.size()==0)
-			return;
-		Connector<HoaDon> cHoaDon=new Connector<HoaDon>();
-		Connector<CTHD> cCTHD=new Connector<CTHD>();
-		List<HoaDon> dsHoaDon=cHoaDon.select(HoaDon.class, "select * from HOADON");
-		int index=0;
-		if(dsHoaDon.size()>0) {
-			index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
+		try {
+			if(dsSanPham.size()==0)
+				return false;
+			Connector<HoaDon> cHoaDon=new Connector<HoaDon>();
+			Connector<CTHD> cCTHD=new Connector<CTHD>();
+			List<HoaDon> dsHoaDon=cHoaDon.select(HoaDon.class, "select * from HOADON");
+			int index=0;
+			if(dsHoaDon.size()>0) {
+				index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
+			}
+			double tongTien=Double.parseDouble(SumCost.getText());
+			String maLichChieu=card.getLichChieu().getMaLichChieu();
+			cHoaDon.insert("insert into HOADON values('"+index+"', '"+LoginController.taikhoan.getMaTaiKhoan()+"', '"+maLichChieu+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
+			BookTicketController.dsSanPhamDaDat.clear();
+			for(CartItem ci:cartItems) {
+				int soLuong=ci.NumberProperty().get();
+				BookTicketController.dsSanPhamDaDat.add(new SanPhamDaDat(index,maLichChieu,ci.sp.getMaSanPham(), ci.sp.getTenSanPham(),soLuong));
+				cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+soLuong+"')");
+			}
+			return true;
 		}
-		double tongTien=Double.parseDouble(SumCost.getText());
-		String maLichChieu=card.getLichChieu().getMaLichChieu();
-		cHoaDon.insert("insert into HOADON values('"+index+"', '"+LoginController.taikhoan.getMaTaiKhoan()+"', '"+maLichChieu+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
-		BookTicketController.dsSanPhamDaDat.clear();
-		for(CartItem ci:cartItems) {
-			int soLuong=ci.NumberProperty().get();
-			BookTicketController.dsSanPhamDaDat.add(new SanPhamDaDat(index,maLichChieu,ci.sp.getMaSanPham(), ci.sp.getTenSanPham(),soLuong));
-			cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+soLuong+"')");
+		catch (Exception e) {
+			return false;
 		}
 	}
 

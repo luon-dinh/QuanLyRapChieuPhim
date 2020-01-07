@@ -309,6 +309,9 @@ public class ScheduleController implements Initializable {
     		}
     		else {
     			card.image.setOnMouseClicked(e->{
+    				if(LocalDate.parse(lcp.getNgayChieu()).compareTo(LocalDate.now())<0) {
+    					return;
+    				}
     				if (e.getButton() == MouseButton.PRIMARY) {
     					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", card);
         				bookTicket.Show();

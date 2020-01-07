@@ -43,13 +43,13 @@
                   </HBox>
                   <HBox layoutX="20.0" layoutY="27.0" spacing="4.0">
                      <children>
-                        <Label text="Ngày:" />
+                        <Label text="Ngày chiếu:" />
                         <Label fx:id="lb_ngay" text="Label" />
                      </children>
                   </HBox>
                   <HBox layoutX="20.0" layoutY="44.0" spacing="4.0">
                      <children>
-                        <Label text="Giờ:" />
+                        <Label text="Giờ chiếu:" />
                         <Label fx:id="lb_gio" text="Label" />
                      </children>
                   </HBox>
@@ -80,6 +80,11 @@
             </VBox>
          </children>
       </GridPane>
+      <Label>
+      <contextMenu>
+         <ContextMenu fx:id="contextMenu" />
+      </contextMenu>
+   </Label>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -124,7 +124,6 @@ public class AddNewMovieController implements Initializable {
 		FileChooser.ExtensionFilter filter = new ExtensionFilter("Image Files", "*.png", "*.jpg");
 		fileChooser.getExtensionFilters().add(filter);
 		f = fileChooser.showOpenDialog(stage);
-
 		if (f != null) {
 			try {
 				BufferedImage bimg = ImageIO.read(f);
@@ -144,9 +143,14 @@ public class AddNewMovieController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				xuLiThemPhim();
-				Stage stage = (Stage) btn_dongy.getScene().getWindow();
-				stage.close();
+				boolean result=xuLiThemPhim();
+				if(result) {
+					Stage stage = (Stage) btn_dongy.getScene().getWindow();
+					stage.close();
+				}
+				else {
+					AlertBox.show(AlertType.ERROR, "Lỗi","Thông tin nhập không đúng định dạng, vui lòng nhập lại!");
+				}
 			}
 		});
 
@@ -162,7 +166,7 @@ public class AddNewMovieController implements Initializable {
 
 	}
 
-	private void xuLiThemPhim() {
+	private boolean xuLiThemPhim() {
 		try {
 			Connector<Phim> c = new Connector<Phim>();
 			List<Phim> dsPhim = c.selectPhim("select * from PHIM");
@@ -211,8 +215,9 @@ public class AddNewMovieController implements Initializable {
 			for (String ma : maLoais) {
 				c.insert("insert into PHIM_LOAIPHIM values('" + maPhim + "','" + ma + "')");
 			}
+			return true;
 		} catch (Exception e) {
-			AlertBox.show(AlertType.ERROR, "Nhập sai");
+			return false;
 		}
 	}
 
