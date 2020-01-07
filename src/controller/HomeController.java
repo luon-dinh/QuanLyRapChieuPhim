@@ -16,19 +16,19 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// warring
-		if (MainController.menu.length > 10)
+		if (MainController.menu.size() > 10)
 			pane.addColumn(4, new Node[pane.getRowConstraints().size()]);
 
 		int r = pane.getRowConstraints().size();
 		int ignore = 0;
-		for (int i = 0; i < MainController.menu.length; i++) {
-			if (MainController.menu[i] == "Home") {
+		for (int i = 0; i < MainController.menu.size(); i++) {
+			if (MainController.menu.get(i).equals("Home")) {
 				ignore += 1;
 				continue;
 			}
 			int R = (i - ignore) % r;
 			int C = (i - ignore) / r;
-			pane.add(new HomeButton(MainController.menu[i]), R, C);
+			pane.add(new HomeButton(MainController.menu.get(i)), R, C);
 		}
 	}
 }

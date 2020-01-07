@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -48,6 +49,7 @@ public class RoomController implements Initializable {
 	@FXML
 	private TextField searchTextField;
 	@FXML private Button btn_timkiem, btn_refresh;
+	@FXML private Label lb_soluongphong;
 
 	private ArrayList<PhongChieuPhim> dsPhong = null;
 	private ObservableList<String> list = FXCollections.observableArrayList("Active", "Inactive");
@@ -129,7 +131,7 @@ public class RoomController implements Initializable {
 			card.menu.getItems().add(delete);
 			paneRoom.getChildren().add(card);
 		}
-
+		lb_soluongphong.setText(temp.size()+"");
 		paneRoom.prefWidthProperty().bind(root.widthProperty().subtract(20));
 	}
 

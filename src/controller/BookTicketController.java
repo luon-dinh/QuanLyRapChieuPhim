@@ -44,9 +44,6 @@ public class BookTicketController implements Initializable {
 		lb_tenphong.setText(card.room.getText());
 		List<Ghe_LichChieu> dsGhe_LichChieu=new Connector().select(Ghe_LichChieu.class, "select * from Ghe_LichChieu where MaLichChieu='"+card.getLichChieu().getMaLichChieu()+"'");
 		int chairs=Integer.parseInt(card.numberSeats.getText());
-//		if(chairs!=dsGhe_LichChieu.size()) {
-//			return;
-//		}
 		for (int i = 0; i < chairs; i++) {
 			int r = i / chairsPreRow;
 			int c = i % chairsPreRow;

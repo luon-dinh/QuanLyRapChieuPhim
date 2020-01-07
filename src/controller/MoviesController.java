@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -45,6 +46,7 @@ public class MoviesController implements Initializable {
     @FXML private FlowPane paneMovie;
     @FXML private TextField condition;
     @FXML private Button btn_refresh, btn_timkiem;
+    @FXML private Label lb_soluongphim;
     
     private AdvanceMenuFilterContent menuContent = new AdvanceMenuFilterContent();
     private ArrayList<Phim> dsPhim;
@@ -142,6 +144,8 @@ public class MoviesController implements Initializable {
 			card.menu.getItems().add(delete);
 			paneMovie.getChildren().add(card);
 		}
+		
+		lb_soluongphim.setText(temp.size()+"");
 		
 	}
 
