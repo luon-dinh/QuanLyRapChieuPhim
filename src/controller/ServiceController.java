@@ -13,6 +13,7 @@ import Model.HoaDon;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.SanPham;
+import controller.BookTicketController.SanPhamDaDat;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -38,11 +39,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
 import usercontrol.control.AddEditInfo;
 import usercontrol.control.CartItem;
+import usercontrol.control.MovieScheduleCard;
 import usercontrol.control.SellingCard;
 
 public class ServiceController implements Initializable {
@@ -60,9 +63,12 @@ public class ServiceController implements Initializable {
 	private ArrayList<SanPham> dsSanPham;
 	private IntegerProperty number = new SimpleIntegerProperty(0);
 	private IntegerProperty cost = new SimpleIntegerProperty(0);
+	private MovieScheduleCard card;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user"))
+			card=(MovieScheduleCard)MyWindows.lastStage.getUserData();
 		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
 			btn_themsanpham.setVisible(false);
 		}
@@ -150,6 +156,8 @@ public class ServiceController implements Initializable {
 				number.set(0);
 				cost.set(0);
 				AlertBox.show(AlertType.INFORMATION, "Đặt thành công");
+				Stage stage=(Stage)btn_timkiem.getScene().getWindow();
+				stage.close();
 			}
 		});
 		
@@ -167,9 +175,13 @@ public class ServiceController implements Initializable {
 			index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
 		}
 		double tongTien=Double.parseDouble(SumCost.getText());
-		cHoaDon.insert("insert into HOADON values('"+index+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
+		String maLichChieu=card.getLichChieu().getMaLichChieu();
+		cHoaDon.insert("insert into HOADON values('"+index+"', '"+LoginController.taikhoan.getMaTaiKhoan()+"', '"+maLichChieu+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
+		BookTicketController.dsSanPhamDaDat.clear();
 		for(CartItem ci:cartItems) {
-			cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+ci.NumberProperty().get()+"')");
+			int soLuong=ci.NumberProperty().get();
+			BookTicketController.dsSanPhamDaDat.add(new SanPhamDaDat(index,maLichChieu,ci.sp.getMaSanPham(), ci.sp.getTenSanPham(),soLuong));
+			cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+soLuong+"')");
 		}
 	}
 
@@ -288,8 +300,13 @@ public class ServiceController implements Initializable {
 				String tenSanPham=sua.Get("Tên sản phẩm").getText();
 				int gia=Integer.parseInt(sua.Get("Giá").getText());
 				String moTa=sua.Get("Mô tả").getText();
-				byte[] hinhAnh=Connector.convertFileToByte(sua.f);
-				new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', Gia='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
+				byte[] hinhAnh;
+				if(sua.f!=null) {
+					hinhAnh=Connector.convertFileToByte(sua.f);
+					new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', GiaSanPham='"+gia+"', MoTa='"+moTa+"', HinhAnh=? where MaSanPham='"+card.sp.getMaSanPham()+"'",hinhAnh);
+				}
+				else
+					new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', GiaSanPham='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
 				initial(null);
 			}
 			catch (Exception e){

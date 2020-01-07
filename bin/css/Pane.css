@@ -5,3 +5,7 @@
 	-fx-border-color: black;
 	-fx-padding: 5 5 5 5;
 }
+
+.pane:hover{
+	-fx-effect: dropshadow(three-pass-box, navy , 10, 0, 0, 0);
+}
