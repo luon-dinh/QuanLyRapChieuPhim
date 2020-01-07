@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Connector.Connector;
+import Model.KhachHang;
 import Model.NhanVien;
 import Model.NhanVien;
 import Model.Phim;
@@ -22,8 +23,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import plugin.AlertBox;
 import plugin.AutoCompleteComboBoxListener;
 import plugin.MyWindows;
@@ -35,6 +39,7 @@ public class StaffController implements Initializable {
 	private AddEditInfo edit = new AddEditInfo("Sửa nhân viên");
 	private List<NhanVien> nhanViens;
 	private ArrayList<TaiKhoan> dsTaiKhoan;
+	private ObservableList<NhanVien> dsNhanVien;
 	
 	@FXML TableView<NhanVien> table_nhanvien;
 	@FXML TableColumn<NhanVien, Integer> column_sothutu;
@@ -47,7 +52,8 @@ public class StaffController implements Initializable {
 	@FXML TableColumn<NhanVien, String> column_email;
 	@FXML TableColumn<NhanVien, String> column_sodienthoai;
 	@FXML TableColumn<NhanVien, String> column_ngayvaolam;
-	@FXML Button btn_xoa, btn_refresh, btn_them;
+	@FXML Button btn_xoa, btn_refresh, btn_them, btn_timkiem;
+	@FXML TextField txt_timkiem;
 	
 
 	@Override
@@ -65,6 +71,27 @@ public class StaffController implements Initializable {
 
 	private void addEvents() {
 	// TODO Auto-generated method stub
+		
+		btn_timkiem.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				xuLiTimKiemTheoTen();
+			}
+		});
+		
+		txt_timkiem.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getCode()==KeyCode.ENTER) {
+					xuLiTimKiemTheoTen();
+				}
+			}
+		});
+		
 		btn_xoa.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -85,7 +112,7 @@ public class StaffController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				loadTableNhanVien();
+				loadTableNhanVien(null);
 			}
 		});
 		
@@ -97,6 +124,32 @@ public class StaffController implements Initializable {
 				xuLiThemNhanVien();
 			}
 		});
+	}
+
+	protected void xuLiTimKiemTheoTen() {
+		// TODO Auto-generated method stub
+		String cond=txt_timkiem.getText().toLowerCase();
+		if(cond.equals("")) {
+			loadTableNhanVien(null);
+			return;
+		}
+		Connector<NhanVien> connection=new Connector<NhanVien>();
+		ArrayList<NhanVien> nhanvien=new ArrayList<NhanVien>();
+		nhanvien.addAll(connection.select(NhanVien.class, "select * from NHANVIEN"));
+		ObservableList<NhanVien> _nvs=FXCollections.observableArrayList();
+		ArrayList<NhanVien> temp=new ArrayList<NhanVien>();
+		temp.addAll(nhanvien);
+		int max_index=nhanvien.size();
+		for(int i=0;i<max_index;i++) {
+			NhanVien item=nhanvien.get(i);
+			String tenKhachHang=item.getHoTen().toLowerCase();
+			if(tenKhachHang.contains(cond)) {
+				continue;
+			}
+			temp.remove(item);
+		}
+		_nvs.addAll(temp);
+		table_nhanvien.setItems(_nvs);
 	}
 
 	protected void xuLiThemNhanVien() {
@@ -119,7 +172,7 @@ public class StaffController implements Initializable {
 				String soDienThoai=add.Get("Số điện thoại").getText();
 				String ngayVaoLam=add.getDatePicker("Ngày vào làm").getValue().toString();
 				new Connector().insert("insert into NHANVIEN values('"+maNhanVien+"','"+hoTen+"','"+ngaySinh+"','"+diaChi+"','"+gioiTinh+"','"+email+"','"+soDienThoai+"','"+ngayVaoLam+"','"+maTaiKhoan+"')");
-				loadTableNhanVien();
+				loadTableNhanVien(null);
 			}
 			catch (Exception e) {
 				// TODO: handle exception
@@ -143,8 +196,9 @@ public class StaffController implements Initializable {
 	
 	
 	public void initialize() {
+		dsNhanVien=FXCollections.observableArrayList();
 		inItTableKhachHang();
-		loadTableNhanVien();
+		loadTableNhanVien(null);
 		loadDanhSachTaiKhoan();
 		inItComboBoxMaTaiKhoan();
 	}
@@ -167,10 +221,14 @@ public class StaffController implements Initializable {
 		dsTaiKhoan.addAll(new Connector().select(TaiKhoan.class,"select * from TAIKHOAN"));
 	}
 
-	private void loadTableNhanVien() {
+	private void loadTableNhanVien(List<NhanVien> nvs) {
+		ArrayList<NhanVien> temp=new ArrayList<NhanVien>();
 		Connector<NhanVien> connection=new Connector<NhanVien>();
 		nhanViens=connection.select(NhanVien.class, "select * from NhanVien");
-		ObservableList<NhanVien> dsNhanVien=FXCollections.observableArrayList();
+		if(nvs!=null)
+			temp.addAll(nvs);
+		else
+			temp.addAll(nhanViens);
 		dsNhanVien.addAll(nhanViens);
 		table_nhanvien.setItems(dsNhanVien);
 	}

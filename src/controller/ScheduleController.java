@@ -312,6 +312,8 @@ public class ScheduleController implements Initializable {
 //    		card.contextMenu.getItems().add(edit);
     		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
     			card.contextMenu.getItems().add(delete);
+    		}
+    		else {
     			card.image.setOnMouseClicked(e->{
     				if (e.getButton() == MouseButton.PRIMARY) {
     					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", card);
