@@ -48,7 +48,7 @@ public class Phim {
 	private byte[] hinhAnh;
 
 	@DBTable(columnName = "Rating")
-	private float rating;
+	private double rating;
 
 	@DBTable(columnName = "NumberVote")
 	private int numberVote;
@@ -69,14 +69,18 @@ public class Phim {
 		this.numberVote = numberVote;
 	}
 
-	public float getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(float rating) {
-		this.rating = rating;
-	}
+//	public void setRating(float rating) {
+//		this.rating = rating;
+//	}
 
+	public void setRating(Number rating) {
+		this.rating = rating.floatValue();
+	}
+	
 	public String getMaPhim() {
 		return maPhim;
 	}

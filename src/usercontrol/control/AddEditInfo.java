@@ -27,6 +27,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,6 +56,7 @@ public class AddEditInfo {
 	private Scene scene;
 	private GridPane grid = new GridPane();
 	private HashMap<String, TextField> map = new HashMap<>();
+	private HashMap<String, TextArea> mapTextArea = new HashMap<>();
 	private HashMap<String, ComboBox> mapComboBox = new HashMap<>();
 	private HashMap<String, ImageView> mapImageView = new HashMap<>();
 	private HashMap<String, DatePicker> mapDatePicker = new HashMap<>();
@@ -211,6 +213,18 @@ public class AddEditInfo {
 		mapComboBox.put(content, comboBox);
 	}
 
+	public void AddTextArea(String content) {
+		grid.add(new Label(content), 0, sumSize);
+		TextArea textArea=new TextArea();
+		grid.add(textArea, 1, sumSize);
+		sumSize++;
+		mapTextArea.put(content, textArea);
+	}
+	
+	public TextArea getTextArea(String contentKey) {
+		return mapTextArea.get(contentKey);
+	}
+	
 	public void AddPasswordField(String content) {
 		grid.add(new Label(content), 0, sumSize);
 		PasswordField passwordField = new PasswordField();

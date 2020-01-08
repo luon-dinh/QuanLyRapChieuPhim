@@ -1,33 +1,46 @@
 package Model;
 
 public class GopY {
-
-	@DBTable(columnName = "MaGopY")
-	private String maGopY;
 	
-	@DBTable(columnName = "MaKhachHang")
-	private String maKhachHang;
+	@DBTable(columnName = "MaTaiKhoan")
+	private String maTaiKhoan;
+	
+	@DBTable(columnName = "MaPhim")
+	private String maPhim;
 	
 	@DBTable(columnName = "NoiDung")
 	private String noiDung;
 	
 	@DBTable(columnName = "NgayGopY")
 	private String ngayGopY;
-
-	public String getMaGopY() {
-		return maGopY;
+	
+	public GopY() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public void setMaGopY(String maGopY) {
-		this.maGopY = maGopY;
+	public GopY(String maTaiKhoan, String maPhim, String noiDung, String ngayGopY) {
+		super();
+		this.maTaiKhoan = maTaiKhoan;
+		this.maPhim = maPhim;
+		this.noiDung = noiDung;
+		this.ngayGopY = ngayGopY;
 	}
 
-	public String getMaKhachHang() {
-		return maKhachHang;
+	public String getMaTaiKhoan() {
+		return maTaiKhoan;
 	}
 
-	public void setMaKhachHang(String maKhachHang) {
-		this.maKhachHang = maKhachHang;
+	public void setMaTaiKhoan(String maTaiKhoan) {
+		this.maTaiKhoan = maTaiKhoan;
+	}
+
+	public String getMaPhim() {
+		return maPhim;
+	}
+
+	public void setMaPhim(String maPhim) {
+		this.maPhim = maPhim;
 	}
 
 	public String getNoiDung() {
@@ -46,16 +59,4 @@ public class GopY {
 		this.ngayGopY = ngayGopY;
 	}
 
-	public GopY(String maGopY, String maKhachHang, String noiDung, String ngayGopY) {
-		super();
-		this.maGopY = maGopY;
-		this.maKhachHang = maKhachHang;
-		this.noiDung = noiDung;
-		this.ngayGopY = ngayGopY;
-	}
-
-	public GopY() {
-		super();
-	}
-	
 }

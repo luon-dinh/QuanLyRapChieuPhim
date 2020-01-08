@@ -10,6 +10,7 @@ import Connector.Connector;
 import Model.CTHD;
 import Model.Ghe_LichChieu;
 import Model.HoaDon;
+import Model.LichChieuPhim;
 import Model.Phim;
 import Model.VeXemPhim;
 import javafx.event.ActionEvent;
@@ -86,11 +87,30 @@ public class HistoryController implements Initializable {
 
 	protected void xuLiTimKiem() {
 		// TODO Auto-generated method stub
-		
+		String cond=searchTextField.getText().toLowerCase();
+		List<VeXemPhim> temp=new Connector<VeXemPhim>().select(VeXemPhim.class ,  "select * from VEXEMPHIM where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"'");
+		ArrayList<VeXemPhim> temp1=new ArrayList<VeXemPhim>();
+		temp1.addAll(temp);
+		for(VeXemPhim vxp:temp) {
+			String maLichChieu=vxp.getMaLichChieu();
+			List<LichChieuPhim> dsLichChieu=new Connector<LichChieuPhim>().select(LichChieuPhim.class, "select * from LICHCHIEUPHIM where MaLichChieu='"+maLichChieu+"'");
+			if(dsLichChieu.size()>0) {
+				String maPhim=dsLichChieu.get(0).getMaPhim();
+				List<Phim> dsPhim=new Connector<Phim>().select(Phim.class, "select * from PHIM where MaPhim='"+maPhim+"'");
+				if(dsPhim.size()>0)
+				{
+					if(!dsPhim.get(0).getTenPhim().toLowerCase().contains(cond)) {
+						temp1.remove(vxp);
+					}
+				}
+			}
+		}
+		loadThongTin(temp1);
 	}
 
-	private void loadThongTin(List<VeXemPhim> vxps) {
+	private void loadThongTin(ArrayList<VeXemPhim> vxps) {
 		// TODO Auto-generated method stub
+		paneHistory.getChildren().clear();
 		ArrayList<VeXemPhim> temp=new ArrayList<VeXemPhim>();
 		if(vxps!=null)
 			temp.addAll(vxps);

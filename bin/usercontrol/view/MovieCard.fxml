@@ -35,6 +35,7 @@
                   <RowConstraints />
                   <RowConstraints minHeight="35.0" vgrow="SOMETIMES" />
                   <RowConstraints />
+                  <RowConstraints />
               </rowConstraints>
                <children>
                   <Text fx:id="title" strokeType="OUTSIDE" strokeWidth="0.0" text="Tên phim - Năm" wrappingWidth="250.0" />
@@ -49,12 +50,28 @@
                      </children>
                   </FlowPane>
                   <Text fx:id="length" strokeType="OUTSIDE" strokeWidth="0.0" text="Thời lượng: " wrappingWidth="250.0" GridPane.rowIndex="3" />
-                  <ScrollPane styleClass="scrollpane" stylesheets="@../../css/Scrollpane.css" GridPane.rowIndex="4">
+                  <ScrollPane hbarPolicy="NEVER" styleClass="scrollpane" stylesheets="@../../css/Scrollpane.css" GridPane.rowIndex="4">
                      <content>
-                        <Text fx:id="sumary" strokeType="OUTSIDE" strokeWidth="0.0" text="Tóm tắt" wrappingWidth="250.0" />
+                        <Text fx:id="sumary" strokeType="OUTSIDE" strokeWidth="0.0" text="Tóm tắt" wrappingWidth="230.0" />
                      </content>
                   </ScrollPane>
-                  <BorderPane fx:id="ratting" GridPane.rowIndex="5" />
+                  <BorderPane fx:id="ratting" GridPane.rowIndex="5">
+                     </BorderPane>
+                  <BorderPane GridPane.rowIndex="6">
+                     <right>
+                        <Button fx:id="btn_gopy" mnemonicParsing="false" text="Góp ý" BorderPane.alignment="CENTER" />
+                     </right>
+                     <center>
+                        <ScrollPane hbarPolicy="NEVER" prefViewportHeight="17.0" styleClass="scrollpane" stylesheets="@../../css/Scrollpane.css">
+                           <content>
+                              <Label fx:id="lb_gopy" wrapText="true" BorderPane.alignment="CENTER" />
+                           </content>
+                           <BorderPane.margin>
+                              <Insets right="10.0" />
+                           </BorderPane.margin>
+                        </ScrollPane>
+                     </center>
+                  </BorderPane>
                </children>
                <GridPane.margin>
                   <Insets left="5.0" />

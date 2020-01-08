@@ -183,10 +183,11 @@ public class MoviesController implements Initializable {
 					new Connector<Phim>().update("update PHIM set TenPhim='"+tenPhim+"', TenNuocSanXuat='"+nuocSanXuat+"', NamSanXuat='"+namSanXuat+"', TenDaoDien='"+daoDien+"', ThoiLuong='"+thoiLuong+"', MoTa='"+moTa+"' where MaPhim='"+p.getMaPhim()+"'");
 				}
 				initial(null);
+				AlertBox.show(AlertType.INFORMATION, "Thông báo", "Cập nhật thành công!");
 			}
 			catch (Exception e) {
 				// TODO: handle exception
-				AlertBox.show(AlertType.WARNING, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin");
+				AlertBox.show(AlertType.WARNING, "Lỗi", "Nhập sai định dạng, vui lòng nhập lại!");
 			}
 		}
 	}
