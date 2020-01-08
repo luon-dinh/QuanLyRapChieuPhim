@@ -49,17 +49,28 @@ import plugin.SceneController;
 import usercontrol.control.Chip;
 
 public class AddNewMovieController implements Initializable {
-	@FXML private BorderPane addNewMovie_borderPane;
-	@FXML private ImageView image;
-	@FXML private TextField name;
-	@FXML private TextField year;
-	@FXML private FlowPane genre;
-	@FXML private ComboBox<String> newGenre;
-	@FXML private TextField director;
-	@FXML private TextField during;
-	@FXML private TextField nuocsanxuat;
-	@FXML private TextArea summary;
-	@FXML private Button btn_dongy, btn_huy;
+	@FXML
+	private BorderPane addNewMovie_borderPane;
+	@FXML
+	private ImageView image;
+	@FXML
+	private TextField name;
+	@FXML
+	private TextField year;
+	@FXML
+	private FlowPane genre;
+	@FXML
+	private ComboBox<String> newGenre;
+	@FXML
+	private TextField director;
+	@FXML
+	private TextField during;
+	@FXML
+	private TextField nuocsanxuat;
+	@FXML
+	private TextArea summary;
+	@FXML
+	private Button btn_dongy, btn_huy;
 
 	ObservableList<String> list = FXCollections.observableArrayList();
 	ArrayList<LoaiPhim> dsLoaiPhim = new ArrayList<LoaiPhim>();
@@ -88,31 +99,31 @@ public class AddNewMovieController implements Initializable {
 		});
 		newGenre.setItems(loais);
 		newGenre.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent t) {
-            	if(t.getCode()==KeyCode.ENTER) {
-                   Chip chip = new Chip(newGenre.getValue());
-            	   chip.setOnMouseClickedDelete(e -> {
-            		   genre.getChildren().remove(chip);
-            	   });
-            	   genre.getChildren().add(chip);
-            	}
-            }
-        });
+			@Override
+			public void handle(KeyEvent t) {
+				if (t.getCode() == KeyCode.ENTER) {
+					Chip chip = new Chip(newGenre.getValue());
+					chip.setOnMouseClickedDelete(e -> {
+						genre.getChildren().remove(chip);
+					});
+					genre.getChildren().add(chip);
+				}
+			}
+		});
 		new AutoCompleteComboBoxListener<String>(newGenre);
 	}
 
 	protected void xuLiThemLoaiPhim(String loai) {
 		// TODO Auto-generated method stub
-		Connector<LoaiPhim> c=new Connector<LoaiPhim>();
+		Connector<LoaiPhim> c = new Connector<LoaiPhim>();
 		dsLoaiPhim.clear();
 		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
-		int lenght=dsLoaiPhim.size();
-		String maLoai=dsLoaiPhim.get(lenght-1).getMaLoai();
-		int index=Integer.parseInt(maLoai.substring(2,maLoai.length()))+1;
-		String ma="LP"+index;
-		dsLoaiPhim.add(new LoaiPhim("LP"+index,loai,"Mô tả"));
-		c.insert("insert into LOAIPHIM values('"+ma+"','"+loai+"','Mô tả')");
+		int lenght = dsLoaiPhim.size();
+		String maLoai = dsLoaiPhim.get(lenght - 1).getMaLoai();
+		int index = Integer.parseInt(maLoai.substring(2, maLoai.length())) + 1;
+		String ma = "LP" + index;
+		dsLoaiPhim.add(new LoaiPhim("LP" + index, loai, "Mô tả"));
+		c.insert("insert into LOAIPHIM values('" + ma + "','" + loai + "','Mô tả')");
 		dsLoaiPhim.clear();
 		dsLoaiPhim.addAll(c.select(LoaiPhim.class, "select * from LOAIPHIM"));
 	}
@@ -124,7 +135,6 @@ public class AddNewMovieController implements Initializable {
 		FileChooser.ExtensionFilter filter = new ExtensionFilter("Image Files", "*.png", "*.jpg");
 		fileChooser.getExtensionFilters().add(filter);
 		f = fileChooser.showOpenDialog(stage);
-
 		if (f != null) {
 			try {
 				BufferedImage bimg = ImageIO.read(f);
@@ -144,8 +154,9 @@ public class AddNewMovieController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+
 				xuLiThemPhim();
-			
+
 			}
 		});
 
@@ -161,7 +172,7 @@ public class AddNewMovieController implements Initializable {
 
 	}
 
-	private void xuLiThemPhim() {
+	private boolean xuLiThemPhim() {
 		try {
 			Connector<Phim> c = new Connector<Phim>();
 			List<Phim> dsPhim = c.selectPhim("select * from PHIM");
@@ -182,40 +193,47 @@ public class AddNewMovieController implements Initializable {
 			if (f != null) {
 				hinhAnh = Connector.convertFileToByte(f);
 			}
-			c.insert("insert into PHIM values('"+maPhim+"','"+tenPhim+"','"+nuocSanXuat+"','"+namSanXuat+"','"+thoiLuong+"','"+daoDien+"','"+tomTat+"',?, '"+0.0f+"','"+0+"')",hinhAnh);
+			c.insert(
+					"insert into PHIM values('" + maPhim + "','" + tenPhim + "','" + nuocSanXuat + "','" + namSanXuat
+							+ "','" + thoiLuong + "','" + daoDien + "','" + tomTat + "',?, '" + 0.0f + "','" + 0 + "')",
+					hinhAnh);
 			ArrayList<String> maLoais = new ArrayList<String>();
 			int max = genre.getChildren().size();
 			for (int i = 0; i < max; i++) {
 				Chip l = (Chip) genre.getChildren().get(i);
 				String tl = l.getTextProperty().get();
-				boolean has=false;
+				boolean has = false;
 				for (int j = 0; j < dsLoaiPhim.size(); j++) {
 					LoaiPhim lp = dsLoaiPhim.get(j);
 					if (lp.getTenLoai().equalsIgnoreCase(tl)) {
-						has=true;
+						has = true;
 						if (!maLoais.contains(tl)) {
 							maLoais.add(lp.getMaLoai());
 						}
 					}
 				}
-				if(!has) {
-					String ml=dsLoaiPhim.get(dsLoaiPhim.size()-1).getMaLoai();
-					int lenght=ml.length();
-					int indexMaPhim=Integer.parseInt(ml.substring(2, lenght));
-					String mlp="MP"+indexMaPhim;
-					new Connector<LoaiPhim>().insert("insert into LOAIPHIM values('"+mlp+"', '"+tl+"','Mô tả')");
+				if (!has) {
+					String ml = dsLoaiPhim.get(dsLoaiPhim.size() - 1).getMaLoai();
+					int lenght = ml.length();
+					int indexMaPhim = Integer.parseInt(ml.substring(2, lenght));
+					String mlp = "MP" + indexMaPhim;
+					new Connector<LoaiPhim>()
+							.insert("insert into LOAIPHIM values('" + mlp + "', '" + tl + "','Mô tả')");
 					maLoais.add(mlp);
 				}
-				
+
 			}
 			for (String ma : maLoais) {
 				c.insert("insert into PHIM_LOAIPHIM values('" + maPhim + "','" + ma + "')");
 			}
+
 			Stage stage = (Stage) btn_dongy.getScene().getWindow();
 			stage.close();
-			AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm phim thành công!");
+			AlertBox.show(AlertType.INFORMATION, "Thành công", "", "Thêm phim thành công!");
+			return true;
 		} catch (Exception e) {
-			AlertBox.show(AlertType.ERROR, "Nhập sai","","Vui lòng kiểm tra và nhập lại!");
+			AlertBox.show(AlertType.ERROR, "Nhập sai", "", "Vui lòng kiểm tra và nhập lại!");
+			return false;
 		}
 	}
 

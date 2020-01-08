@@ -39,28 +39,42 @@
          <children>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox>
+                  <Pane>
                      <children>
-                        <Label text="Phòng: " />
-                        <Label fx:id="lb_tenphong" text="Tên phòng" />
+                        <HBox>
+                           <children>
+                              <Label text="Số lượng vé: " />
+                              <Label fx:id="ticketCounter" text="Số lượng" />
+                           </children>
+                        </HBox>
+                        <HBox layoutY="34.0">
+                           <children>
+                              <Label text="Thành tiền: " />
+                              <Label fx:id="lb_sotien" text="Số tiền" />
+                           </children>
+                        </HBox>
+                        <HBox layoutY="17.0">
+                           <children>
+                              <Label text="Phòng: " />
+                              <Label fx:id="lb_tenphong" text="Tên phòng" />
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Số lượng vé: " />
-                        <Label fx:id="ticketCounter" text="Số lượng" />
-                     </children>
-                  </HBox>
-                  <HBox>
-                     <children>
-                        <Label text="Thành tiền: " />
-                        <Label fx:id="lb_sotien" text="Số tiền" />
-                     </children>
-                  </HBox>
+                  </Pane>
+                  <MenuButton fx:id="mn_doandadat" mnemonicParsing="false" stylesheets="@../css/MenuButton.css" text="Đồ ăn đã đặt (0)">
+                     <items>
+                        <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
+                           <content>
+                              <VBox fx:id="cb_doandadat" spacing="10.0" />
+                           </content>
+                        </CustomMenuItem>
+                     </items>
+                  </MenuButton>
                </children>
             </VBox>
             <HBox spacing="10.0" stylesheets="@../css/button.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
+                  <Button fx:id="btn_muadoanvat" mnemonicParsing="false" text="Mua đồ ăn vặt" />
                   <Button fx:id="btn_dongy" mnemonicParsing="false" text="Thanh toán" />
                   <Button fx:id="btn_huy" mnemonicParsing="false" text="Hủy" />
                </children>

@@ -23,7 +23,7 @@ public class MyWindows {
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.initModality(Modality.WINDOW_MODAL);
-		stage.setResizable(false);
+		stage.setResizable(true);
 		stage.initOwner(SceneController.GetInstance().getCurrentStage());
 		stage.getIcons().add(ImagesControler.getInstance().tryGetImage("ApplicationIcon"));
 		stage.setUserData(userData);

@@ -37,6 +37,7 @@ public class CustomerController implements Initializable {
 	private AddEditInfo edit = new AddEditInfo("Sửa khách hàng");
 	private List<KhachHang> khs;
 	private ArrayList<TaiKhoan> dsTaiKhoan;
+	private ObservableList<KhachHang> dsKhachHang;
 	
 	@FXML TableView<KhachHang> table_khachhang;
 	@FXML TableColumn<KhachHang, Integer> column_sothutu;
@@ -51,6 +52,7 @@ public class CustomerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		dsKhachHang=FXCollections.observableArrayList();
 		initControls();
 		initialize();
 		addEvents();
@@ -114,19 +116,28 @@ public class CustomerController implements Initializable {
 	}
 
 	protected void xuLiTimKiemTheoTen() {
-		// TODO Auto-generated method stub
-		List<KhachHang> temp=khs;
 		String cond=txt_timkiem.getText().toLowerCase();
 		if(cond.equals("")) {
-			loadTableKhachHang(null);	
+			loadTableKhachHang(null);
+			return;
 		}
-		for(KhachHang kh:temp) {
-			String hoTen=kh.getHoTen();
-			if(hoTen==null||(!hoTen.toLowerCase().contains(cond))) {
-				temp.remove(kh);
+		Connector<KhachHang> connection=new Connector<KhachHang>();
+		ArrayList<KhachHang> danhsach=new ArrayList<KhachHang>();
+		danhsach.addAll(connection.select(KhachHang.class, "select * from KHACHHANG"));
+		ObservableList<KhachHang> _khs=FXCollections.observableArrayList();
+		int max_index=danhsach.size();
+		ArrayList<KhachHang> temp=new ArrayList<KhachHang>();
+		temp.addAll(danhsach);
+		for(int i=0;i<max_index;i++) {
+			KhachHang item=danhsach.get(i);
+			String tenKhachHang=item.getHoTen().toLowerCase();
+			if(tenKhachHang.contains(cond)) {
+				continue;
 			}
+			temp.remove(item);
 		}
-		loadTableKhachHang(temp);
+		_khs.addAll(temp);
+		table_khachhang.setItems(_khs);
 	}
 
 	private void inItTableKhachHang() {
@@ -169,14 +180,14 @@ public class CustomerController implements Initializable {
 		
 		Connector<KhachHang> connection=new Connector<KhachHang>();
 		khs=connection.select(KhachHang.class, "select * from KHACHHANG");
-		List<KhachHang> temp;
+		ArrayList<KhachHang> temp=new ArrayList<KhachHang>();
 		if(_khs==null) {
-			temp=khs;
+			temp.addAll(khs);
 		}
 		else {
-			temp=_khs;
+			temp.addAll(_khs);
 		}
-		ObservableList<KhachHang> dsKhachHang=FXCollections.observableArrayList();
+		dsKhachHang.clear();
 		dsKhachHang.addAll(temp);
 		table_khachhang.setItems(dsKhachHang);
 	}

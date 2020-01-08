@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Connector.Connector;
 import Model.Ghe;
+import Model.Ghe_LichChieu;
 import Model.LichChieuPhim;
 import Model.LoaiPhim;
 import Model.Phim;
@@ -164,6 +165,7 @@ public class AddMovieToScheduleController implements Initializable{
 				if(result.get()==ButtonType.YES) {
 					new Connector<Phim>().delete("delete from PHIM where MaPhim='"+p.getMaPhim()+"'");
 					paneMovie.getChildren().remove(card);
+					AlertBox.show(AlertType.INFORMATION,"Thành công","", "Xoá phim thành công!");
 				}
 			});
 //			card.menu.getItems().add(edit);
@@ -200,7 +202,7 @@ public class AddMovieToScheduleController implements Initializable{
 				if(dsPhong.size()>0) {
 					int maxSoGhe=dsPhong.get(dsPhong.size()-1).getSoGhe();
 					if(soGhe>maxSoGhe) {
-						AlertBox.show(AlertType.ERROR, "Số vé nhiều hơn số ghế hiện có của phòng!");
+						AlertBox.show(AlertType.ERROR,"Lỗi","", "Số vé nhiều hơn số ghế hiện có của phòng!");
 						return;
 					}
 				}
@@ -210,13 +212,13 @@ public class AddMovieToScheduleController implements Initializable{
 				card.setGioBatDau(time);
 				//xử lí thêm lịch chiếu phim
 				xuLiThemLichChieuPhim(card);
+			
 			}
 			catch (Exception e) {
 				// TODO: handle exception
 				AlertBox.show(AlertType.ERROR,"Nhập sai","", "Vui lòng kiểm tra lại thông tin!");
 			}
 			finally {
-				MyWindows.lastStage.close();
 			}
 		}
 	}
@@ -224,20 +226,27 @@ public class AddMovieToScheduleController implements Initializable{
 
 	private void xuLiThemLichChieuPhim(MovieCard card) {
 		// TODO Auto-generated method stub
-		ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
-		Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
-		dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM"));
-		List<Ghe> dsGhe=new Connector().select(Ghe.class, "select * from Ghe where MaPhong='"+ScheduleController.phong.getMaPhong()+"'");
-		int index=0;
-		if(dsLichChieu.size()>0) {
-			String maLichChieu=dsLichChieu.get(dsLichChieu.size()-1).getMaLichChieu();
-			index=Integer.parseInt(maLichChieu.substring(2,maLichChieu.length()));
+		try {
+			ArrayList<LichChieuPhim> dsLichChieu=new ArrayList<LichChieuPhim>();
+			Connector<LichChieuPhim> c=new Connector<LichChieuPhim>();
+			dsLichChieu.addAll(c.select(LichChieuPhim.class, "select * from LICHCHIEUPHIM"));
+			List<Ghe> dsGhe=new Connector<Ghe>().select(Ghe.class, "select * from GHE where MaPhong='"+ScheduleController.phong.getMaPhong()+"'");
+			int index=0;
+			if(dsLichChieu.size()>0) {
+				String maLichChieu=dsLichChieu.get(dsLichChieu.size()-1).getMaLichChieu();
+				index=Integer.parseInt(maLichChieu.substring(2,maLichChieu.length()));
+			}
+			String maLichChieu="LC"+(index+1);
+			c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
+			for(Ghe ghe:dsGhe) {
+				new Connector<Ghe_LichChieu>().insert("insert into GHE_LICHCHIEU values('"+ghe.getMaGhe()+"','"+maLichChieu+"','"+1+"','"+(-1)+"')");
+			}
+			MyWindows.lastStage.close();
+			AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm lịch chiếu phim thành công!");
 		}
-		String maLichChieu="LC"+(index+1);
-		c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
-		for(Ghe ghe:dsGhe) {
-			new Connector().insert("insert into GHE_LICHCHIEU values('"+ghe.getMaGhe()+"','"+maLichChieu+"','"+1+"')");
+		catch (Exception e) {
+			AlertBox.show(AlertType.ERROR, "Lỗi","", "Thông tin không đúng định dạng, vui lòng nhập lại!");
 		}
-		AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm lịch chiếu phim thành công!");
+		
 	}
 }

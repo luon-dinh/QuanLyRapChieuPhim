@@ -2,6 +2,7 @@ package usercontrol.control;
 
 import java.io.IOException;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ public class Chip extends HBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		content.styleProperty().bind(Bindings.when(content.hoverProperty()).then("-fx-text-fill: black").otherwise("-fx-text-fill: black"));
     }
     
 	public Chip() {

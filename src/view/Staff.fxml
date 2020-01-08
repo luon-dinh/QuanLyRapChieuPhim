@@ -15,23 +15,25 @@
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StaffController">
    <children>
       <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <bottom>
-            <AnchorPane stylesheets="@../css/button.css" BorderPane.alignment="CENTER">
+      	
+      	<top>
+            <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <HBox AnchorPane.leftAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.leftAnchor="0.0">
                      <children>
-                        <Button fx:id="btn_them" mnemonicParsing="false" text="Thêm" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0" AnchorPane.rightAnchor="0.0">
-                     <children>
+                        <TextField fx:id="txt_timkiem" styleClass="textField" stylesheets="@../css/SearchTextField.css" />
+                        <Button fx:id="btn_timkiem" mnemonicParsing="false" text="Tìm kiếm" />
                         <Button fx:id="btn_refresh" mnemonicParsing="false" text="Refresh" />
-                        <Button fx:id="btn_xoa" mnemonicParsing="false" text="Xóa" />
                      </children>
                   </HBox>
+                  <Button fx:id="btn_them" mnemonicParsing="false" text="Thêm" AnchorPane.rightAnchor="50.0" />
+                  <Button fx:id="btn_xoa" mnemonicParsing="false" text="Xóa" AnchorPane.rightAnchor="0.0" />
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+               </BorderPane.margin>
             </AnchorPane>
-         </bottom>
+         </top>
          <center>
             <TableView fx:id="table_nhanvien" layoutX="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
               <columns>

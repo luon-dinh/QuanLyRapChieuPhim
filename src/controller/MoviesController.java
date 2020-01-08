@@ -141,8 +141,10 @@ public class MoviesController implements Initializable {
 					AlertBox.show(AlertType.INFORMATION, "Thành công", "", "Xoá phim thành công!");
 				}
 			});
-			card.menu.getItems().add(edit);
-			card.menu.getItems().add(delete);
+			if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
+				card.menu.getItems().add(edit);
+				card.menu.getItems().add(delete);
+			}
 			paneMovie.getChildren().add(card);
 		}
 		

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root prefHeight="260.0" prefWidth="400.0" styleClass="pane" stylesheets="@../../css/Pane.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="image" fitHeight="250.0" fitWidth="180.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../../src/images/ExampleImage.png" />
+               </image>
+            </ImageView>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <children>
+                  <HBox spacing="4.0">
+                     <children>
+                        <Label text="Tên phim:" />
+                        <Label fx:id="lb_tenphim" text="Label" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="20.0" layoutY="10.0" spacing="4.0">
+                     <children>
+                        <Label text="Số vé đã đặt:" />
+                        <Label fx:id="lb_sovedadat" text="Label" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="20.0" layoutY="27.0" spacing="4.0">
+                     <children>
+                        <Label text="Ngày chiếu:" />
+                        <Label fx:id="lb_ngay" text="Label" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="20.0" layoutY="44.0" spacing="4.0">
+                     <children>
+                        <Label text="Giờ chiếu:" />
+                        <Label fx:id="lb_gio" text="Label" />
+                     </children>
+                  </HBox>
+                  <Label text="Danh sách các món ăn đã đặt:" />
+                  <HBox spacing="4.0">
+                     <children>
+                        <Label text="Tên món">
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin></Label>
+                        <Label text="Số lượng">
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin></Label>
+                     </children>
+                  </HBox>
+                  <ScrollPane hbarPolicy="NEVER" styleClass="scrollpane" stylesheets="@../../css/Scrollpane.css" VBox.vgrow="ALWAYS">
+                     <content>
+                        <HBox spacing="4.0">
+                           <children>
+                              <VBox fx:id="vb_tenmon" spacing="4.0" />
+                              <VBox fx:id="vb_soluong" spacing="4.0" />
+                           </children>
+                        </HBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+      <Label>
+      <contextMenu>
+         <ContextMenu fx:id="contextMenu" />
+      </contextMenu>
+   </Label>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</fx:root>

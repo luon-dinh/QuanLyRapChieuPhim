@@ -41,6 +41,9 @@ public final class Helper {
 		
 		HomeMenuInfo.put("Staff","Nhân viên");
 		HomeMenuDescription.put("Staff","Xem, quản lí danh sách nhân viên");
+		
+		HomeMenuInfo.put("History","Lịch sử đặt vé");
+		HomeMenuDescription.put("History","Xem thông tin các vé đã đặt");
 	}
 	
 	public static HashMap<String, String> HomeMenuInfo = new HashMap<>();

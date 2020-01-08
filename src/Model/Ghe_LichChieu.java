@@ -2,18 +2,6 @@ package Model;
 
 public class Ghe_LichChieu {
 	
-	public Ghe_LichChieu(int maGhe, String maLichChieu, int trangThai) {
-		super();
-		this.maGhe = maGhe;
-		this.maLichChieu = maLichChieu;
-		this.trangThai = trangThai;
-	}
-
-	public Ghe_LichChieu() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	@DBTable(columnName = "MaGhe")
 	private int maGhe;
 	
@@ -22,6 +10,30 @@ public class Ghe_LichChieu {
 	
 	@DBTable(columnName = "TrangThai")
 	private int trangThai;
+	
+	@DBTable(columnName = "MaVe")
+	private int maVe;
+
+	public Ghe_LichChieu() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Ghe_LichChieu(int maGhe, String maLichChieu, int trangThai, int maVe) {
+		super();
+		this.maGhe = maGhe;
+		this.maLichChieu = maLichChieu;
+		this.trangThai = trangThai;
+		this.maVe = maVe;
+	}
+
+	public int getMaVe() {
+		return maVe;
+	}
+
+	public void setMaVe(int maVe) {
+		this.maVe = maVe;
+	}
 
 	public int getTrangThai() {
 		return trangThai;

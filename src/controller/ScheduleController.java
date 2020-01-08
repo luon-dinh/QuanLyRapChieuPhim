@@ -187,12 +187,6 @@ public class ScheduleController implements Initializable {
 					// TODO Auto-generated method stub
 					try{
 						datePicker.setValue(LocalDate.parse(labels.get(j).getText()));
-//						labels.get(j).setTextFill(Color.ORANGERED);
-//						for(int i=0;i<7;i++) {
-//							if(i==j)
-//								continue;
-//							labels.get(i).setTextFill(Color.BLACK);
-//						}
 						for(int i=0;i<7;i++) {
 							btns.get(i).styleProperty().set("");
 						}
@@ -313,7 +307,12 @@ public class ScheduleController implements Initializable {
 //    		card.contextMenu.getItems().add(edit);
     		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
     			card.contextMenu.getItems().add(delete);
+    		}
+    		else {
     			card.image.setOnMouseClicked(e->{
+    				if(LocalDate.parse(lcp.getNgayChieu()).compareTo(LocalDate.now())<0) {
+    					return;
+    				}
     				if (e.getButton() == MouseButton.PRIMARY) {
     					MyWindows bookTicket = new MyWindows("../view/BookTicket.fxml", card);
         				bookTicket.Show();

@@ -11,16 +11,42 @@ public class HoaDon {
 	@DBTable(columnName = "NgayDat")
 	private String ngayDat;
 	
-	public HoaDon(int maHoaDon, double tongTien, String ngayDat) {
-		super();
-		this.maHoaDon = maHoaDon;
-		this.tongTien = tongTien;
-		this.ngayDat = ngayDat;
-	}
+	@DBTable(columnName = "MaLichChieu")
+	private String maLichChieu;
+	
+	@DBTable(columnName = "MaTaiKhoan")
+	private String maTaiKhoan;
+	
+
 
 	public HoaDon() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public HoaDon(int maHoaDon, double tongTien, String ngayDat, String maLichChieu, String maTaiKhoan) {
+		super();
+		this.maHoaDon = maHoaDon;
+		this.tongTien = tongTien;
+		this.ngayDat = ngayDat;
+		this.maLichChieu = maLichChieu;
+		this.maTaiKhoan = maTaiKhoan;
+	}
+	
+	public String getMaTaiKhoan() {
+		return maTaiKhoan;
+	}
+
+	public void setMaTaiKhoan(String maTaiKhoan) {
+		this.maTaiKhoan = maTaiKhoan;
+	}
+
+	public String getMaLichChieu() {
+		return maLichChieu;
+	}
+
+	public void setMaLichChieu(String maLichChieu) {
+		this.maLichChieu = maLichChieu;
 	}
 
 	public int getMaHoaDon() {

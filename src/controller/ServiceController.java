@@ -13,6 +13,7 @@ import Model.HoaDon;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
 import Model.SanPham;
+import controller.BookTicketController.SanPhamDaDat;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -38,11 +39,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import plugin.AlertBox;
 import plugin.MyWindows;
 import plugin.AlertBox.MyButtonType;
 import usercontrol.control.AddEditInfo;
 import usercontrol.control.CartItem;
+import usercontrol.control.MovieScheduleCard;
 import usercontrol.control.SellingCard;
 
 public class ServiceController implements Initializable {
@@ -60,9 +63,12 @@ public class ServiceController implements Initializable {
 	private ArrayList<SanPham> dsSanPham;
 	private IntegerProperty number = new SimpleIntegerProperty(0);
 	private IntegerProperty cost = new SimpleIntegerProperty(0);
+	private MovieScheduleCard card;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user"))
+			card=(MovieScheduleCard)MyWindows.lastStage.getUserData();
 		if(LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
 			btn_themsanpham.setVisible(false);
 		}
@@ -143,33 +149,51 @@ public class ServiceController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				xuLiMuaSanPham();
+				boolean result=xuLiMuaSanPham();
 				//xóa danh sách đã chọn, reset lại thông tin 
-				cart.getChildren().removeAll(cart.getChildren());
-				cartItems.clear();
-				number.set(0);
-				cost.set(0);
-				AlertBox.show(AlertType.INFORMATION, "Thành công","","Đặt thành công!");
+
+				if(result) {
+					cart.getChildren().removeAll(cart.getChildren());
+					cartItems.clear();
+					number.set(0);
+					cost.set(0);
+					AlertBox.show(AlertType.INFORMATION,"Thành công","", "Đặt sản phẩm thành công!");
+					Stage stage=(Stage)btn_timkiem.getScene().getWindow();
+					stage.close();
+				}
+				else {
+					AlertBox.show(AlertType.ERROR, "Lỗi","","Đặt sản phẩm thất bại");
+				}
 			}
 		});
 		
 	}
 
-	protected void xuLiMuaSanPham() {
+	protected boolean xuLiMuaSanPham() {
 		// TODO Auto-generated method stub
-		if(dsSanPham.size()==0)
-			return;
-		Connector<HoaDon> cHoaDon=new Connector<HoaDon>();
-		Connector<CTHD> cCTHD=new Connector<CTHD>();
-		List<HoaDon> dsHoaDon=cHoaDon.select(HoaDon.class, "select * from HOADON");
-		int index=0;
-		if(dsHoaDon.size()>0) {
-			index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
+		try {
+			if(dsSanPham.size()==0)
+				return false;
+			Connector<HoaDon> cHoaDon=new Connector<HoaDon>();
+			Connector<CTHD> cCTHD=new Connector<CTHD>();
+			List<HoaDon> dsHoaDon=cHoaDon.select(HoaDon.class, "select * from HOADON");
+			int index=0;
+			if(dsHoaDon.size()>0) {
+				index=dsHoaDon.get(dsHoaDon.size()-1).getMaHoaDon()+1;
+			}
+			double tongTien=Double.parseDouble(SumCost.getText());
+			String maLichChieu=card.getLichChieu().getMaLichChieu();
+			cHoaDon.insert("insert into HOADON values('"+index+"', '"+LoginController.taikhoan.getMaTaiKhoan()+"', '"+maLichChieu+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
+			BookTicketController.dsSanPhamDaDat.clear();
+			for(CartItem ci:cartItems) {
+				int soLuong=ci.NumberProperty().get();
+				BookTicketController.dsSanPhamDaDat.add(new SanPhamDaDat(index,maLichChieu,ci.sp.getMaSanPham(), ci.sp.getTenSanPham(),soLuong));
+				cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+soLuong+"')");
+			}
+			return true;
 		}
-		double tongTien=Double.parseDouble(SumCost.getText());
-		cHoaDon.insert("insert into HOADON values('"+index+"','"+tongTien+"','"+LocalDate.now().toString()+"')");
-		for(CartItem ci:cartItems) {
-			cCTHD.insert("insert into CTHD values('"+index+"','"+ci.sp.getMaSanPham()+"','"+ci.NumberProperty().get()+"')");
+		catch (Exception e) {
+			return false;
 		}
 	}
 
@@ -258,10 +282,11 @@ public class ServiceController implements Initializable {
 		});
 		MenuItem delete = new MenuItem("Xóa");
 		delete.setOnAction(e -> {
-			Optional<ButtonType> result =AlertBox.show(AlertType.CONFIRMATION, "Xác nhận", "Bạn có thực sự muốn xóa bộ phim này?", MyButtonType.YesNo);
+			Optional<ButtonType> result =AlertBox.show(AlertType.CONFIRMATION, "Xác nhận", "Bạn có thực sự muốn xóa dịch vụ này?", MyButtonType.YesNo);
 			if(result.get()==ButtonType.YES) {
 				new Connector<SanPham>().delete("delete from SANPHAM where MaSanPham='"+card.sp.getMaSanPham()+"'");
 				pane.getChildren().remove(card);
+				AlertBox.show(AlertType.INFORMATION, "Thành công","", "Xoá sản phẩm thành công!");
 			}
 		});
 		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user")) {
@@ -288,10 +313,15 @@ public class ServiceController implements Initializable {
 				String tenSanPham=sua.Get("Tên sản phẩm").getText();
 				int gia=Integer.parseInt(sua.Get("Giá").getText());
 				String moTa=sua.Get("Mô tả").getText();
-				byte[] hinhAnh=Connector.convertFileToByte(sua.f);
-				new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', Gia='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
+				byte[] hinhAnh;
+				if(sua.f!=null) {
+					hinhAnh=Connector.convertFileToByte(sua.f);
+					new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', GiaSanPham='"+gia+"', MoTa='"+moTa+"', HinhAnh=? where MaSanPham='"+card.sp.getMaSanPham()+"'",hinhAnh);
+				}
+				else
+					new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', GiaSanPham='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
 				initial(null);
-				AlertBox.show(AlertType.INFORMATION,"Thành công","","Thêm sản phẩm thành công!");
+				AlertBox.show(AlertType.INFORMATION,"Thành công","","Cập nhật thông tin sản phẩm thành công!");
 			}
 			catch (Exception e){
 				AlertBox.show(AlertType.ERROR,"Nhập sai","","Vui lòng kiểm tra lại thông tin!");

@@ -42,7 +42,9 @@ public class LoginController {
 					MainController.menu.clear();
 					MainController.menu.add("Home");
 					MainController.menu.add("Schedule");
-					MainController.menu.add("Service");
+					MainController.menu.add("Movies");
+					//MainController.menu.add("Service");\
+					MainController.menu.add("History");
 					MainController.menu.add("Account");
 				}
 				else {
