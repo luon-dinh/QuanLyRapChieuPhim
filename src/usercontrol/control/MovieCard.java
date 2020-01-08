@@ -145,7 +145,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 			menu.show(this, e.getScreenX(), e.getScreenY());
 		});
 		rattingBar.info.set("(" + p.getRating() + " - " + p.getNumberVote() + " vote)");
-		rattingBar.ratting.set(p.getRating());
+		rattingBar.ratting.set((float)p.getRating());
 		rattingBar.vote.set(p.getNumberVote());
 	}
 	
@@ -192,7 +192,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 				int numVote=0;
 				if(ps.size()>0) {
 					Phim currentPhim=ps.get(ps.size()-1);
-					rating=currentPhim.getRating();
+					rating=(float)currentPhim.getRating();
 					numVote=currentPhim.getNumberVote();
 				}
 				if(kh_v.size()==0){
