@@ -321,10 +321,12 @@ public class ServiceController implements Initializable {
 				else
 					new Connector<Phim>().update("update SANPHAM set TenSanPham='"+tenSanPham+"', GiaSanPham='"+gia+"', MoTa='"+moTa+"' where MaSanPham='"+card.sp.getMaSanPham()+"'");
 				initial(null);
+
 				AlertBox.show(AlertType.INFORMATION,"Thành công","","Cập nhật thông tin sản phẩm thành công!");
 			}
 			catch (Exception e){
 				AlertBox.show(AlertType.ERROR,"Nhập sai","","Vui lòng kiểm tra lại thông tin!");
+
 			}
 		}
 	}

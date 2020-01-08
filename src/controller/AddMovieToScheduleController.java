@@ -240,6 +240,7 @@ public class AddMovieToScheduleController implements Initializable{
 			c.insert("insert into LICHCHIEUPHIM values('"+maLichChieu+"','"+ScheduleController.phong.getMaPhong()+"','"+card.phim.getMaPhim()+"','"+ScheduleController.date+"','"+card.getGioBatDau().toString()+"','"+card.getThoiLuong()+"','"+card.getSoGhe()+"','"+card.getGiaVe()+"')");
 			for(Ghe ghe:dsGhe) {
 				new Connector<Ghe_LichChieu>().insert("insert into GHE_LICHCHIEU values('"+ghe.getMaGhe()+"','"+maLichChieu+"','"+1+"','"+(-1)+"')");
+			
 			}
 			MyWindows.lastStage.close();
 			AlertBox.show(AlertType.INFORMATION, "Thành công","","Thêm lịch chiếu phim thành công!");

@@ -189,6 +189,7 @@ public class MoviesController implements Initializable {
 			catch (Exception e) {
 				// TODO: handle exception
 				AlertBox.show(AlertType.ERROR, "Nhập sai", "", "Vui lòng kiểm tra lại thông tin!");
+
 			}
 		}
 	}

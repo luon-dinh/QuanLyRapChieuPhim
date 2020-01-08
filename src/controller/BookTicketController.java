@@ -123,6 +123,7 @@ public class BookTicketController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				MyWindows m=new MyWindows("../view/Service.fxml",card);
+				m.Resize(760, 540);
 				m.Show();
 				int lenght=dsSanPhamDaDat.size();
 				mn_doandadat.setText("Đồ ăn đã đặt ("+lenght+")");

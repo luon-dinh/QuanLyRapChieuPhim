@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Blob;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,12 @@ import Connector.Connector;
 import Model.LoaiPhim;
 import Model.Phim;
 import Model.Phim_LoaiPhim;
+import Model.GopY;
 import Model.KhachHang_Vote;
 import controller.LoginController;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +30,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +49,9 @@ public class MovieCard extends AnchorPane implements Initializable {
 	@FXML public Text length;
 	@FXML public Text sumary;
 	@FXML private BorderPane ratting;
+	@FXML private Button btn_gopy;
+	@FXML private Label lb_gopy;
+	
 	public RattingBar rattingBar = new RattingBar();
 	public ContextMenu menu = new ContextMenu();
 	public Phim phim=null;
@@ -110,6 +118,13 @@ public class MovieCard extends AnchorPane implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		List<GopY> dsGopY=new Connector<GopY>().select(GopY.class, "select * from GOPY where MaTaiKhoan='"+LoginController.taikhoan.getMaTaiKhoan()+"' and MaPhim='"+phim.getMaPhim()+"'");
+		if(dsGopY.size()>0) {
+			GopY gopY=dsGopY.get(dsGopY.size()-1);
+			lb_gopy.setText(gopY.getNoiDung());
+		}
+		
 		image.setOnContextMenuRequested(e -> {
 			menu.show(this, e.getScreenX(), e.getScreenY());
 		});
@@ -130,7 +145,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 			menu.show(this, e.getScreenX(), e.getScreenY());
 		});
 		rattingBar.info.set("(" + p.getRating() + " - " + p.getNumberVote() + " vote)");
-		rattingBar.ratting.set(p.getRating());
+		rattingBar.ratting.set((float)p.getRating());
 		rattingBar.vote.set(p.getNumberVote());
 	}
 	
@@ -138,7 +153,27 @@ public class MovieCard extends AnchorPane implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ratting.setCenter(rattingBar);
-		
+		if(!LoginController.taikhoan.getLoaiTaiKhoan().equals("user"))
+			btn_gopy.setVisible(false);
+		btn_gopy.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				AddEditInfo add=new AddEditInfo("Góp ý cho phim "+phim.getTenPhim());
+				add.AddTextArea("Nội dung góp ý");
+				add.getTextArea("Nội dung góp ý").setText(lb_gopy.getText());
+				add.show();
+				if(add.boxReturn==ButtonType.CANCEL)
+					AlertBox.show(AlertType.INFORMATION, "Thông báo", "Góp ý thất bại");
+				else if(add.boxReturn==ButtonType.OK) {
+					String noiDung=add.getTextArea("Nội dung góp ý").getText();
+					new Connector<GopY>().insert("insert into GOPY values('"+LoginController.taikhoan.getMaTaiKhoan()+"', '"+phim.getMaPhim()+"', '"+noiDung+"', '"+LocalDate.now().toString()+"')");
+					lb_gopy.setText(noiDung);
+					AlertBox.show(AlertType.INFORMATION, "Thông báo", "Đã góp ý thành công");
+				}
+			}
+		});
 		for(int i=0;i<rattingBar.bar.length;i++) {
 			ImageView imgv=rattingBar.bar[i];
 			int j=i;
@@ -157,7 +192,7 @@ public class MovieCard extends AnchorPane implements Initializable {
 				int numVote=0;
 				if(ps.size()>0) {
 					Phim currentPhim=ps.get(ps.size()-1);
-					rating=currentPhim.getRating();
+					rating=(float)currentPhim.getRating();
 					numVote=currentPhim.getNumberVote();
 				}
 				if(kh_v.size()==0){
